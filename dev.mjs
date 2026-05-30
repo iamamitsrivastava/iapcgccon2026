@@ -2,7 +2,7 @@ import { spawn, execSync } from 'child_process';
 import net from 'net';
 
 const defaultPort = parseInt(process.env.PORT || '3000', 10);
-const host = '127.0.0.1'; // Bind specifically to IPv4 localhost
+const host = '0.0.0.0'; // Bind specifically to IPv4 localhost
 
 function freePort(port) {
     try {

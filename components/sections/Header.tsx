@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+
 // Native SVG icon for the close button to avoid dependency issues with lucide-react in Turbopack
 
 const ChevronIcon = ({ size = 16, color = "currentColor" }: { size?: number, color?: string }) => (
@@ -66,13 +66,12 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
             <div className={styles.container}>
                 <Link href="/" className={styles.logo}>
                     <div className={styles.logoImageWrapper}>
-                        <Image
+                        <img
                             src="/parul-university-logo.svg"
                             alt="Parul University"
-                            width={160} // Updated from 130
-                            height={48} // Updated from 40
+                            width={160}
+                            height={48}
                             className={styles.logoImage}
-                            priority
                         />
                     </div>
                     {conference.title}
@@ -101,12 +100,11 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                             )}
                         </div>
                     ))}
-
-
-                    <Link href="/registration" className={styles.cta}>
-                        REGISTER
-                    </Link>
                 </nav>
+
+                <Link href="/registration" className={`${styles.cta} ${styles.desktopCta}`}>
+                    REGISTER
+                </Link>
 
                 {/* Mobile Menu Button */}
                 <button

@@ -223,20 +223,23 @@
     color: var(--color-primary);
 }
 
+@media (max-width: 1100px) {
+    .pricingGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
 @media (max-width: 768px) {
     .pricingGrid {
         grid-template-columns: 1fr;
     }
 
-    .internationalCard {
+    .internationalBar {
         flex-direction: column;
         text-align: center;
         gap: 1.5rem;
-    }
-
-    .intContent {
-        flex-direction: column;
-        gap: 1rem;
+        padding: 2rem 1.5rem;
     }
 
     .bankDetails {
@@ -373,8 +376,7 @@
     font-weight: 700;
     margin-bottom: 0.5rem;
     letter-spacing: 0.02em;
-    white-space: nowrap;
-    width: max-content;
+    text-align: center;
 }
 
 .profileRole {

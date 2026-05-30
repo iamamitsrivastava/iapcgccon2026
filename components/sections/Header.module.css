@@ -77,7 +77,7 @@
 .logoImageWrapper {
     display: flex;
     align-items: center;
-    margin-right: 1.5rem; /* Gap between logo and text */
+    margin-right: 0.75rem; /* Reduced gap between logo and text */
     flex-shrink: 0;
 }
 
@@ -90,9 +90,10 @@
 .nav {
     display: flex;
     align-items: center;
-    gap: 1.5rem; /* Reduced from 2rem for better fit */
-    margin-left: auto;
-    padding-left: 1rem;
+    gap: 1rem; /* Condensed links to pull them further left */
+    margin-right: auto;
+    margin-left: 0;
+    padding-left: 0;
 }
 
 .navLink {
@@ -364,6 +365,10 @@
 @media (max-width: 1250px) {
     .nav {
         display: none !important; /* Force hide to prevent overflow */
+    }
+
+    .desktopCta {
+        display: none !important;
     }
 
     .mobileMenuBtn {

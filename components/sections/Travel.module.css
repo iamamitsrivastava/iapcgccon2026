@@ -207,3 +207,9 @@
 .reachButton:hover svg {
     transform: translateX(3px);
 }
+
+@media (max-width: 600px) {
+    .attractionGrid {
+        grid-template-columns: 1fr;
+    }
+}
