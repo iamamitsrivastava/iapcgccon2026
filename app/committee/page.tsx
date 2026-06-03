@@ -40,7 +40,7 @@ export default function CommitteePage() {
                         margin: '0 auto',
                         lineHeight: 1.6
                     }}>
-                        Meet the dedicated team of experts and professionals who are working to make ICBD 2026 a premier scientific event.
+                        Meet the dedicated team of experts and professionals who are working to make IAPSMGC CON 2026 a premier scientific event.
                     </p>
                 </ScrollReveal>
             </section>

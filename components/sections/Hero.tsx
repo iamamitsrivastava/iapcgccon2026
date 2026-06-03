@@ -135,12 +135,6 @@ export default function Hero() {
       image: "/images/ram-madhav-new.jpg"
     },
     {
-      name: "Dr. Hemang Joshi",
-      title: "Member of Parliament (MP), Vadodara",
-      badge: "National Advisory Committee",
-      image: "/images/hemang-joshi.jpg"
-    },
-    {
       name: "Prof. Yogesh Singh",
       title: "AICTE Chairman & VC, Delhi University",
       badge: "National Advisory Committee",
@@ -277,26 +271,29 @@ export default function Hero() {
       <div className={styles.container}>
         <div className={styles.heroGrid}>
           <div className={styles.content}>
-            <div className={`${styles.presenter} ${styles.animate} ${styles['delay-100']}`}>PARUL INSTITUTE OF LIBERAL ARTS PRESENTS</div>
+            <div className={`${styles.presenter} ${styles.animate} ${styles['delay-100']}`}>PARUL INSTITUTE OF MEDICAL SCIENCES &amp; RESEARCH PRESENTS</div>
 
             <h1 className={`${styles.title} ${styles.animate} ${styles['delay-200']}`}>
               {conference.title}
             </h1>
 
             <p className={`${styles.subtitle} ${styles.animate} ${styles['delay-300']}`}>
-              International Conference on Bridging Disciplines:
+              International Conference on Translating Public Health Policy into Practice towards
               <br />
-              <span style={{ fontWeight: 600, color: 'white' }}>Expanding Horizons in Liberal Arts</span>
+              <span style={{ fontWeight: 600, color: 'white' }}>Viksit Bharat @ 2047</span>
             </p>
 
             <div className={`${styles.meta} ${styles.animate} ${styles['delay-400']}`}>
               <div className={styles.metaItem}>
                 <Calendar className={styles.metaIcon} size={24} />
-                <span>{conference.dates}</span>
+                <span>
+                  <strong>Pre-Conference:</strong> 26 Nov 2026 &nbsp;|&nbsp;
+                  <strong>Main:</strong> 27–28 Nov 2026
+                </span>
               </div>
               <div className={styles.metaItem}>
                 <MapPin className={styles.metaIcon} size={24} />
-                <span>Parul University, Vadodara</span>
+                <span>PIMSR, Parul University, Vadodara</span>
               </div>
             </div>
 
@@ -350,67 +347,31 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Stats Row */}
-            <div className={`${styles.statsRow} ${styles.animate} ${styles['delay-700']}`}>
-              <div className={styles.statItem}>
-                <span className={styles.statNumber}>300+</span>
-                <span className={styles.statLabel}>Attendees</span>
-              </div>
-              <div className={styles.statLine}></div>
-              <div className={styles.statItem}>
-                <span className={styles.statNumber}>20+</span>
-                <span className={styles.statLabel}>Speakers</span>
-              </div>
-              <div className={styles.statLine}></div>
-              <div className={styles.statItem}>
-                <span className={styles.statNumber}>5+</span>
-                <span className={styles.statLabel}>Countries</span>
-              </div>
-              <div className={styles.statLine}></div>
-              <div className={styles.statItem}>
-                <span className={styles.statNumber}>2+</span>
-                <span className={styles.statLabel}>Workshops / Panel Discussion</span>
-              </div>
-            </div>
           </div>
 
-          {/* Right Side Visuals - Chairperson Slider */}
-          <div className={`${styles.visuals} ${styles.animate} ${styles['delay-500']}`}>
-            <div className={`${styles.imageCard} ${styles.heroCardExpanded}`}>
-              <div className={styles.profileWrapper}>
-                {profiles.map((profile, index) => (
-                  <Image
-                    key={index}
-                    src={profile.image}
-                    alt={profile.name}
-                    fill
-                    className={`${styles.profileImage} ${index === currentProfile ? styles.activeProfile : styles.inactiveProfile}`}
-                    sizes="(max-width: 1024px) 70vw, 40vw"
-                    style={{
-                      objectFit: 'cover',
-                      objectPosition: 'top'
-                    }}
-                    priority={index === 0}
-                  />
-                ))}
-              </div>
-              <div key={currentProfile} className={`${styles.profileInfo} ${styles.fadeInText}`}>
-                <h3 className={styles.profileName}>{profiles[currentProfile].name}</h3>
-                <p className={styles.profileTitle}>{profiles[currentProfile].title}</p>
-                <div className={styles.profileBadge}>{profiles[currentProfile].badge}</div>
-                
-                {/* Dots for slider navigation */}
-                <div className={styles.profileDots}>
-                  {profiles.map((_, index) => (
-                    <div 
-                      key={index} 
-                      className={`${styles.profileDot} ${index === currentProfile ? styles.activeDot : ''}`}
-                      onClick={() => setCurrentProfile(index)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
+
+        </div>
+
+        {/* Stats Row */}
+        <div className={`${styles.statsRow} ${styles.animate} ${styles['delay-700']}`}>
+          <div className={styles.statItem}>
+            <span className={styles.statNumber}>300+</span>
+            <span className={styles.statLabel}>Attendees</span>
+          </div>
+          <div className={styles.statLine}></div>
+          <div className={styles.statItem}>
+            <span className={styles.statNumber}>20+</span>
+            <span className={styles.statLabel}>Speakers</span>
+          </div>
+          <div className={styles.statLine}></div>
+          <div className={styles.statItem}>
+            <span className={styles.statNumber}>5+</span>
+            <span className={styles.statLabel}>Countries</span>
+          </div>
+          <div className={styles.statLine}></div>
+          <div className={styles.statItem}>
+            <span className={styles.statNumber}>2+</span>
+            <span className={styles.statLabel}>Workshops / Panel Discussion</span>
           </div>
         </div>
       </div>

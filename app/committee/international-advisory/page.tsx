@@ -62,7 +62,7 @@ export default function InternationalAdvisoryPage() {
                         fontSize: '1.1rem',
                         lineHeight: 1.7,
                     }}>
-                        Distinguished international scholars and experts providing global perspective to ICBD-2026.
+                        Distinguished international scholars and experts providing global perspective to IAPSMGC CON 2026.
                     </p>
                 </ScrollReveal>
             </section>

@@ -88,11 +88,11 @@ export default function Footer() {
                             </div>
                         </div>
                         <h3 className={styles.footerConferenceTitle}>{conference.title}</h3>
-                        <p className={styles.footerConferenceSubtitle}>International Conference on Bridging Disciplines</p>
+                        <p className={styles.footerConferenceSubtitle}>Translating Public Health Policy into Practice towards Viksit Bharat @ 2047</p>
 
                         <div className={styles.footerMeta}>
-                            <p>Vadodara, Gujarat, India</p>
-                            <p>{conference.dates}</p>
+                            <p>PIMSR, Parul University, Vadodara, Gujarat</p>
+                            <p>26–28 November 2026</p>
                         </div>
 
                         <div className={styles.socialIcons}>

@@ -43,52 +43,28 @@ export default function RegistrationPage() {
     
     const fees = [
         {
-            category: 'Research Scholar(Ph.D[Student outside Parul University])',
-            offlineAttending: '1000 INR',
-            onlineAttending: '800 INR',
-            regularContributor: '1200 INR',
-            onlineContributor: '1000 INR',
-            onSpotContributor: '1500 INR',
+            category: 'IAPSM Member',
+            earlyBird: '₹4000',
+            lateBird: '₹4500',
+            spot: '₹5000',
         },
         {
-            category: 'UG/PG (within Parul University)',
-            offlineAttending: '700 INR',
-            onlineAttending: '500 INR',
-            regularContributor: '800 INR',
-            onlineContributor: '600 INR',
-            onSpotContributor: '1000 INR',
+            category: 'IAPSM Non-Member',
+            earlyBird: '₹4500',
+            lateBird: '₹5000',
+            spot: '₹6000',
         },
         {
-            category: 'Academicians',
-            offlineAttending: '1200 INR',
-            onlineAttending: '1000 INR',
-            regularContributor: '1500 INR',
-            onlineContributor: '1200 INR',
-            onSpotContributor: '2000 INR',
+            category: 'PG Students/SRs',
+            earlyBird: '₹3500',
+            lateBird: '₹4000',
+            spot: '₹5000',
         },
         {
-            category: 'Industry',
-            offlineAttending: '1500 INR',
-            onlineAttending: '1200 INR',
-            regularContributor: '2000 INR',
-            onlineContributor: '1700 INR',
-            onSpotContributor: '2500 INR',
-        },
-        {
-            category: 'Foreign Student',
-            offlineAttending: '50 USD',
-            onlineAttending: '30 USD',
-            regularContributor: '75 USD',
-            onlineContributor: '50 USD',
-            onSpotContributor: '100 USD',
-        },
-        {
-            category: 'Foreign Delegate',
-            offlineAttending: '100 USD',
-            onlineAttending: '50 USD',
-            regularContributor: '125 USD',
-            onlineContributor: '75 USD',
-            onSpotContributor: '150 USD',
+            category: 'Interns/UG/Co-Delegates',
+            earlyBird: '₹2500',
+            lateBird: '₹3000',
+            spot: '₹3500',
         },
     ];
 
@@ -156,16 +132,10 @@ export default function RegistrationPage() {
                         <table className={styles.feeTable}>
                             <thead>
                                 <tr>
-                                    <th rowSpan={2} className={styles.categoryHeader}>Category</th>
-                                    <th colSpan={2} className={`${styles.groupHeader} ${styles.groupHeaderAttending}`}>Only Attending</th>
-                                    <th colSpan={3} className={styles.groupHeader}>Contributor (Presenting Paper)</th>
-                                </tr>
-                                <tr>
-                                    <th className={`${styles.subHeader} ${styles.attendingCol}`}>Offline</th>
-                                    <th className={`${styles.subHeader} ${styles.attendingCol}`}>Online</th>
-                                    <th className={`${styles.subHeader} ${styles.contributorCol}`}>Offline</th>
-                                    <th className={`${styles.subHeader} ${styles.contributorCol}`}>Online</th>
-                                    <th className={`${styles.subHeader} ${styles.contributorCol}`}>
+                                    <th className={styles.categoryHeader}>Category</th>
+                                    <th className={`${styles.groupHeader}`}>Early Bird</th>
+                                    <th className={`${styles.groupHeader}`}>Late Bird</th>
+                                    <th className={`${styles.groupHeader}`}>
                                         <div style={{ 
                                             display: 'flex', 
                                             flexDirection: 'column', 
@@ -178,7 +148,7 @@ export default function RegistrationPage() {
                                             border: '1px solid rgba(218, 165, 32, 0.3)'
                                         }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#daa520', fontWeight: 'bold' }}>
-                                                On Spot {isOnSpotLocked && <Lock size={14} />}
+                                                Spot {isOnSpotLocked && <Lock size={14} />}
                                             </div>
                                             {isOnSpotLocked && (
                                                 <span style={{ fontSize: '0.65rem', fontWeight: 600, color: '#FFD700', textTransform: 'uppercase' }}>
@@ -197,51 +167,26 @@ export default function RegistrationPage() {
                                                 {renderCategory(item.category)}
                                             </div>
                                         </td>
-                                        <td data-label="Offline (Attending)" className={styles.attendingCol}>
+                                        <td data-label="Early Bird" className={styles.attendingCol}>
+                                            <a 
+                                                href="#" 
+                                                className={`${styles.feeGridButton}`}
+                                            >
+                                                <span className={styles.feeText}>{item.earlyBird}</span>
+                                            </a>
+                                        </td>
+                                        <td data-label="Late Bird" className={styles.attendingCol}>
                                             <a 
                                                 href="#" 
                                                 className={`${styles.feeGridButton} ${areOthersLocked ? styles.lockedButton : ''}`}
                                                 onClick={(e) => areOthersLocked && e.preventDefault()}
                                                 style={areOthersLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                             >
-                                                <span className={styles.feeText}>{item.offlineAttending}</span>
+                                                <span className={styles.feeText}>{item.lateBird}</span>
                                                 {areOthersLocked && <Lock size={14} style={{ marginLeft: '4px' }} />}
                                             </a>
                                         </td>
-                                        <td data-label="Online (Attending)" className={`${styles.attendingCol} ${styles.onlineCol}`}>
-                                            <a 
-                                                href="#" 
-                                                className={`${styles.feeGridButton} ${areOthersLocked ? styles.lockedButton : ''}`}
-                                                onClick={(e) => areOthersLocked && e.preventDefault()}
-                                                style={areOthersLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
-                                            >
-                                                <span className={styles.feeText}>{item.onlineAttending}</span>
-                                                {areOthersLocked && <Lock size={14} style={{ marginLeft: '4px' }} />}
-                                            </a>
-                                        </td>
-                                        <td data-label="Regular (Contributor)" className={styles.contributorCol}>
-                                            <a 
-                                                href="#" 
-                                                className={`${styles.feeGridButton} ${areOthersLocked ? styles.lockedButton : ''}`}
-                                                onClick={(e) => areOthersLocked && e.preventDefault()}
-                                                style={areOthersLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
-                                            >
-                                                <span className={styles.feeText}>{item.regularContributor}</span>
-                                                {areOthersLocked && <Lock size={14} style={{ marginLeft: '4px' }} />}
-                                            </a>
-                                        </td>
-                                        <td data-label="Online (Contributor)" className={`${styles.contributorCol} ${styles.onlineCol}`}>
-                                            <a 
-                                                href="#" 
-                                                className={`${styles.feeGridButton} ${areOthersLocked ? styles.lockedButton : ''}`}
-                                                onClick={(e) => areOthersLocked && e.preventDefault()}
-                                                style={areOthersLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
-                                            >
-                                                <span className={styles.feeText}>{item.onlineContributor}</span>
-                                                {areOthersLocked && <Lock size={14} style={{ marginLeft: '4px' }} />}
-                                            </a>
-                                        </td>
-                                        <td data-label="On Spot (Contributor)" className={styles.contributorCol}>
+                                        <td data-label="Spot" className={styles.contributorCol}>
                                             <a 
                                                 href="#" 
                                                 className={`${styles.feeGridButton} ${isOnSpotLocked ? styles.lockedButton : ''}`}
@@ -249,7 +194,7 @@ export default function RegistrationPage() {
                                                 style={isOnSpotLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                             >
                                                 <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                                                    {item.onSpotContributor}
+                                                    {item.spot}
                                                     {isOnSpotLocked && <Lock size={14} />}
                                                 </span>
                                             </a>

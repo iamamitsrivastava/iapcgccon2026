@@ -1,146 +1,199 @@
-.themes {
-    background-color: white;
+/* ═══════════════════════════════════════════════
+   THEMES — Scientific Themes Grid
+═══════════════════════════════════════════════ */
+
+.section {
+    background: #0A1124;
+    padding: 6rem 0;
 }
 
-.container {
+/* ── Card Grid ── */
+.grid {
     display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 4rem;
-    align-items: start;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 3rem;
 }
 
-.tabList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.tabBtn {
-    text-align: left;
-    padding: 1.25rem 1.75rem;
-    border: 1px solid var(--color-border);
-    background: transparent;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: var(--font-heading);
-    font-weight: 500;
-    color: var(--color-text-muted);
-    font-size: 1rem;
+/* ── Theme Card ── */
+.card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.5rem 1.25rem 1.25rem;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
 }
 
-.tabBtn:hover {
-    background-color: var(--color-bg);
-    color: var(--color-primary);
-    transform: translateX(5px);
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(212, 175, 55, 0.15);
+    border-color: rgba(212, 175, 55, 0.3);
 }
 
-.tabBtn[data-active="true"] {
-    background-color: #0f172a;
-    /* Deep blue/black */
-    color: white;
-    border-color: #0f172a;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
-    font-weight: 600;
-    transform: translateX(10px);
+.cardActive {
+    box-shadow: 0 16px 48px rgba(212, 175, 55, 0.3);
+    transform: translateY(-4px);
+    border-color: rgba(212, 175, 55, 0.5);
+    background: rgba(255, 255, 255, 0.05);
 }
 
-.contentPanel {
-    padding: 1rem;
-    min-height: 400px;
-    animation: fadeIn 0.4s ease-out;
+/* top accent bar */
+.cardBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 16px 16px 0 0;
 }
 
-.panelTitle {
-    font-size: 2.5rem;
-    margin-bottom: 2.5rem;
-    color: #0f172a;
-    font-family: var(--font-heading);
-}
-
-.subThemeList {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    /* Two columns for sub-themes as per image */
-    gap: 1.5rem;
-}
-
-.subThemeItem {
+/* Icon circle */
+.cardIcon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    font-size: 1.1rem;
-    padding: 1rem 1.5rem;
-    background: white;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.card:hover .cardIcon {
+    transform: scale(1.08);
+}
+
+/* Number badge */
+.cardNum {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.cardTitle {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.35;
+    flex: 1;
+}
+
+.cardHint {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-top: 0.25rem;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+}
+
+.card:hover .cardHint { opacity: 1; }
+
+/* ── Sub-theme expandable list ── */
+.subList {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    animation: expandIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 0.85rem;
+    transform-origin: top;
+}
+
+@keyframes expandIn {
+    from { opacity: 0; transform: translateY(-10px) scaleY(0.95); }
+    to   { opacity: 1; transform: translateY(0) scaleY(1); }
+}
+
+.subItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.45;
+}
+
+/* ── CTA Banner ── */
+.ctaBanner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    background: linear-gradient(135deg, #0a1124 0%, #0f2144 100%);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.ctaTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.3rem;
+}
+
+.ctaSub {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.ctaSub strong { color: #D4AF37; }
+
+.ctaBtn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.75rem;
+    background: linear-gradient(135deg, #D4AF37 0%, #aa8c2c 100%);
+    color: #0a1124;
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-decoration: none;
     border-radius: 8px;
-    border: 1px solid var(--color-border);
+    white-space: nowrap;
+    flex-shrink: 0;
     transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
 }
 
-.subThemeItem:hover {
+.ctaBtn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    border-color: var(--color-secondary);
+    box-shadow: 0 8px 28px rgba(212, 175, 55, 0.45);
 }
 
-.bullet {
-    color: var(--color-secondary);
-    min-width: 24px;
+/* ── Responsive ── */
+@media (max-width: 1280px) {
+    .grid { grid-template-columns: repeat(4, 1fr); }
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+@media (max-width: 1024px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-@media (max-width: 900px) {
-    .container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
+@media (max-width: 768px) {
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .ctaBanner { flex-direction: column; text-align: center; }
+    .ctaBtn { width: 100%; justify-content: center; }
+}
 
-    .tabList {
-        flex-direction: row;
-        overflow-x: auto;
-        padding-bottom: 1rem;
-        gap: 1rem;
-        /* Hide scrollbar */
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-
-    .tabList::-webkit-scrollbar {
-        display: none;
-    }
-
-    .tabBtn {
-        white-space: nowrap;
-        padding: 1rem 1.5rem;
-        min-width: fit-content;
-    }
-
-    .tabBtn:hover,
-    .tabBtn[data-active="true"] {
-        transform: none;
-    }
-
-    .subThemeList {
-        grid-template-columns: 1fr;
-    }
-
-    .panelTitle {
-        font-size: 2rem;
-        text-align: center;
-    }
+@media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr; }
+    .section { padding: 4rem 0; }
 }

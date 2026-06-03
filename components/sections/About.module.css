@@ -70,6 +70,58 @@
     text-decoration: underline;
 }
 
+/* ── Mission Banner ── */
+.missionBanner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: linear-gradient(135deg, #0a1124 0%, #0f2144 100%);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-left: 4px solid #D4AF37;
+    border-radius: 12px;
+    padding: 1.75rem 2rem;
+    margin-top: 3rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.missionIcon {
+    width: 140px;
+    height: 70px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.missionContent {
+    flex: 1;
+}
+
+.missionLabel {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #D4AF37;
+    margin-bottom: 0.4rem;
+}
+
+.missionText {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    margin: 0 !important;
+    line-height: 1.5 !important;
+    text-align: left !important;
+}
+
+@media (max-width: 640px) {
+    .missionBanner { flex-direction: column; text-align: center; gap: 1rem; }
+    .missionText { text-align: center !important; }
+}
+
 
 .imageWrapper {
     width: 100%;

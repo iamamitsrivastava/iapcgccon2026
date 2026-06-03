@@ -13,7 +13,7 @@ export default function Travel() {
                 <div className={styles.header}>
                     <h1 className={styles.title}>Travel & Accommodation</h1>
                     <p className={styles.subtitle}>
-                        Plan your trip to Vadodara for ICBD 2026. Find information on travel, visas, and local stays.
+                        Plan your trip to Vadodara for IAPSMGC CON 2026. Find information on travel, visas, and local stays.
                     </p>
                 </div>
 

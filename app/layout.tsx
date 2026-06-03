@@ -15,8 +15,16 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'ICBD-2026 | Parul University',
-  description: 'International Conference on Bridging Disciplines: Expanding Horizons in Liberal Arts',
+  title: 'IAPSMGC CON 2026 | Parul University',
+  description: 'Translating Public Health Policy into Practice towards Viksit Bharat @ 2047 — PIMSR, Parul University, Vadodara, 26–28 November 2026.',
+  openGraph: {
+    title: 'IAPSMGC CON 2026 | Parul University',
+    description: 'Translating Public Health Policy into Practice towards Viksit Bharat @ 2047',
+    images: [{ url: '/parul-university-logo.svg' }],
+  },
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export const viewport = {

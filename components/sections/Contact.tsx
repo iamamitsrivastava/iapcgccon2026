@@ -61,25 +61,21 @@ export default function Contact() {
                     {/* Contact Info Column */}
                     <div className={styles.infoColumn}>
                         <div className={styles.infoBlock}>
-                            <h3 className={styles.subHeading}>Primary Contact :</h3>
+                            <h3 className={styles.subHeading}>Contact Information :</h3>
 
                             <div className={styles.contactItem}>
-                                <h4>Conference Director</h4>
-                                <p>Dr.Digvijay Pandya (digvijay.pandya29007@paruluniversity.ac.in)</p>
+                                <h4>Address</h4>
+                                <p>Department of Community Medicine</p>
+                                <p>2nd Floor, PIMSR</p>
+                                <p>Parul University</p>
+                                <p>Vadodara – 391760</p>
                             </div>
 
                             <div className={styles.contactItem}>
-                                <h4>CONTACT</h4>
-                                <p style={{ whiteSpace: 'nowrap' }}>Dr. Vijendra Nath Pathak (+91-7905765113)</p>
-                                <p style={{ whiteSpace: 'nowrap' }}>Dr. Ashok Biswas (+91-8306849669)</p>
-                                <p style={{ whiteSpace: 'nowrap' }}>Mr. Ashish Kotadiya (+91-8155883094)</p>
-                            </div>
-
-                            <div className={styles.contactItem}>
-                                <h4>E-mail :</h4>
+                                <h4>Email</h4>
                                 <p>
-                                    <a href="mailto:icbd2026@paruluniversity.ac.in" style={{ color: '#f0c040', wordBreak: 'break-all' }}>
-                                        icbd2026@paruluniversity.ac.in
+                                    <a href="mailto:iapsmgccon2026@paruluniversity.ac.in" style={{ color: '#f0c040', wordBreak: 'break-all' }}>
+                                        iapsmgccon2026@paruluniversity.ac.in
                                     </a>
                                 </p>
                             </div>

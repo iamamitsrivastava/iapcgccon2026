@@ -61,7 +61,7 @@ export default function Sponsorship() {
             inkind: false
         },
         {
-            feature: "Networking lunch with ICBD executive team & Invited stakeholders",
+            feature: "Networking lunch with conference executive team & Invited stakeholders",
             platinum: true,
             gold: true,
             silver: true,
@@ -82,14 +82,14 @@ export default function Sponsorship() {
                 <div className={styles.header}>
                     <h1 className={styles.title}>Sponsorship Opportunities</h1>
                     <p className={styles.subtitle}>
-                        Partner with ICBD 2026 and connect with a highly engaged community of researchers, academicians, industry associates, and policymakers from around the globe.
+                        Partner with IAPSMGC CON 2026 and connect with a highly engaged community of researchers, academicians, industry associates, and policymakers from around the globe.
                     </p>
                 </div>
 
                 <div className={styles.grid}>
                     <div className={styles.card}>
                         <h2 className={styles.sectionTitle}>
-                            <Award className={styles.goldIcon} /> Why Sponsor ICBD 2026?
+                            <Award className={styles.goldIcon} /> Why Sponsor IAPSMGC CON 2026?
                         </h2>
                         <div className={styles.benefitList}>
                             <div className={styles.benefitItem}>
@@ -120,7 +120,7 @@ export default function Sponsorship() {
                             <Zap className={styles.goldIcon} /> Sponsorship Packages
                         </h2>
                         <p className={styles.subtitle} style={{ textAlign: 'left', margin: '0 0 2rem 0', fontSize: '1rem' }}>
-                            ICBD 2026 offers flexible sponsorship options to align with the objectives including day, session and event sponsorship packages.
+                            IAPSMGC CON 2026 offers flexible sponsorship options to align with the objectives including day, session and event sponsorship packages.
                         </p>
                         <div className={styles.tableWrapper}>
                             <table className={styles.table}>

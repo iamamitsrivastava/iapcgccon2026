@@ -70,7 +70,7 @@ export default function NationalAdvisoryPage() {
                         fontSize: '1.1rem',
                         lineHeight: 1.7,
                     }}>
-                        Eminent national scholars and academicians guiding the academic direction of ICBD-2026.
+                        Eminent national scholars and academicians guiding the academic direction of IAPSMGC CON 2026.
                     </p>
                 </ScrollReveal>
             </section>

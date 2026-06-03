@@ -1,188 +1,223 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import styles from './Header.module.css';
 
-// Native SVG icon for the close button to avoid dependency issues with lucide-react in Turbopack
-
-const ChevronIcon = ({ size = 16, color = "currentColor" }: { size?: number, color?: string }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="6 9 12 15 18 9"></polyline>
+/* ─────────── SVG icons (no external dependency) ─────────── */
+const ChevronDown = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="6 9 12 15 18 9" />
     </svg>
 );
 
-import { conference } from '@/data/conference';
-import styles from './Header.module.css';
+const MenuIcon = () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+);
 
-// Improved mobile menu navigation
+const CloseIcon = () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+);
+
+/* ─────────── Types ─────────── */
+interface NavChild { label: string; href: string; }
+interface NavItem { label: string; href: string; children?: NavChild[]; }
+
 interface HeaderProps {
     variant?: 'transparent' | 'solid';
 }
 
-export default function Header({ variant = 'transparent' }: HeaderProps) {
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const isDarkTheme = variant === 'solid';
+const navItems: NavItem[] = [
+    { label: 'About', href: '/#about' },
+    { label: 'Pre-Conference', href: '/pre-conference' },
+    { label: 'Scientific Program', href: '/program' },
+    { label: 'SPONSORSHIP', href: '/sponsorship' },
+    { label: 'PUBLICATION & ETHICS', href: '/resources/publishing-ethics' },
+    { label: 'Explore Vadodara', href: '/travel' },
+    { label: 'Contact Us', href: '/contact' },
+];
 
+/* ─────────── Component ─────────── */
+export default function Header({ variant = 'transparent' }: HeaderProps) {
+    const [scrolled, setScrolled] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+    const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+
+    const isSolid = variant === 'solid';
+
+    /* scroll handler */
     useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        const onScroll = () => setScrolled(window.scrollY > 60);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
+    /* lock body scroll when mobile menu open */
+    useEffect(() => {
+        document.body.style.overflow = mobileOpen ? 'hidden' : '';
+        return () => { document.body.style.overflow = ''; };
+    }, [mobileOpen]);
 
-    interface NavItem {
-        label: string;
-        href: string;
-        children?: { label: string; href: string }[];
-    }
-
-    const navItems: NavItem[] = [
-        { label: 'ABOUT PARUL', href: '/#about-parul' },
-        {
-            label: 'COMMITTEE', href: '/committee',
-            children: [
-                { label: 'Committee', href: '/committee' },
-                { label: 'International Advisory', href: '/committee/international-advisory' },
-                { label: 'National Advisory', href: '/committee/national-advisory' },
-            ]
-        },
-        { label: 'SPEAKERS', href: '/#speakers' },
-        {
-            label: 'Themes', href: '/#themes',
-            children: [
-                { label: 'Call For Abstract', href: '/#themes' },
-            ]
-        },
-        { label: 'PUBLICATION & ETHICS', href: '/resources/publishing-ethics' },
-        { label: 'TRAVELS', href: '/travel' },
-        { label: 'SPONSORSHIP', href: '/sponsorship' },
-        { label: 'CONTACT', href: '/contact' },
-    ];
+    const headerClass = [
+        styles.header,
+        scrolled ? styles.scrolled : '',
+        isSolid ? styles.solid : '',
+    ].filter(Boolean).join(' ');
 
     return (
-        <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''} ${isDarkTheme ? styles.solidHeader : ''}`}>
-            <div className={styles.container}>
-                <Link href="/" className={styles.logo}>
-                    <div className={styles.logoImageWrapper}>
-                        <img
-                            src="/parul-university-logo.svg"
-                            alt="Parul University"
-                            width={160}
-                            height={48}
-                            className={styles.logoImage}
-                        />
-                    </div>
-                    {conference.title}
-                </Link>
+        <>
+            <header className={headerClass}>
+                <div className={styles.inner}>
 
-                {/* Desktop Nav */}
-                <nav className={styles.nav}>
-                    {navItems.map((item) => (
-                        <div key={item.label} className={styles.navItem}>
-                            <Link
-                                href={item.href}
-                                className={`${styles.navLink} ${item.label === 'ABOUT US' ? styles.noUnderline : ''}`}
-                            >
-                                {item.label}
-                                {item.children && <ChevronIcon size={14} />}
-                            </Link>
-
-                            {item.children && (
-                                <div className={styles.dropdown}>
-                                    {item.children?.map((child) => (
-                                        <Link key={child.label} href={child.href} className={styles.dropdownLink}>
-                                            {child.label}
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
+                    {/* ── Logo cluster ── */}
+                    <Link href="/" className={styles.logoCluster} onClick={() => setMobileOpen(false)}>
+                        <div className={styles.logoGroup}>
+                            <Image
+                                src="/parul-university-logo.svg"
+                                alt="Parul University"
+                                width={110}
+                                height={38}
+                                className={styles.logoImg}
+                                priority
+                            />
                         </div>
-                    ))}
-                </nav>
+                        <div className={styles.logoSeparator} />
+                        <div className={styles.logoText}>
+                            <span className={styles.logoTitle}>IAPSMGC CON</span>
+                            <span className={styles.logoYear}>2026</span>
+                        </div>
+                    </Link>
 
-                <Link href="/registration" className={`${styles.cta} ${styles.desktopCta}`}>
-                    REGISTER
-                </Link>
+                    {/* ── Desktop nav ── */}
+                    <nav className={styles.desktopNav} aria-label="Main navigation">
+                        {navItems.map(item => (
+                            <div
+                                key={item.label}
+                                className={styles.navItem}
+                                onMouseEnter={() => item.children && setOpenDropdown(item.label)}
+                                onMouseLeave={() => setOpenDropdown(null)}
+                            >
+                                <Link href={item.href} className={styles.navLink}>
+                                    {item.label}
+                                    {item.children && (
+                                        <span className={`${styles.chevron} ${openDropdown === item.label ? styles.chevronOpen : ''}`}>
+                                            <ChevronDown />
+                                        </span>
+                                    )}
+                                </Link>
 
-                {/* Mobile Menu Button */}
-                <button
-                    className={`${styles.mobileMenuBtn} ${isMobileMenuOpen ? styles.active : ''}`}
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    aria-label="Toggle Menu"
-                >
-                    <div className={styles.hamburgerLines}>
-                        <span className={`${styles.line} ${styles.line1}`}></span>
-                        <span className={`${styles.line} ${styles.line2}`}></span>
-                        <span className={`${styles.line} ${styles.line3}`}></span>
-                    </div>
-                </button>
-
-                {/* Mobile Overlay */}
-                <div
-                    className={`${styles.mobileOverlay} ${isMobileMenuOpen ? styles.overlayOpen : ''}`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                />
-
-                {/* Mobile Nav */}
-                <div className={`${styles.mobileNav} ${isMobileMenuOpen ? styles.open : ''}`}>
-                    <div className={styles.mobileNavHeader}>
-                        <div className={styles.mobileMenuBrand}>Menu</div>
-                    </div>
-
-                    <div className={styles.mobileNavContent}>
-                        {navItems.map((item, index) => (
-                            <div key={item.label} className={styles.mobileMenuSection}>
-                                {item.children ? (
-                                    <>
-                                        <div className={styles.mobileGroupTitle}>
-                                            {item.label}
-                                        </div>
-                                        <div className={styles.mobileSublinks}>
-
-                                            {item.children?.map((child) => (
+                                {item.children && (
+                                    <div className={`${styles.dropdown} ${openDropdown === item.label ? styles.dropdownVisible : ''}`}>
+                                        <div className={styles.dropdownInner}>
+                                            {item.children.map(child => (
                                                 <Link
                                                     key={child.label}
                                                     href={child.href}
-                                                    className={styles.mobileSubLink}
-                                                    onClick={() => setIsMobileMenuOpen(false)}
+                                                    className={styles.dropdownLink}
+                                                    onClick={() => setOpenDropdown(null)}
                                                 >
+                                                    <span className={styles.dropdownDot} />
                                                     {child.label}
                                                 </Link>
                                             ))}
                                         </div>
-                                    </>
-                                ) : (
-                                    <Link
-                                        href={item.href}
-                                        className={styles.mobileNavLink}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        style={{ animationDelay: `${0.1 + index * 0.05}s` }}
-                                    >
-                                        {item.label}
-                                    </Link>
+                                    </div>
                                 )}
                             </div>
                         ))}
-                        <Link
-                            href="/registration"
-                            className={`${styles.mobileNavLink} ${styles.cta}`}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            style={{
-                                marginTop: '2rem',
-                                textAlign: 'center',
-                                justifyContent: 'center',
-                                border: '1px solid #FFD700',
-                                marginLeft: 0,
-                                animationDelay: `${0.1 + navItems.length * 0.05}s`
-                            }}
-                        >
-                            REGISTER
+                    </nav>
+
+                    {/* ── CTA ── */}
+                    <div className={styles.ctaWrap}>
+                        <Link href="/registration" className={styles.cta}>
+                            Register Now
                         </Link>
+
+                        {/* Hamburger */}
+                        <button
+                            className={styles.hamburger}
+                            onClick={() => setMobileOpen(v => !v)}
+                            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+                            aria-expanded={mobileOpen}
+                        >
+                            {mobileOpen ? <CloseIcon /> : <MenuIcon />}
+                        </button>
                     </div>
                 </div>
-            </div>
-        </header>
+            </header>
+
+            {/* ── Mobile overlay ── */}
+            <div
+                className={`${styles.overlay} ${mobileOpen ? styles.overlayOpen : ''}`}
+                onClick={() => setMobileOpen(false)}
+                aria-hidden="true"
+            />
+
+            {/* ── Mobile drawer ── */}
+            <aside className={`${styles.drawer} ${mobileOpen ? styles.drawerOpen : ''}`} aria-label="Mobile navigation">
+                <div className={styles.drawerHeader}>
+                    <div className={styles.drawerBrand}>
+                        <Image src="/parul-university-logo.svg" alt="Parul University" width={90} height={30} />
+                        <span className={styles.drawerTitle}>IAPSMGC CON <b>2026</b></span>
+                    </div>
+                </div>
+
+                <nav className={styles.drawerNav}>
+                    {navItems.map((item, i) => (
+                        <div key={item.label} className={styles.drawerGroup}>
+                            {item.children ? (
+                                <>
+                                    <button
+                                        className={styles.drawerGroupBtn}
+                                        onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
+                                        aria-expanded={mobileExpanded === item.label}
+                                    >
+                                        {item.label}
+                                        <span className={`${styles.drawerChevron} ${mobileExpanded === item.label ? styles.drawerChevronOpen : ''}`}>
+                                            <ChevronDown />
+                                        </span>
+                                    </button>
+                                    <div className={`${styles.drawerChildren} ${mobileExpanded === item.label ? styles.drawerChildrenOpen : ''}`}>
+                                        {item.children.map(child => (
+                                            <Link
+                                                key={child.label}
+                                                href={child.href}
+                                                className={styles.drawerChildLink}
+                                                onClick={() => setMobileOpen(false)}
+                                            >
+                                                {child.label}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </>
+                            ) : (
+                                <Link
+                                    href={item.href}
+                                    className={styles.drawerLink}
+                                    style={{ animationDelay: `${i * 0.04}s` }}
+                                    onClick={() => setMobileOpen(false)}
+                                >
+                                    {item.label}
+                                </Link>
+                            )}
+                        </div>
+                    ))}
+
+                    <div className={styles.drawerCta}>
+                        <Link href="/registration" className={styles.drawerCtaBtn} onClick={() => setMobileOpen(false)}>
+                            Register Now
+                        </Link>
+                    </div>
+                </nav>
+            </aside>
+        </>
     );
 }

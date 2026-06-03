@@ -173,7 +173,7 @@ export function Committees() {
                                     </div>
                                     <h4 className={styles.profileName}>{member.name}</h4>
                                     <div className={styles.profileRole}>{member.role}</div>
-                                    <div className={styles.profileAffiliation}>ICBD-2026</div>
+                                    <div className={styles.profileAffiliation}>IAPSMGC CON 2026</div>
                                 </div>
                             );
                         })}

@@ -1,10 +1,12 @@
 export const conference = {
-  title: "ICBD-2026",
-  subtitle: "International Conference on Bridging Disciplines: Expanding Horizons in Liberal Arts",
-  dates: "16th - 17th July 2026",
-  location: "Parul Institute of Liberal Arts, Parul University, Vadodara, Gujarat, India",
+  title: "IAPSMGC CON 2026",
+  subtitle: "Translating Public Health Policy into Practice towards Viksit Bharat @ 2047",
+  preConferenceDate: "26th November 2026",
+  mainConferenceDates: "27th – 28th November 2026",
+  dates: "26–28 November 2026",
+  location: "Parul Institute of Medical Sciences & Research (PIMSR), Parul University, Vadodara, Gujarat, India",
   host: "Parul University",
-  description: "A premier gathering for academicians, researchers, and professionals to explore the intersections of liberal arts and global challenges.",
+  description: "A premier gathering for public health professionals, researchers, and policymakers to translate health policy into transformative practice towards Viksit Bharat @ 2047.",
 
   // SECTION 4: THEMES
   themes: [
@@ -69,10 +71,11 @@ export const conference = {
 
   // SECTION 5: KEY DATES
   timeline: [
-    { label: "Abstract Submission Deadline", date: "30th June, 2026" },
-    { label: "Full Paper Submission Deadline", date: "5th July, 2026" },
-    { label: "Registration Deadline", date: "10th July, 2026" },
-    { label: "Conference Date", date: "16th - 17th July 2026" },
+    { label: "Abstract / Research Paper Submission Deadline", date: "15th October, 2026" },
+    { label: "Notification of Acceptance", date: "31st October, 2026" },
+    { label: "Registration Deadline", date: "15th November, 2026" },
+    { label: "Pre-Conference Workshop", date: "26th November 2026" },
+    { label: "Main Conference", date: "27th – 28th November 2026" },
   ],
 
   // SECTION 5.1: HIGHLIGHTS
@@ -463,6 +466,6 @@ export const conference = {
   contact: {
     email: "contact@icbd2026.com", // Placeholder
     phone: "+91 7905765113", // Placeholder
-    address: "Parul Institute of Liberal Arts, Parul University, Vadodara, Gujarat, India"
+    address: "Parul Institute of Medical Sciences & Research (PIMSR), Parul University, Vadodara, Gujarat, India"
   }
 };

@@ -9,19 +9,17 @@ export function Venue() {
         "/images/venue-slider-3.jpg",
         "/images/venue-slider-2.jpg",
         "/images/venue-slider-4.jpg",
-        "/images/venue-slider-5.jpg",
         "/images/about-buddha.jpg",
         "/images/gate-hero.jpg",
     ];
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const facultyImages = [
-        "/images/faculty-kathakali.png",
-        "/images/gallery-speaker.png",
-        "/images/gallery-cultural-dance.png",
-        "/images/gallery-campus-garden.jpg",
+    const iapsmImages = [
+        "/images/iapsm-1.jpg",
+        "/images/iapsm-2.png",
+        "/images/iapsm-3.png",
     ];
-    const [facultyIndex, setFacultyIndex] = useState(0);
+    const [iapsmIndex, setIapsmIndex] = useState(0);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -33,11 +31,11 @@ export function Venue() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setFacultyIndex((prevIndex: number) => (prevIndex + 1) % facultyImages.length);
+            setIapsmIndex((prevIndex: number) => (prevIndex + 1) % iapsmImages.length);
         }, 4000);
 
         return () => clearInterval(interval);
-    }, [facultyImages.length]);
+    }, [iapsmImages.length]);
 
     return (
         <section className={styles.venue} id="about-parul">
@@ -71,12 +69,13 @@ export function Venue() {
                             Recognized for its world-class infrastructure, industry-aligned curriculum, and outstanding placement records, Parul University houses state-of-the-art research facilities, dedicated innovation and incubation centers, and a diverse range of disciplines across multiple faculties. These include the Faculty of Engineering and Technology, Faculty of Management Studies, Faculty of Applied Sciences, Faculty of Computer Science and Applications, Faculty of Pharmacy, Faculty of Medicine, Faculty of Nursing, Faculty of Architecture and Planning, Faculty of Law, Faculty of Liberal Arts, Faculty of Design, Faculty of Commerce, Faculty of Agriculture, and Faculty of Hospitality and Tourism Management, creating a multidisciplinary academic ecosystem that encourages innovation, research, and holistic learning.
                         </p>
 
-                        {/* Feature chips */}
+                        {/* Venue details */}
                         <div className={styles.featureChips}>
-                            <span className={styles.chip}>🏗️ World-class Infrastructure</span>
-                            <span className={styles.chip}>🔬 Research Facilities</span>
-                            <span className={styles.chip}>💡 Innovation Centers</span>
-                            <span className={styles.chip}>📚 Multi-disciplinary</span>
+                            <span className={styles.chip}><strong>Main Inauguration:</strong>&nbsp;University Auditorium</span>
+                            <span className={styles.chip}><strong>Scientific Sessions:</strong>&nbsp;Seminar Hall 1, Seminar Hall 2</span>
+                            <span className={styles.chip}><strong>Workshops:</strong>&nbsp;Skill Labs</span>
+                            <span className={styles.chip}><strong>Prayas Hall:</strong>&nbsp;Poster &amp; Dining</span>
+                            <span className={styles.chip}><strong>Central Foyer:</strong>&nbsp;PIMSR Parking</span>
                         </div>
 
                         {/* Location */}
@@ -140,57 +139,59 @@ export function Venue() {
                     </div>
                 </div>
 
-                {/* Faculty of Liberal Arts - Full width row */}
-                <div className={styles.facultyRow}>
-                    {/* Text side */}
-                    <div className={styles.textContent}>
-                        <h3 className={styles.facultyHeading}>
-                            <BookOpen size={20} style={{ display: 'inline', marginRight: '0.5rem', color: 'var(--color-secondary)' }} />
-                            Faculty of Liberal Arts
-                        </h3>
-                        <p className={styles.bodyText}>
-                            Parul Institute of Liberal Arts (PILA), established in 2016, is a constituent institute of Parul University, aligned with the principles of the National Education Policy (NEP) 2020, PILA adopts a flexible and multidisciplinary approach to learning.
-                            The Faculty of Liberal Arts at Parul University offers diverse programs in Psychology, English, JMC, Political Science, History, Geography, Sociology, and Economics at UG, PG, and PhD levels. With over 1000+ students and 35+ faculty members, it fosters a strong culture of mentorship, research, and interdisciplinary learning. The curriculum blends theory with practical application to address real-world challenges. The Faculty promotes holistic development through events like Literature Fest and Maadhyam(Gujarati Biggest Media Festival), and encourages global exposure through international collaborations. Supported by modern infrastructure and active research initiatives, it prepares socially responsible and globally competent individuals.
-                        </p>
 
-                        <div className={styles.featureChips}>
-                            <span className={styles.chip}>🏗️ 1000+ Students</span>
-                            <span className={styles.chip}>🔬 35+ Faculty Members</span>
-                            <span className={styles.chip}>💡 20+ Programs</span>
-                            <span className={styles.chip}>📚 2+ Flagship Events</span>
-                            <span className={styles.chip}>🌍 Global Collaborations</span>
-                        </div>
-                    </div>
 
-                    {/* Slider side */}
+                {/* About IAPSM Gujarat Chapter */}
+                <div id="about-iapsm" className={styles.facultyRow} style={{ marginTop: '8rem', scrollMarginTop: '100px' }}>
+                    {/* Image side */}
                     <div className={styles.imageSection}>
                         <div className={styles.imageWrapper}>
-                            {facultyImages.map((src, index) => (
+                            {iapsmImages.map((src, index) => (
                                 <Image
                                     key={index}
                                     src={src}
-                                    alt={`Faculty of Liberal Arts ${index + 1}`}
+                                    alt={`IAPSM Gujarat Chapter ${index + 1}`}
                                     fill
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                     style={{
                                         objectFit: 'cover',
-                                        opacity: facultyIndex === index ? 1 : 0,
+                                        opacity: iapsmIndex === index ? 1 : 0,
                                         transition: 'opacity 1s ease-in-out',
                                     }}
                                 />
                             ))}
+
+                            {/* Slider dots */}
                             <div className={styles.sliderDots}>
-                                {facultyImages.map((_, index) => (
+                                {iapsmImages.map((_, index) => (
                                     <button
                                         key={index}
-                                        className={`${styles.dot} ${facultyIndex === index ? styles.dotActive : ''}`}
-                                        onClick={() => setFacultyIndex(index)}
+                                        className={`${styles.dot} ${iapsmIndex === index ? styles.dotActive : ''}`}
+                                        onClick={() => setIapsmIndex(index)}
                                         aria-label={`View image ${index + 1}`}
                                     />
                                 ))}
                             </div>
                         </div>
-                        <div className={styles.imageAccent}></div>
+                    </div>
+
+                    {/* Text side */}
+                    <div className={styles.textContent}>
+                        <span className={styles.sectionTag} style={{ marginBottom: '0.5rem', background: 'transparent', border: 'none', padding: 0 }}>
+                            ORGANISER
+                        </span>
+                        <h2 className={styles.sectionTitle} style={{ fontSize: '2.4rem', marginBottom: '1.5rem', color: 'var(--color-primary)' }}>
+                            About IAPSM Gujarat Chapter
+                        </h2>
+                        <p className={styles.bodyText}>
+                            The <strong>Indian Association of Preventive &amp; Social Medicine (IAPSM)</strong> is the apex national body of community and public health professionals in India. The <strong>Gujarat Chapter of IAPSM</strong> represents community medicine faculty, public health practitioners, and researchers across the state of Gujarat.
+                        </p>
+                        <p className={styles.bodyText}>
+                            The chapter actively promotes academic excellence in preventive and social medicine, fosters inter-institutional collaboration, advocates for evidence-based public health policy, and supports capacity building in community health at undergraduate, postgraduate, and doctoral levels. It organises annual conferences, workshops, and continuing medical education (CME) programmes to advance public health science and practice across Gujarat.
+                        </p>
+                        <p className={styles.bodyText}>
+                            IAPSM Gujarat Chapter is committed to strengthening India&apos;s public health workforce and aligning state-level health interventions with national goals such as the Sustainable Development Goals (SDGs) and the Viksit Bharat vision.
+                        </p>
                     </div>
                 </div>
 

@@ -25,15 +25,15 @@ export default function PublishingEthicsPage() {
             <section className={styles.heroSection}>
                 <div className={styles.heroBadge}>
                     <Shield size={14} />
-                    ICBD-2026 Guidelines
+                    IAPSMGC CON 2026 Guidelines
                 </div>
                 <h1 className={styles.title}>
                     Publishing <span className={styles.titleAccent}>Ethics</span>
                 </h1>
                 <p className={styles.subtitle}>
-                    Publication ethics and malpractice statement ensuring the highest standards of scholarly integrity at ICBD-2026.
+                    Publication ethics and malpractice statement ensuring the highest standards of scholarly integrity at IAPSMGC CON 2026.
                 </p>
-                <a href="/Author_Guidelines_ICBD_2026.pdf" download className={styles.downloadBtn}>
+                <a href="/Author_Guidelines_IAPSMGC_CON_2026.pdf" download className={styles.downloadBtn}>
                     <Download size={18} />
                     Download Author Guidelines
                 </a>
@@ -205,7 +205,7 @@ export default function PublishingEthicsPage() {
                     </div>
                     <h2 className={styles.introTitle}>Publication Ethics &amp; Malpractice Statement</h2>
                     <p className={styles.introText}>
-                        The International Conference on Bridging Disciplines 2026 (ICBD-2026) is dedicated to maintaining
+                        The International Conference on Bridging Disciplines 2026 (IAPSMGC CON 2026) is dedicated to maintaining
                         the highest standards of ethical integrity in scholarly publishing. The conference provides an international platform for
                         academicians, researchers, industry professionals, and policymakers to deliberate on contemporary issues related to
                         liberal arts, humanities, and social sciences, in alignment with global academic standards.
@@ -374,7 +374,7 @@ export default function PublishingEthicsPage() {
                         <Mail className={styles.contactBannerIcon} />
                         <span>
                             For complaints or concerns regarding published articles, contact us at{' '}
-                            <a href="mailto:icbd@paruluniversity.ac.in" className={styles.link}>icbd@paruluniversity.ac.in</a>.
+                            <a href="mailto:iapsmgccon2026@paruluniversity.ac.in" className={styles.link}>iapsmgccon2026@paruluniversity.ac.in</a>.
                             We will acknowledge your email and provide an estimated timeframe for investigating your concerns.
                         </span>
                     </div>
