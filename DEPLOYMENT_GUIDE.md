@@ -1,4 +1,4 @@
-# Deployment Guide - ICBD-2026 Conference Website
+# Deployment Guide - IAPSMGC CON 2026 Conference Website
 
 ## Quick Deploy to Vercel (Recommended - 5 minutes)
 
@@ -12,7 +12,7 @@ git add .
 git commit -m "Initial commit with performance optimizations"
 
 # Create a new repository on GitHub, then:
-git remote add origin https://github.com/YOUR_USERNAME/icbd-2026.git
+git remote add origin https://github.com/YOUR_USERNAME/iapsmgccon2026.git
 git branch -M main
 git push -u origin main
 ```
@@ -24,7 +24,7 @@ git push -u origin main
 4. Vercel will auto-detect Next.js
 5. Click "Deploy"
 
-**Done!** Your site will be live in ~2 minutes at `https://icbd-2026.vercel.app`
+**Done!** Your site will be live in ~2 minutes at `https://iapsmgccon2026.vercel.app`
 
 ### Step 3: Custom Domain (Optional)
 1. In Vercel dashboard, go to "Settings" → "Domains"
@@ -337,7 +337,7 @@ Even with Vercel, you can add Cloudflare for extra protection:
 
 ## Conclusion
 
-Your ICBD-2026 website is now optimized to handle 1000+ concurrent users with:
+Your IAPSMGC CON 2026 website is now optimized to handle 1000+ concurrent users with:
 - ✅ Sub-second load times globally
 - ✅ Automatic scaling via CDN
 - ✅ 99.99% uptime guarantee

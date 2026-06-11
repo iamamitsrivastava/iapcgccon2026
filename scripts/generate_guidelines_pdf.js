@@ -12,7 +12,7 @@ const doc = new PDFDocument({
 doc.pipe(fs.createWriteStream(outputPath));
 
 // Header
-doc.fontSize(24).font('Helvetica-Bold').text('ICBD-2026 Conference', {
+doc.fontSize(24).font('Helvetica-Bold').text('IAPSMGC CON 2026 Conference', {
     align: 'center'
 });
 doc.fontSize(14).font('Helvetica').fillColor('grey').text('Submission Guidelines & Author Instructions', {
@@ -33,7 +33,7 @@ const guidelines = [
     },
     {
         title: '2. Abstract Submission',
-        text: 'Submit your abstract through the official ICBD-2026 submission portal. Ensure all author details and affiliations are correctly entered. All submissions will undergo a double-blind peer review process.'
+        text: 'Submit your abstract through the official IAPSMGC CON 2026 submission portal. Ensure all author details and affiliations are correctly entered. All submissions will undergo a double-blind peer review process.'
     },
     {
         title: '3. Review Process',

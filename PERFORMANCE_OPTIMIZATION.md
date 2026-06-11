@@ -1,7 +1,7 @@
-# Performance Optimization Guide for ICBD-2026
+# Performance Optimization Guide for IAPSMGC CON 2026
 ## Handling 1000+ Concurrent Users
 
-This document outlines the optimizations implemented to ensure the ICBD-2026 conference website can handle 1000+ concurrent users efficiently.
+This document outlines the optimizations implemented to ensure the IAPSMGC CON 2026 conference website can handle 1000+ concurrent users efficiently.
 
 ---
 

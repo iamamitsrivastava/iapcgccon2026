@@ -20,5 +20,5 @@ async function padImage(filePath) {
     console.log(`Padded ${filePath}`);
 }
 
-padImage('/Users/amitsrivastava/Desktop/ICBD-2026/public/images/krishan-kumar-soni.jpg').catch(console.error);
-padImage('/Users/amitsrivastava/Desktop/ICBD-2026/public/images/krishna-mishra.jpg').catch(console.error);
+padImage('/Users/amitsrivastava/Desktop/IAPSMGC CON 2026/public/images/krishan-kumar-soni.jpg').catch(console.error);
+padImage('/Users/amitsrivastava/Desktop/IAPSMGC CON 2026/public/images/krishna-mishra.jpg').catch(console.error);

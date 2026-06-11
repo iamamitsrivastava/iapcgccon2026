@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.css';
@@ -46,12 +47,24 @@ const navItems: NavItem[] = [
 
 /* ─────────── Component ─────────── */
 export default function Header({ variant = 'transparent' }: HeaderProps) {
+    const pathname = usePathname() || '/';
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
 
     const isSolid = variant === 'solid';
+
+    const isActive = (href: string) => {
+        const path = href.split('#')[0];
+        if (!path) return pathname === '/';
+        if (path === '/' && pathname !== '/') return false;
+        return pathname === path || pathname.startsWith(path + '/');
+    };
+
+    const isGroupActive = (item: NavItem) => {
+        return item.children?.some(child => isActive(child.href)) || isActive(item.href);
+    };
 
     /* scroll handler */
     useEffect(() => {
@@ -105,7 +118,7 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                                 onMouseEnter={() => item.children && setOpenDropdown(item.label)}
                                 onMouseLeave={() => setOpenDropdown(null)}
                             >
-                                <Link href={item.href} className={styles.navLink}>
+                                <Link href={item.href} className={`${styles.navLink} ${isActive(item.href) || isGroupActive(item) ? styles.active : ''}`}>
                                     {item.label}
                                     {item.children && (
                                         <span className={`${styles.chevron} ${openDropdown === item.label ? styles.chevronOpen : ''}`}>
@@ -121,7 +134,7 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                                                 <Link
                                                     key={child.label}
                                                     href={child.href}
-                                                    className={styles.dropdownLink}
+                                                    className={`${styles.dropdownLink} ${isActive(child.href) ? styles.active : ''}`}
                                                     onClick={() => setOpenDropdown(null)}
                                                 >
                                                     <span className={styles.dropdownDot} />
@@ -176,7 +189,7 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                             {item.children ? (
                                 <>
                                     <button
-                                        className={styles.drawerGroupBtn}
+                                        className={`${styles.drawerGroupBtn} ${isGroupActive(item) ? styles.active : ''}`}
                                         onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
                                         aria-expanded={mobileExpanded === item.label}
                                     >
@@ -190,7 +203,7 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                                             <Link
                                                 key={child.label}
                                                 href={child.href}
-                                                className={styles.drawerChildLink}
+                                                className={`${styles.drawerChildLink} ${isActive(child.href) ? styles.active : ''}`}
                                                 onClick={() => setMobileOpen(false)}
                                             >
                                                 {child.label}
@@ -201,7 +214,7 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                             ) : (
                                 <Link
                                     href={item.href}
-                                    className={styles.drawerLink}
+                                    className={`${styles.drawerLink} ${isActive(item.href) ? styles.active : ''}`}
                                     style={{ animationDelay: `${i * 0.04}s` }}
                                     onClick={() => setMobileOpen(false)}
                                 >

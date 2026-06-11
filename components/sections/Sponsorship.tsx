@@ -1,5 +1,5 @@
 'use client';
-import { Check, User, Phone, Landmark, Award, Zap, Briefcase } from 'lucide-react';
+import { Check, MapPin, Mail, Landmark, Award, Zap, Briefcase } from 'lucide-react';
 import styles from './Sponsorship.module.css';
 
 export default function Sponsorship() {
@@ -185,38 +185,36 @@ export default function Sponsorship() {
                             <Briefcase className={styles.goldIcon} /> Contact Details
                         </h2>
                         <div className={styles.contactGrid}>
-                            {[
-                                {
-                                    name: "Dr. Vijendra Nath Pathak",
-                                    role: "Associate Professor",
-                                    phone: "+91 79057 65113"
-                                },
-                                {
-                                    name: "Dr. Ashok Biswas",
-                                    role: "Co-Convener",
-                                    phone: "+91 83068 49669"
-                                },
-                                {
-                                    name: "Mr. Ashish Kotadiya",
-                                    role: "Co-Convener",
-                                    phone: "+91 81558 83094"
-                                }
-                            ].map((contact, index) => (
-                                <div key={index} className={styles.contactBox}>
-                                    <div className={styles.contactAvatar}>
-                                        <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(255,215,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #FFD700' }}>
-                                            <User size={40} color="#FFD700" />
-                                        </div>
-                                    </div>
-                                    <div className={styles.contactInfo}>
-                                        <h3 style={{ fontSize: '1.25rem', whiteSpace: 'nowrap' }}>{contact.name}</h3>
-                                        <p>{contact.role}</p>
-                                        <a href={`tel:${contact.phone.replace(/\s+/g, '')}`} className={styles.phone}>
-                                            <Phone size={18} /> {contact.phone}
-                                        </a>
+                            <div className={styles.contactBox}>
+                                <div className={styles.contactAvatar}>
+                                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(255,215,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #FFD700' }}>
+                                        <MapPin size={40} color="#FFD700" />
                                     </div>
                                 </div>
-                            ))}
+                                <div className={styles.contactInfo}>
+                                    <h3 style={{ fontSize: '1.25rem', whiteSpace: 'nowrap' }}>Address</h3>
+                                    <p>Department of Community Medicine</p>
+                                    <p>2nd Floor, PIMSR</p>
+                                    <p>Parul University</p>
+                                    <p>Vadodara – 391760</p>
+                                </div>
+                            </div>
+
+                            <div className={styles.contactBox}>
+                                <div className={styles.contactAvatar}>
+                                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(255,215,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #FFD700' }}>
+                                        <Mail size={40} color="#FFD700" />
+                                    </div>
+                                </div>
+                                <div className={styles.contactInfo}>
+                                    <h3 style={{ fontSize: '1.25rem', whiteSpace: 'nowrap' }}>Email</h3>
+                                    <p>
+                                        <a href="mailto:iapsmgccon2026@paruluniversity.ac.in" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                                            iapsmgccon2026@paruluniversity.ac.in
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

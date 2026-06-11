@@ -11,7 +11,7 @@ export default function TermsPage() {
                     
                     <section style={{ marginBottom: '2rem' }}>
                         <p style={{ lineHeight: '1.6', color: '#cbd5e1', marginBottom: '1rem' }}>
-                            Welcome to the International Conference on Bridging Disciplines (ICBD-2026). By registering for or participating in the conference, you agree to comply with the following Terms and Conditions established by Parul Institute of Liberal Arts, Parul University.
+                            Welcome to the International Conference on Bridging Disciplines (IAPSMGC CON 2026). By registering for or participating in the conference, you agree to comply with the following Terms and Conditions established by Parul Institute of Liberal Arts, Parul University.
                         </p>
                     </section>
                     

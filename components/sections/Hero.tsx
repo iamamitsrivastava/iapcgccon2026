@@ -160,7 +160,14 @@ export default function Hero() {
     }
   ];
 
+  const sliderImages = [
+    "/images/iapsm-1.jpg",
+    "/images/iapsm-2.png",
+    "/images/iapsm-3.png"
+  ];
+
   const [currentProfile, setCurrentProfile] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isExpired, setIsExpired] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -207,9 +214,15 @@ export default function Hero() {
       setCurrentProfile((prev) => (prev + 1) % profiles.length);
     }, 5000);
 
+    // Image slider interval
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % sliderImages.length);
+    }, 4500);
+
     return () => {
       clearInterval(countdownInterval);
       clearInterval(profileInterval);
+      clearInterval(slideInterval);
     };
   }, [profiles.length]);
 
@@ -349,7 +362,28 @@ export default function Hero() {
 
           </div>
 
-
+          <div className={`${styles.visuals} ${styles.animate} ${styles['delay-500']}`}>
+            <div className={styles.sliderContainer}>
+              {sliderImages.map((src, index) => (
+                <img
+                  key={index}
+                  src={src}
+                  alt={`Event ${index + 1}`}
+                  className={`${styles.slideImage} ${index === currentSlide ? styles.active : ''}`}
+                />
+              ))}
+              <div className={styles.sliderIndicators}>
+                {sliderImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`${styles.indicator} ${index === currentSlide ? styles.activeIndicator : ''}`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Stats Row */}

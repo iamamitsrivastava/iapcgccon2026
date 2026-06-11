@@ -1,8 +1,8 @@
-# 🚀 ICBD-2026 Backend Optimization - Complete
+# 🚀 IAPSMGC CON 2026 Backend Optimization - Complete
 
 ## What Was Done
 
-I've successfully optimized your ICBD-2026 conference website to handle **1000+ concurrent users**. Here's everything that was implemented:
+I've successfully optimized your IAPSMGC CON 2026 conference website to handle **1000+ concurrent users**. Here's everything that was implemented:
 
 ---
 
@@ -87,7 +87,7 @@ SEO:             95+
 git init
 git add .
 git commit -m "Optimized for 1000+ users"
-git remote add origin https://github.com/YOUR_USERNAME/icbd-2026.git
+git remote add origin https://github.com/YOUR_USERNAME/iapsmgccon2026.git
 git push -u origin main
 
 # 2. Deploy to Vercel
@@ -257,7 +257,7 @@ HTML Pages:     Cache-Control: public, max-age=3600, must-revalidate
 
 ## ✨ Summary
 
-Your ICBD-2026 website is now **production-ready** and optimized to handle:
+Your IAPSMGC CON 2026 website is now **production-ready** and optimized to handle:
 
 ### ✅ Performance
 - 10,000+ concurrent users

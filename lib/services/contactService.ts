@@ -4,12 +4,17 @@ import { ContactSubmission } from '@/types';
 import { ContactInput } from '../validations/contact';
 
 const CONTACT_EMAIL = '2303051240028@paruluniversity.ac.in';
-const DATA_DIR = path.join(process.cwd(), 'data');
-const SUBMISSIONS_DIR = path.join(DATA_DIR, 'submissions');
-const CONTACT_FILE = path.join(SUBMISSIONS_DIR, 'contact.json');
+
+function getPaths() {
+    const DATA_DIR = path.join(process.cwd(), 'data');
+    const SUBMISSIONS_DIR = path.join(DATA_DIR, 'submissions');
+    const CONTACT_FILE = path.join(SUBMISSIONS_DIR, 'contact.json');
+    return { DATA_DIR, SUBMISSIONS_DIR, CONTACT_FILE };
+}
 
 export class ContactService {
     static async saveSubmission(input: ContactInput): Promise<ContactSubmission> {
+        const { CONTACT_FILE } = getPaths();
         const submission: ContactSubmission = {
             id: Date.now().toString(),
             ...input,
@@ -30,6 +35,7 @@ export class ContactService {
     }
 
     private static getAllSubmissions(): ContactSubmission[] {
+        const { CONTACT_FILE } = getPaths();
         if (!fs.existsSync(CONTACT_FILE)) return [];
 
         try {
@@ -42,6 +48,7 @@ export class ContactService {
     }
 
     private static ensureDirectory() {
+        const { DATA_DIR, SUBMISSIONS_DIR } = getPaths();
         [DATA_DIR, SUBMISSIONS_DIR].forEach(dir => {
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });

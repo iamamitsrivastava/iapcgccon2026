@@ -424,11 +424,8 @@
 .sliderContainer {
     position: relative;
     width: 100%;
-    max-width: 380px;
-    /* Make it smaller */
-    /* Force it bigger vertically */
-    /* Aspect ratio for the slider */
-    aspect-ratio: 3 / 4;
+    max-width: 650px;
+    aspect-ratio: 1 / 1;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
@@ -543,14 +540,15 @@
     }
 
     .visuals {
-        display: block;
+        display: flex;
+        justify-content: center;
         width: 100%;
         margin-top: 3rem;
-        padding-right: 0;
+        padding-left: 0;
     }
 
     .sliderContainer {
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 1 / 1;
         max-width: 100%;
     }
 

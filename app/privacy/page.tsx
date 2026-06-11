@@ -11,7 +11,7 @@ export default function PrivacyPage() {
                     
                     <section style={{ marginBottom: '2rem' }}>
                         <p style={{ lineHeight: '1.6', color: '#cbd5e1', marginBottom: '1rem' }}>
-                            At ICBD-2026 (International Conference on Bridging Disciplines), organized by Parul Institute of Liberal Arts, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you visit our website, register for the conference, or submit papers.
+                            At IAPSMGC CON 2026 (International Conference on Bridging Disciplines), organized by Parul Institute of Liberal Arts, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you visit our website, register for the conference, or submit papers.
                         </p>
                     </section>
                     

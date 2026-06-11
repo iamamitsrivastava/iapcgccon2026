@@ -1,5 +1,5 @@
 /**
- * Simple Load Testing Script for ICBD-2026
+ * Simple Load Testing Script for IAPSMGC CON 2026
  * 
  * This script simulates concurrent users accessing the website
  * to test performance under load.

@@ -1,5 +1,5 @@
 export const conference = {
-  title: "ICBD-2026",
+  title: "IAPSMGC CON 2026",
   subtitle: "International Conference on Bridging Disciplines: Expanding Horizons in Liberal Arts",
   dates: "12th - 13th June 2026",
   location: "Parul Institute of Liberal Arts, Parul University, Vadodara, Gujarat, India",

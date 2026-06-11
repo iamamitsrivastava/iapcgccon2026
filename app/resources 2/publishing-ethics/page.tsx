@@ -23,7 +23,7 @@ export default function PublishingEthicsPage() {
             <div className={styles.container}>
                 <div className={styles.header}>
                     <h1 className={styles.title}>Publishing Ethics</h1>
-                    <p className={styles.subtitle}>Publication ethics and malpractice statement for ICBD-2026.</p>
+                    <p className={styles.subtitle}>Publication ethics and malpractice statement for IAPSMGC CON 2026.</p>
 
                     <a href="/Author_Guidelines_ICBD_2026.pdf" download className={styles.downloadBtn}>
                         Download Author Guidelines
@@ -37,7 +37,7 @@ export default function PublishingEthicsPage() {
                     </div>
                     <div className={styles.content}>
                         <p>
-                            The International Conference on Bridging Disciplines 2026 (ICBD-2026) is dedicated to maintaining
+                            The International Conference on Bridging Disciplines 2026 (IAPSMGC CON 2026) is dedicated to maintaining
                             the highest standards of ethical integrity in scholarly publishing. The conference provides an international platform for
                             academicians, researchers, industry professionals, and policymakers to deliberate on contemporary issues related to
                             liberal arts, humanities, and social sciences, in alignment with global academic standards.

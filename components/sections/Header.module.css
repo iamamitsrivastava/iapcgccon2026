@@ -147,12 +147,14 @@
     transition: width 0.25s ease;
 }
 
-.navLink:hover {
+.navLink:hover,
+.navLink.active {
     color: #D4AF37;
     background: rgba(212, 175, 55, 0.07);
 }
 
-.navLink:hover::after { width: 70%; }
+.navLink:hover::after,
+.navLink.active::after { width: 70%; }
 
 .chevron {
     display: inline-flex;
@@ -208,7 +210,8 @@
     white-space: nowrap;
 }
 
-.dropdownLink:hover {
+.dropdownLink:hover,
+.dropdownLink.active {
     background: rgba(212, 175, 55, 0.1);
     color: #D4AF37;
     padding-left: 1.5rem;
@@ -224,7 +227,8 @@
     transition: opacity 0.18s;
 }
 
-.dropdownLink:hover .dropdownDot { opacity: 1; }
+.dropdownLink:hover .dropdownDot,
+.dropdownLink.active .dropdownDot { opacity: 1; }
 
 /* ══════════════════════════════════════
    CTA + HAMBURGER
@@ -381,7 +385,8 @@
     to   { opacity: 1; transform: translateX(0); }
 }
 
-.drawerLink:hover {
+.drawerLink:hover,
+.drawerLink.active {
     color: #D4AF37;
     background: rgba(212, 175, 55, 0.06);
     padding-left: 2rem;
@@ -405,7 +410,8 @@
     transition: color 0.2s, background 0.2s;
 }
 
-.drawerGroupBtn:hover {
+.drawerGroupBtn:hover,
+.drawerGroupBtn.active {
     color: #D4AF37;
     background: rgba(212, 175, 55, 0.06);
 }
@@ -439,7 +445,8 @@
     transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
-.drawerChildLink:hover {
+.drawerChildLink:hover,
+.drawerChildLink.active {
     color: #D4AF37;
     border-left-color: #D4AF37;
     background: rgba(212, 175, 55, 0.05);
