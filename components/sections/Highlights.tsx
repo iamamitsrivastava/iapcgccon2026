@@ -1,4 +1,4 @@
-import { BookOpen, Award, FileText, Share2, Mic, BadgeCheck } from 'lucide-react';
+import { Award } from 'lucide-react';
 import styles from './Highlights.module.css';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 

@@ -25,7 +25,7 @@ export function AboutConference() {
                             </p>
                             <p>
                                 The conference is centred on the theme{' '}
-                                <strong>&ldquo;Translating Public Health Policy into Practice towards Viksit Bharat @ 2047&rdquo;</strong>.
+                                <strong>&ldquo;Digital Health for All: Bridging Equity, Access, and Innovation&rdquo;</strong>.
                                 It brings together public health professionals, community medicine experts, researchers, policymakers,
                                 and students to deliberate on bridging the gap between health policy formulation and its on-ground
                                 implementation, contributing towards India&apos;s vision of becoming a developed nation by 2047.
@@ -66,7 +66,7 @@ export function AboutConference() {
                         <div className={styles.missionContent}>
                             <span className={styles.missionLabel}>Conference Mission</span>
                             <p className={styles.missionText}>
-                                Translating Public Health Policy into Practice towards <strong>Viksit Bharat @ 2047</strong>
+                                Digital Health for All: Bridging Equity, <strong>Access, and Innovation</strong>
                             </p>
                         </div>
                     </div>

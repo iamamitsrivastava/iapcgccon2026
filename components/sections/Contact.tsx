@@ -66,8 +66,7 @@ export default function Contact() {
                             <div className={styles.contactItem}>
                                 <h4>Address</h4>
                                 <p>Department of Community Medicine</p>
-                                <p>2nd Floor, PIMSR</p>
-                                <p>Parul University</p>
+                                <p>PIMSR, Parul University</p>
                                 <p>Vadodara – 391760</p>
                             </div>
 
@@ -77,6 +76,22 @@ export default function Contact() {
                                     <a href="mailto:iapsmgccon2026@paruluniversity.ac.in" style={{ color: '#f0c040', wordBreak: 'break-all' }}>
                                         iapsmgccon2026@paruluniversity.ac.in
                                     </a>
+                                </p>
+                            </div>
+
+                            <div className={styles.contactItem}>
+                                <h4>Inquiry: Info of Organizing personnel</h4>
+                                <p style={{ marginBottom: '0.5rem' }}>
+                                    <strong>Dr Keyur Mistry</strong> (First Year resident)<br />
+                                    Contact number - 9727913272
+                                </p>
+                                <p style={{ marginBottom: '0.5rem' }}>
+                                    <strong>Dr Swapnil Raulji</strong> (First Year resident)<br />
+                                    Contact number - 7046653327
+                                </p>
+                                <p>
+                                    <strong>Dr Aditya Babaria</strong> (Senior Resident)<br />
+                                    Contact number - 9601490880
                                 </p>
                             </div>
                         </div>

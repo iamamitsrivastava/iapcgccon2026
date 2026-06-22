@@ -291,9 +291,9 @@ export default function Hero() {
             </h1>
 
             <p className={`${styles.subtitle} ${styles.animate} ${styles['delay-300']}`}>
-              International Conference on Translating Public Health Policy into Practice towards
+              International Conference on Digital Health for All: Bridging Equity,
               <br />
-              <span style={{ fontWeight: 600, color: 'white' }}>Viksit Bharat @ 2047</span>
+              <span style={{ fontWeight: 600, color: 'white' }}>Access, and Innovation</span>
             </p>
 
             <div className={`${styles.meta} ${styles.animate} ${styles['delay-400']}`}>

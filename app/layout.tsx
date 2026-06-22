@@ -18,10 +18,10 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: 'IAPSMGC CON 2026 | Parul University',
-  description: 'Translating Public Health Policy into Practice towards Viksit Bharat @ 2047 — PIMSR, Parul University, Vadodara, 26–28 November 2026.',
+  description: 'Digital Health for All: Bridging Equity, Access, and Innovation — PIMSR, Parul University, Vadodara, 26–28 November 2026.',
   openGraph: {
     title: 'IAPSMGC CON 2026 | Parul University',
-    description: 'Translating Public Health Policy into Practice towards Viksit Bharat @ 2047',
+    description: 'Digital Health for All: Bridging Equity, Access, and Innovation',
     images: [{ url: '/parul-university-logo.svg' }],
   },
   icons: {

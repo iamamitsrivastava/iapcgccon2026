@@ -88,7 +88,7 @@ export default function Footer() {
                             </div>
                         </div>
                         <h3 className={styles.footerConferenceTitle}>{conference.title}</h3>
-                        <p className={styles.footerConferenceSubtitle}>Translating Public Health Policy into Practice towards Viksit Bharat @ 2047</p>
+                        <p className={styles.footerConferenceSubtitle}>Digital Health for All: Bridging Equity, Access, and Innovation</p>
 
                         <div className={styles.footerMeta}>
                             <p>PIMSR, Parul University, Vadodara, Gujarat</p>

@@ -1,6 +1,6 @@
 export const conference = {
   title: "IAPSMGC CON 2026",
-  subtitle: "Translating Public Health Policy into Practice towards Viksit Bharat @ 2047",
+  subtitle: "Digital Health for All: Bridging Equity, Access, and Innovation",
   preConferenceDate: "26th November 2026",
   mainConferenceDates: "27th – 28th November 2026",
   dates: "26–28 November 2026",
@@ -209,28 +209,45 @@ export const conference = {
   committees: {
     president: {
       name: "Dr. Devanshu Patel",
-      role: "Chief Patron",
       affiliation: "President, Parul University",
       image: "/images/president.jpg" // Added image path
     },
     vicePresidents: [
       {
         name: "Dr. Geetika Patel",
-        role: "Co-Chief Patron",
+        role: "Conference Director",
         affiliation: "Vice President, Parul University",
         image: "/images/geetika-patel.jpg"
       },
       {
         name: "Dr. Parul Patel",
-        role: "Co-Chief Patron",
         affiliation: "Vice President, Parul University",
         image: "/images/parul-patel.jpg"
       },
       {
         name: "Dr. Komal Patel",
-        role: "Co-Chief Patron",
         affiliation: "Vice President, Parul University",
         image: "/images/komal-patel-v2.png"
+      }
+    ],
+    officeBearers: [
+      {
+        name: "Dr Sunil Nayak",
+        role: "President",
+        affiliation: "Professor and Head\nGMERS Medical college, Vadodara",
+        image: "/images/sunil-nayak.png"
+      },
+      {
+        name: "Dr Raman Damor",
+        role: "Vice President",
+        affiliation: "Associate Professor\nGovernment Medical college, Vadodara",
+        image: "/images/raman-damor.png"
+      },
+      {
+        name: "Dr Nilesh Thakor",
+        role: "Secretory",
+        affiliation: "Professor & Head\nGMERS Medical college, Vadnagar",
+        image: "/images/nilesh-thakor.png"
       }
     ],
     nationalAdvisory: [
@@ -377,70 +394,53 @@ export const conference = {
     ],
     chiefPatrons: [
       {
-        name: "Dr. K. N. Madhusoodanan",
-        role: "Patron",
-        affiliation: "Provost, Parul University",
-        image: "/images/provost.jpg"
+        name: "Dr Niraj Bharadva",
+        role: "Organizing Chairperson",
+        affiliation: "Professor &Head, Dept. of Community medicine",
+        image: "/images/niraj-bharadva.png"
       },
       {
-        name: "Dr. Kunjal Sinha",
-        role: "Co-Patron",
-        affiliation: "Pro Vice-Chancellor, Parul University",
-        image: "/images/kunjal-sinha-v3.png"
+        name: "Dr. Utkarsh Shah",
+        role: "Co-Chairperson",
+        affiliation: "Professor, Dept. of Community medicine",
+        image: "/images/utkarsh-shah.png"
       }
     ],
     patrons: [], // Removed as per request, merged into Chief Patrons or Conveners if needed, but keeping empty for structure
     secretaries: [
       {
-        name: "Prof.  (Dr.) Digvijay Pandya",
-        role: "Conference Director",
-        affiliation: "Dean, Parul University", // Assuming Parul University
-        image: "/images/digvijay-pandya-v2.png"
+        name: "Dr. Prashant Dave",
+        role: "Organizing Secretary",
+        affiliation: "Associate Professor, Dept. of Community medicine", // Assuming Parul University
+        image: "/images/prashant-dave.png"
       }
     ],
-    conveners: [
-      {
-        name: "Dr. Vijendra Nath Pathak",
-        role: "Convener",
-        affiliation: "Parul University",
-        image: "/images/vijendra-pathak.jpg"
-      }
+    advisory: [
+      "Dr A.M Kadri",
+      "Dr Bhavesh Modi",
+      "Dr Deepak Sakxena",
+      "Dr Narayan Gaonkar",
+      "Dr. Bharat Patel",
+      "Dr. Jivraj Damor",
+      "Dr. Sunil Nayak",
+      "Dr. Niraj Pandit"
     ],
-    coConveners: [
-      {
-        name: "Dr. Ashok Biswas",
-        role: "Co-Convener",
-        affiliation: "Parul University",
-        image: "/images/ashok-biswas-v3.jpg"
-      },
-      {
-        name: "Mr. Ashish Kotadiya",
-        role: "Co-Convener",
-        affiliation: "Parul University",
-        image: "/images/ashish-kotadiya-v3.png"
-      }
-    ],
-    advisory: [],
     // Text-only lists
     registrationCommittee: [
-      "Dr. Piyush Trivedi (Lead)",
-      "Mr. Harsh Jain",
-      "Mr. Dipesh Gokhale",
-      "Ms. Gargi Sharma",
-      "Mr. Ranjit Mandal",
-      "Ms. Ankita Gupta",
-      "Dr. Venkatesh Arvindh",
-      "Dr. Vijayalaxmi Kore",
+      "Dr. Sneha Kurian",
+      "Dr. Maharashi Patel",
+      "Ms. Farida Khatri",
+      "Dr. Khusbu Chauhan",
+      "Dr. Nirmal Jyoti Jyotsana",
+      "Dr. Honey Patel"
     ],
     scientificCommittee: [
-      "Dr. Pathikkumar J. Bhatt(Lead)",
-      "Dr. Shobhana Singh",
-      "Dr. Chimat Ladol",
-      "Dr. Megha Taragi",
-      "Ms. Shefali Upadhyay",
-      "Dr. Maninder Kumar Singh",
-      "Dr. Ayesha Fatma",
-      "Dr. Rajesh Kumar",
+      "Dr. P. S. Ganguly (Chairman)",
+      "Dr. Shaily Surti",
+      "Dr. Shashwat Nagar",
+      "Dr. Parag Chavda",
+      "Dr. Kedar Mehta",
+      "Dr. Pranav Kshatriya"
     ],
     hospitality: [
       "Dr. Dayal Singh (Lead)",
@@ -450,15 +450,42 @@ export const conference = {
       "Dr. Chander Shekhar",
       "Ms. Tanya Mandloi",
       "Ms. Shaili Singh",
-      "Ms. Hetanshi Bhatt",
+      "Ms. Hetanshi Bhatt"
     ],
     mediaCommittee: [
       "Mr. Ashish Kotadiya(Lead)",
       "Dr. Ashish Dubey",
       "Mr. Neel Desai",
-      "Ms. Neha Gautam",
+      "Ms. Neha Gautam"
     ],
-    culturalCommittee: [],
+    souvenirCommittee: [
+      "Dr. Labhita Das",
+      "Dr. Grishma Chauhan",
+      "Dr. Ankita Parmar",
+      "Dr. Keyur Mistry"
+    ],
+    culturalCommittee: [
+      "Dr Charvi Mistry",
+      "Dr. Kalpita Shringarpure",
+      "Ms. Komal Parmar",
+      "Dr. Dhvani Mevada"
+    ],
+    transportAccommodation: [
+      "Dr. Aditya Babaria",
+      "Dr. Golak Patra",
+      "Dr. Ashish savani",
+      "Dr. Bhavna Dhakate",
+      "Dr. Khantil Gohil",
+      "Dr. Jimmy Kagathara"
+    ],
+    venueStage: [
+      "Dr. Saurabh Parmar",
+      "Dr. Damini Joshi",
+      "Dr. Piyush Parmar",
+      "Dr. Swati Gohel",
+      "Dr. Chirag Nandha",
+      "Dr. Swapnil Raulji"
+    ],
     organizingSecretaries: [],
     iahpExecutiveCommittee: [],
   },

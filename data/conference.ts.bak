@@ -148,26 +148,22 @@ export const conference = {
   committees: {
     president: {
       name: "Dr. Devanshu Patel",
-      role: "Chief Patron",
       affiliation: "President, Parul University",
       image: "/images/president.jpg" // Added image path
     },
     vicePresidents: [
       {
         name: "Dr. Geetika Patel",
-        role: "Co-Chief Patron",
         affiliation: "Vice President, Parul University",
         image: "/images/geetika-patel.jpg"
       },
       {
         name: "Dr. Parul Patel",
-        role: "Co-Chief Patron",
         affiliation: "Vice President, Parul University",
         image: "/images/parul-patel.jpg"
       },
       {
         name: "Dr. Komal Patel",
-        role: "Co-Chief Patron",
         affiliation: "Vice President, Parul University",
         image: "/images/komal-patel-v2.png"
       }

@@ -232,14 +232,37 @@ export default function Themes() {
                     ))}
                 </div>
 
-                {/* CTA banner */}
+                {/* Call for Abstract */}
                 <ScrollReveal animation="fade-up" delay={300}>
-                    <div className={styles.ctaBanner}>
-                        <div>
-                            <p className={styles.ctaTitle}>Ready to Submit Your Research?</p>
-                            <p className={styles.ctaSub}>Abstract submission deadline: <strong>15th October 2026</strong></p>
-                        </div>
-                        <a href="/#submit" className={styles.ctaBtn}>Submit Abstract →</a>
+                    <div style={{ marginTop: '4rem', padding: '2.5rem', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '1rem', border: '1px solid rgba(255, 255, 255, 0.08)', color: 'rgba(255, 255, 255, 0.85)', lineHeight: '1.6' }}>
+                        <h3 style={{ fontSize: '2rem', color: 'white', marginBottom: '1.2rem' }}>Call for Abstract</h3>
+                        
+                        <p style={{ marginBottom: '1rem' }}>
+                            Abstract submission is invited for the presentations under the Oral, Poster and Shri H M Patel Award sessions.
+                        </p>
+                        <p style={{ marginBottom: '1rem' }}>
+                            The Scientific Committee warmly invites researchers, academicians, public health professionals, postgraduate students, and practitioners to submit original research abstracts for Oral and Poster Presentations at the conference.
+                        </p>
+                        <p style={{ marginBottom: '2rem' }}>
+                            Abstracts addressing a wide range of topics related to community medicine and public health, aligned with the conference themes and sub-themes, are encouraged. Selected abstracts will be showcased during the scientific sessions, and outstanding oral and poster presentations will be recognized with awards.
+                        </p>
+
+                        <h4 style={{ fontSize: '1.3rem', color: '#D4AF37', marginBottom: '1rem' }}>Guidelines for Abstract Submission</h4>
+                        <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginBottom: '1.5rem' }}>
+                            <li style={{ marginBottom: '0.5rem' }}>Abstracts should be submitted through the official conference website.<br />Website- </li>
+                            <li style={{ marginBottom: '0.5rem' }}>Abstract should be submitted after the registration for the conference</li>
+                            <li style={{ marginBottom: '0.5rem' }}>Last date of abstract submission: </li>
+                        </ul>
+                        
+                        <p style={{ marginBottom: '0.75rem' }}>
+                            Detailed guidelines, eligibility criteria, submission process, important dates, and presentation instructions are available on the conference website.
+                        </p>
+                        <p style={{ marginBottom: '0.75rem' }}>
+                            Submission of an abstract implies consent for publication in conference materials.
+                        </p>
+                        <p>
+                            Acceptance of an abstract does not include financial support for travel, accommodation, or registration.
+                        </p>
                     </div>
                 </ScrollReveal>
             </div>

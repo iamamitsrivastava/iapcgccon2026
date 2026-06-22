@@ -39,7 +39,15 @@ const navItems: NavItem[] = [
     { label: 'About', href: '/#about' },
     { label: 'Pre-Conference', href: '/pre-conference' },
     { label: 'Scientific Program', href: '/program' },
-    { label: 'SPONSORSHIP', href: '/sponsorship' },
+    {
+        label: 'Committee',
+        href: '/committee',
+        children: [
+            { label: 'Committee', href: '/committee' },
+            { label: 'Office Bearers', href: '/committee/office-bearers' },
+        ]
+    },
+    { label: 'THEMES', href: '/#themes' },
     { label: 'PUBLICATION & ETHICS', href: '/resources/publishing-ethics' },
     { label: 'Explore Vadodara', href: '/travel' },
     { label: 'Contact Us', href: '/contact' },
@@ -103,6 +111,16 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                             />
                         </div>
                         <div className={styles.logoSeparator} />
+                        <div className={styles.logoGroup}>
+                            <Image
+                                src="/images/iapsmgc-logo.png"
+                                alt="IAPSM Gujarat Chapter"
+                                width={38}
+                                height={38}
+                                className={styles.logoImg}
+                                priority
+                            />
+                        </div>
                         <div className={styles.logoText}>
                             <span className={styles.logoTitle}>IAPSMGC CON</span>
                             <span className={styles.logoYear}>2026</span>
@@ -188,16 +206,33 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                         <div key={item.label} className={styles.drawerGroup}>
                             {item.children ? (
                                 <>
-                                    <button
-                                        className={`${styles.drawerGroupBtn} ${isGroupActive(item) ? styles.active : ''}`}
-                                        onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
-                                        aria-expanded={mobileExpanded === item.label}
-                                    >
-                                        {item.label}
-                                        <span className={`${styles.drawerChevron} ${mobileExpanded === item.label ? styles.drawerChevronOpen : ''}`}>
-                                            <ChevronDown />
-                                        </span>
-                                    </button>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', background: isGroupActive(item) ? 'rgba(212, 175, 55, 0.06)' : 'transparent' }}>
+                                        <Link
+                                            href={item.href}
+                                            className={styles.drawerLink}
+                                            style={{ flex: 1, borderBottom: 'none', background: 'none', margin: 0, paddingLeft: isActive(item.href) ? '2rem' : '1.5rem' }}
+                                            onClick={() => setMobileOpen(false)}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                        <button
+                                            onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
+                                            aria-expanded={mobileExpanded === item.label}
+                                            style={{
+                                                padding: '0.95rem 1.5rem',
+                                                background: 'none',
+                                                border: 'none',
+                                                color: 'white',
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center'
+                                            }}
+                                        >
+                                            <span className={`${styles.drawerChevron} ${mobileExpanded === item.label ? styles.drawerChevronOpen : ''}`} style={{ color: 'rgba(255,255,255,0.6)' }}>
+                                                <ChevronDown />
+                                            </span>
+                                        </button>
+                                    </div>
                                     <div className={`${styles.drawerChildren} ${mobileExpanded === item.label ? styles.drawerChildrenOpen : ''}`}>
                                         {item.children.map(child => (
                                             <Link

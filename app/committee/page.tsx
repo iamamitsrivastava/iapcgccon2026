@@ -4,10 +4,10 @@ import Header from "@/components/sections/Header";
 import Footer from "../../components/sections/Footer";
 import Image from "next/image";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import advisoryStyles from "@/components/sections/Advisory.module.css";
 import { CommitteeMember } from "@/types";
+import advisoryStyles from "@/components/sections/Advisory.module.css";
 
-const CheckCircle2 = ({ size = 20, color = "currentColor" }) => (
+const CheckCircle2 = ({ size = 20, color = "currentColor" }: { size?: number; color?: string }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"></circle>
         <path d="M9 12l2 2 4-4"></path>
@@ -54,11 +54,23 @@ export default function CommitteePage() {
                 <div id="leadership" style={{ marginBottom: '6rem', scrollMarginTop: '6rem' }}>
                     {/* President & Vice President Section */}
                     <section style={{ marginBottom: '8rem' }}>
-                        {/* President */}
-                        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4rem' }}>
-                            {conference.committees.president && (
-                                <ScrollReveal>
-                                    <div style={{ textAlign: 'center', width: '350px' }}>
+                        {/* Leadership Row 1 */}
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                            gap: '3rem',
+                            maxWidth: '1200px',
+                            margin: '0 auto',
+                            marginBottom: '4rem',
+                            justifyContent: 'center'
+                        }}>
+                            {([
+                                conference.committees.president as CommitteeMember,
+                                conference.committees.vicePresidents?.find((p: CommitteeMember) => p.name.includes("Parul")),
+                                conference.committees.vicePresidents?.find((p: CommitteeMember) => p.name.includes("Komal"))
+                            ].filter(Boolean) as CommitteeMember[]).map((person: CommitteeMember, idx: number) => (
+                                <ScrollReveal key={`row1-${idx}`}>
+                                    <div style={{ textAlign: 'center' }}>
                                         <div style={{
                                             position: 'relative',
                                             aspectRatio: '1/1',
@@ -71,10 +83,10 @@ export default function CommitteePage() {
                                             transition: 'transform 0.3s ease',
                                             marginBottom: '2rem'
                                         }}>
-                                            {conference.committees.president.image ? (
+                                            {person.image ? (
                                                 <Image
-                                                    src={conference.committees.president.image}
-                                                    alt={conference.committees.president.name}
+                                                    src={person.image}
+                                                    alt={person.name}
                                                     fill
                                                     style={{ objectFit: 'cover', objectPosition: 'top' }}
                                                 />
@@ -84,26 +96,25 @@ export default function CommitteePage() {
                                                 </div>
                                             )}
                                         </div>
-                                        <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{conference.committees.president.role}</p>
-                                        <h4 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white' }}>{conference.committees.president.name}</h4>
-                                        <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem' }}>{conference.committees.president.affiliation}</p>
+                                        <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
+                                        <h4 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
+                                        <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
                                     </div>
                                 </ScrollReveal>
-                            )}
+                            ))}
                         </div>
 
-                        {/* Vice Presidents */}
+                        {/* Leadership Row 2 */}
                         <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                            gap: '3rem',
-                            maxWidth: '1200px',
-                            margin: '0 auto',
-                            justifyContent: 'center'
+                            display: 'flex',
+                            justifyContent: 'center',
+                            marginBottom: '4rem'
                         }}>
-                            {conference.committees.vicePresidents && conference.committees.vicePresidents.map((person: CommitteeMember, idx: number) => (
-                                <ScrollReveal key={idx}>
-                                    <div style={{ textAlign: 'center' }}>
+                            {([
+                                conference.committees.vicePresidents?.find((p: CommitteeMember) => p.name.includes("Geetika"))
+                            ].filter(Boolean) as CommitteeMember[]).map((person: CommitteeMember, idx: number) => (
+                                <ScrollReveal key={`row2-${idx}`}>
+                                    <div style={{ textAlign: 'center', width: '350px' }}>
                                         <div style={{
                                             position: 'relative',
                                             aspectRatio: '1/1',
@@ -181,51 +192,7 @@ export default function CommitteePage() {
                         </ScrollReveal>
                     </section>
 
-                    {/* Advisory Links */}
-                    <section style={{ marginBottom: '8rem' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-                            <ScrollReveal>
-                                <a href="/committee/national-advisory" style={{
-                                    display: 'block',
-                                    padding: '2.5rem',
-                                    borderRadius: '1.5rem',
-                                    border: '1px solid rgba(250, 204, 21, 0.3)',
-                                    backgroundColor: 'rgba(30, 41, 59, 0.4)',
-                                    textAlign: 'center',
-                                    textDecoration: 'none',
-                                    transition: 'all 0.3s ease'
-                                }}
-                                    className={advisoryStyles.advisoryCard}
-                                >
-                                    <h3 style={{ fontSize: '1.5rem', color: '#FACC15', fontWeight: 800 }}>National Advisory</h3>
-                                    <p style={{ color: '#cbd5e1', marginTop: '0.5rem' }}>View the eminent scholars from across the nation.</p>
-                                    <div style={{ marginTop: '1.5rem', color: '#FACC15', fontWeight: 700, fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                                        VIEW MEMBERS <span>→</span>
-                                    </div>
-                                </a>
-                            </ScrollReveal>
-                            <ScrollReveal>
-                                <a href="/committee/international-advisory" style={{
-                                    display: 'block',
-                                    padding: '2.5rem',
-                                    borderRadius: '1.5rem',
-                                    border: '1px solid rgba(250, 204, 21, 0.3)',
-                                    backgroundColor: 'rgba(30, 41, 59, 0.4)',
-                                    textAlign: 'center',
-                                    textDecoration: 'none',
-                                    transition: 'all 0.3s ease'
-                                }}
-                                    className={advisoryStyles.advisoryCard}
-                                >
-                                    <h3 style={{ fontSize: '1.5rem', color: '#FACC15', fontWeight: 800 }}>International Advisory</h3>
-                                    <p style={{ color: '#cbd5e1', marginTop: '0.5rem' }}>View our global network of experts and advisors.</p>
-                                    <div style={{ marginTop: '1.5rem', color: '#FACC15', fontWeight: 700, fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                                        VIEW MEMBERS <span>→</span>
-                                    </div>
-                                </a>
-                            </ScrollReveal>
-                        </div>
-                    </section>
+
                 </div>
 
                 {/* --- ORGANIZING TEAM --- */}
@@ -279,78 +246,80 @@ export default function CommitteePage() {
                     )}
 
                     {/* Convener & Co-Conveners Section */}
-                    <section style={{ marginBottom: '8rem' }}>
-                        <ScrollReveal>
-                            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-                            </div>
+                    {((conference.committees as any).conveners?.length || (conference.committees as any).coConveners?.length) ? (
+                        <section style={{ marginBottom: '8rem' }}>
+                            <ScrollReveal>
+                                <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                                </div>
 
-                            <div style={{
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                gap: '4rem',
-                                maxWidth: '1200px',
-                                margin: '0 auto',
-                                alignItems: 'start',
-                                justifyContent: 'center'
-                            }}>
-                                {conference.committees.conveners.map((person: CommitteeMember, idx: number) => (
-                                    <div key={`conv-${idx}`} style={{ textAlign: 'center', width: '300px', margin: '0 auto' }}>
-                                        <div style={{
-                                            position: 'relative',
-                                            aspectRatio: '1/1',
-                                            borderRadius: '50%',
-                                            maxWidth: '250px',
-                                            width: '100%',
-                                            margin: '0 auto',
-                                            overflow: 'hidden',
-                                            border: '4px solid #FACC15',
-                                            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
-                                            marginBottom: '2rem',
-                                            transition: 'transform 0.3s ease'
-                                        }}>
-                                            <Image
-                                                src={person.image!}
-                                                alt={person.name}
-                                                fill
-                                                style={{ objectFit: 'cover', objectPosition: 'top' }}
-                                            />
+                                <div style={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: '4rem',
+                                    maxWidth: '1200px',
+                                    margin: '0 auto',
+                                    alignItems: 'start',
+                                    justifyContent: 'center'
+                                }}>
+                                    {(conference.committees as any).conveners?.map((person: CommitteeMember, idx: number) => (
+                                        <div key={`conv-${idx}`} style={{ textAlign: 'center', width: '300px', margin: '0 auto' }}>
+                                            <div style={{
+                                                position: 'relative',
+                                                aspectRatio: '1/1',
+                                                borderRadius: '50%',
+                                                maxWidth: '250px',
+                                                width: '100%',
+                                                margin: '0 auto',
+                                                overflow: 'hidden',
+                                                border: '4px solid #FACC15',
+                                                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+                                                marginBottom: '2rem',
+                                                transition: 'transform 0.3s ease'
+                                            }}>
+                                                <Image
+                                                    src={person.image!}
+                                                    alt={person.name}
+                                                    fill
+                                                    style={{ objectFit: 'cover', objectPosition: 'top' }}
+                                                />
+                                            </div>
+                                            <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
+                                            <h4 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
+                                            <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
                                         </div>
-                                        <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
-                                        <h4 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
-                                        <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
-                                    </div>
-                                ))}
+                                    ))}
 
-                                {conference.committees.coConveners.map((person: CommitteeMember, idx: number) => (
-                                    <div key={`coconv-${idx}`} style={{ textAlign: 'center', width: '300px', margin: '0 auto' }}>
-                                        <div style={{
-                                            position: 'relative',
-                                            aspectRatio: '1/1',
-                                            borderRadius: '50%',
-                                            maxWidth: '250px',
-                                            width: '100%',
-                                            margin: '0 auto',
-                                            overflow: 'hidden',
-                                            border: '4px solid #FACC15',
-                                            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
-                                            marginBottom: '2rem',
-                                            transition: 'transform 0.3s ease'
-                                        }}>
-                                            <Image
-                                                src={person.image!}
-                                                alt={person.name}
-                                                fill
-                                                style={{ objectFit: 'cover', objectPosition: person.name.includes("Ashish") ? 'center 30%' : person.name.includes("Ashok") ? 'center 25%' : 'top' }}
-                                            />
+                                    {(conference.committees as any).coConveners?.map((person: CommitteeMember, idx: number) => (
+                                        <div key={`coconv-${idx}`} style={{ textAlign: 'center', width: '300px', margin: '0 auto' }}>
+                                            <div style={{
+                                                position: 'relative',
+                                                aspectRatio: '1/1',
+                                                borderRadius: '50%',
+                                                maxWidth: '250px',
+                                                width: '100%',
+                                                margin: '0 auto',
+                                                overflow: 'hidden',
+                                                border: '4px solid #FACC15',
+                                                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
+                                                marginBottom: '2rem',
+                                                transition: 'transform 0.3s ease'
+                                            }}>
+                                                <Image
+                                                    src={person.image!}
+                                                    alt={person.name}
+                                                    fill
+                                                    style={{ objectFit: 'cover', objectPosition: person.name.includes("Ashish") ? 'center 30%' : person.name.includes("Ashok") ? 'center 25%' : 'top' }}
+                                                />
+                                            </div>
+                                            <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
+                                            <h4 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
+                                            <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
                                         </div>
-                                        <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
-                                        <h4 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
-                                        <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </ScrollReveal>
-                    </section>
+                                    ))}
+                                </div>
+                            </ScrollReveal>
+                        </section>
+                    ) : null}
 
                     {/* Organizing Secretaries Section */}
                     {conference.committees.organizingSecretaries && conference.committees.organizingSecretaries.length > 0 && (
@@ -414,129 +383,45 @@ export default function CommitteePage() {
                         maxWidth: '1200px',
                         margin: '0 auto'
                     }}>
-                        {/* Registration Committee */}
-                        <ScrollReveal>
-                            <div className={advisoryStyles.opCard} style={{
-                                backgroundColor: 'rgba(30, 41, 59, 0.5)',
-                                backdropFilter: 'blur(16px)',
-                                padding: '2rem 2rem 2.5rem',
-                                borderRadius: '1.25rem',
-                                border: '1px solid rgba(250, 204, 21, 0.12)',
-                                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-                                height: '100%',
-                                position: 'relative' as const,
-                                overflow: 'hidden' as const,
-                            }}>
-                                <div style={{ position: 'absolute' as const, top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, #FACC15, #f59e0b, #d97706)' }} />
-                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', gap: '0.75rem' }}>
-                                    <div style={{ background: 'linear-gradient(135deg, #FACC15, #f59e0b)', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(250, 204, 21, 0.3)' }}>
-                                        <CheckCircle2 size={20} color="#0B1C35" />
+                        {[
+                            { name: "Advisory Committee", list: conference.committees.advisory },
+                            { name: "Scientific Committee", list: conference.committees.scientificCommittee },
+                            { name: "Registration Committee", list: conference.committees.registrationCommittee },
+                            { name: "Souvenir Committee", list: (conference.committees as any).souvenirCommittee },
+                            { name: "Cultural Committee", list: conference.committees.culturalCommittee },
+                            { name: "Transport & Accommodation Committee", list: (conference.committees as any).transportAccommodation },
+                            { name: "Venue & Stage Committee", list: (conference.committees as any).venueStage }
+                        ].map((comm, idx) => comm.list && comm.list.length > 0 && (
+                            <ScrollReveal key={idx}>
+                                <div className={advisoryStyles.opCard} style={{
+                                    backgroundColor: 'rgba(30, 41, 59, 0.5)',
+                                    backdropFilter: 'blur(16px)',
+                                    padding: '2rem 2rem 2.5rem',
+                                    borderRadius: '1.25rem',
+                                    border: '1px solid rgba(250, 204, 21, 0.12)',
+                                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+                                    height: '100%',
+                                    position: 'relative' as const,
+                                    overflow: 'hidden' as const,
+                                }}>
+                                    <div style={{ position: 'absolute' as const, top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, #FACC15, #f59e0b, #d97706)' }} />
+                                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', gap: '0.75rem' }}>
+                                        <div style={{ background: 'linear-gradient(135deg, #FACC15, #f59e0b)', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(250, 204, 21, 0.3)' }}>
+                                            <CheckCircle2 size={20} color="#0B1C35" />
+                                        </div>
+                                        <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FACC15', letterSpacing: '0.03em' }}>{comm.name}</h3>
                                     </div>
-                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FACC15', letterSpacing: '0.03em' }}>Registration Committee</h3>
+                                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                        {comm.list.map((name: string, itemIdx: number) => (
+                                            <li key={itemIdx} style={{ padding: '0.55rem 0', color: '#e2e8f0', fontSize: '0.95rem', display: 'flex', alignItems: 'flex-start', gap: '0.75rem', borderBottom: itemIdx !== comm.list.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+                                                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#FACC15', display: 'inline-block', flexShrink: 0, marginTop: '8px', boxShadow: '0 0 8px rgba(250,204,21,0.5)' }}></span>
+                                                <span style={{ fontWeight: String(name).includes('(Lead)') || String(name).includes('(Chairman)') ? 700 : 500, color: String(name).includes('(Lead)') || String(name).includes('(Chairman)') ? '#FACC15' : 'inherit', lineHeight: 1.4 }}>{String(name)}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
-                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                    {conference.committees.registrationCommittee.map((name, idx) => (
-                                        <li key={idx} style={{ padding: '0.55rem 0', color: '#e2e8f0', fontSize: '0.95rem', display: 'flex', alignItems: 'flex-start', gap: '0.75rem', borderBottom: idx !== conference.committees.registrationCommittee.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
-                                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#FACC15', display: 'inline-block', flexShrink: 0, marginTop: '8px', boxShadow: '0 0 8px rgba(250,204,21,0.5)' }}></span>
-                                            <span style={{ fontWeight: String(name).includes('(Lead)') ? 700 : 500, color: String(name).includes('(Lead)') ? '#FACC15' : 'inherit', lineHeight: 1.4 }}>{String(name)}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </ScrollReveal>
-
-                        {/* Scientific Committee */}
-                        <ScrollReveal>
-                            <div className={advisoryStyles.opCard} style={{
-                                backgroundColor: 'rgba(30, 41, 59, 0.5)',
-                                backdropFilter: 'blur(16px)',
-                                padding: '2rem 2rem 2.5rem',
-                                borderRadius: '1.25rem',
-                                border: '1px solid rgba(250, 204, 21, 0.12)',
-                                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-                                height: '100%',
-                                position: 'relative' as const,
-                                overflow: 'hidden' as const,
-                            }}>
-                                <div style={{ position: 'absolute' as const, top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, #FACC15, #f59e0b, #d97706)' }} />
-                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', gap: '0.75rem' }}>
-                                    <div style={{ background: 'linear-gradient(135deg, #FACC15, #f59e0b)', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(250, 204, 21, 0.3)' }}>
-                                        <CheckCircle2 size={20} color="#0B1C35" />
-                                    </div>
-                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FACC15', letterSpacing: '0.03em' }}>Scientific Committee</h3>
-                                </div>
-                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                    {conference.committees.scientificCommittee.map((name, idx) => (
-                                        <li key={idx} style={{ padding: '0.55rem 0', color: '#e2e8f0', fontSize: '0.95rem', display: 'flex', alignItems: 'flex-start', gap: '0.75rem', borderBottom: idx !== conference.committees.scientificCommittee.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
-                                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#FACC15', display: 'inline-block', flexShrink: 0, marginTop: '8px', boxShadow: '0 0 8px rgba(250,204,21,0.5)' }}></span>
-                                            <span style={{ fontWeight: String(name).includes('(Lead)') ? 700 : 500, color: String(name).includes('(Lead)') ? '#FACC15' : 'inherit', lineHeight: 1.4 }}>{String(name)}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </ScrollReveal>
-
-                        {/* Hospitality Committee */}
-                        <ScrollReveal>
-                            <div className={advisoryStyles.opCard} style={{
-                                backgroundColor: 'rgba(30, 41, 59, 0.5)',
-                                backdropFilter: 'blur(16px)',
-                                padding: '2rem 2rem 2.5rem',
-                                borderRadius: '1.25rem',
-                                border: '1px solid rgba(250, 204, 21, 0.12)',
-                                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-                                height: '100%',
-                                position: 'relative' as const,
-                                overflow: 'hidden' as const,
-                            }}>
-                                <div style={{ position: 'absolute' as const, top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, #FACC15, #f59e0b, #d97706)' }} />
-                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', gap: '0.75rem' }}>
-                                    <div style={{ background: 'linear-gradient(135deg, #FACC15, #f59e0b)', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(250, 204, 21, 0.3)' }}>
-                                        <CheckCircle2 size={20} color="#0B1C35" />
-                                    </div>
-                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FACC15', letterSpacing: '0.03em' }}>Hospitality Committee</h3>
-                                </div>
-                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                    {conference.committees.hospitality.map((name, idx) => (
-                                        <li key={idx} style={{ padding: '0.55rem 0', color: '#e2e8f0', fontSize: '0.95rem', display: 'flex', alignItems: 'flex-start', gap: '0.75rem', borderBottom: idx !== conference.committees.hospitality.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
-                                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#FACC15', display: 'inline-block', flexShrink: 0, marginTop: '8px', boxShadow: '0 0 8px rgba(250,204,21,0.5)' }}></span>
-                                            <span style={{ fontWeight: String(name).includes('(Lead)') ? 700 : 500, color: String(name).includes('(Lead)') ? '#FACC15' : 'inherit', lineHeight: 1.4 }}>{String(name)}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </ScrollReveal>
-
-                        {/* Media & Press Committee */}
-                        <ScrollReveal>
-                            <div className={advisoryStyles.opCard} style={{
-                                backgroundColor: 'rgba(30, 41, 59, 0.5)',
-                                backdropFilter: 'blur(16px)',
-                                padding: '2rem 2rem 2.5rem',
-                                borderRadius: '1.25rem',
-                                border: '1px solid rgba(250, 204, 21, 0.12)',
-                                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-                                height: '100%',
-                                position: 'relative' as const,
-                                overflow: 'hidden' as const,
-                            }}>
-                                <div style={{ position: 'absolute' as const, top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, #FACC15, #f59e0b, #d97706)' }} />
-                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', gap: '0.75rem' }}>
-                                    <div style={{ background: 'linear-gradient(135deg, #FACC15, #f59e0b)', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(250, 204, 21, 0.3)' }}>
-                                        <CheckCircle2 size={20} color="#0B1C35" />
-                                    </div>
-                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#FACC15', letterSpacing: '0.03em' }}>Media & Press Committee</h3>
-                                </div>
-                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                    {conference.committees.mediaCommittee.map((name, idx) => (
-                                        <li key={idx} style={{ padding: '0.55rem 0', color: '#e2e8f0', fontSize: '0.95rem', display: 'flex', alignItems: 'flex-start', gap: '0.75rem', borderBottom: idx !== conference.committees.mediaCommittee.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
-                                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#FACC15', display: 'inline-block', flexShrink: 0, marginTop: '8px', boxShadow: '0 0 8px rgba(250,204,21,0.5)' }}></span>
-                                            <span style={{ fontWeight: String(name).includes('(Lead)') ? 700 : 500, color: String(name).includes('(Lead)') ? '#FACC15' : 'inherit', lineHeight: 1.4 }}>{String(name)}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </ScrollReveal>
+                            </ScrollReveal>
+                        ))}
                     </div>
                 </div>
 

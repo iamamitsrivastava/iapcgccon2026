@@ -56,7 +56,7 @@ async function start() {
     const port = await findOrFreePort(defaultPort);
     console.log(`[dev.mjs] 🚀 Starting Next.js dev server on http://${host}:${port}`);
 
-    const child = spawn('npx', ['next', 'dev', '-H', host, '-p', port.toString()], {
+    const child = spawn('./node_modules/.bin/next', ['dev', '-H', host, '-p', port.toString()], {
         stdio: 'inherit',
         env: { ...process.env, PORT: port.toString() },
         shell: true

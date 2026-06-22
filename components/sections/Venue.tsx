@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { MapPin, Award, Users, Globe, TreePine, BookOpen, ChevronRight, Building2 } from 'lucide-react';
+import { MapPin, Award, Users, Globe, TreePine, ChevronRight, Building2 } from 'lucide-react';
 import Image from 'next/image';
 import styles from './Venue.module.css';
 
