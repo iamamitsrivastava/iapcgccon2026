@@ -66,7 +66,7 @@ export default function Contact() {
                             <div className={styles.contactItem}>
                                 <h4>Address</h4>
                                 <p>Department of Community Medicine</p>
-                                <p>PIMSR, Parul University</p>
+                                <p> 2nd floor, PIMSR, Parul University</p>
                                 <p>Vadodara – 391760</p>
                             </div>
 
@@ -82,15 +82,15 @@ export default function Contact() {
                             <div className={styles.contactItem}>
                                 <h4>Inquiry: Info of Organizing personnel</h4>
                                 <p style={{ marginBottom: '0.5rem' }}>
-                                    <strong>Dr Keyur Mistry</strong> (First Year resident)<br />
+                                    <strong>Dr Keyur Mistry</strong><br />
                                     Contact number - 9727913272
                                 </p>
                                 <p style={{ marginBottom: '0.5rem' }}>
-                                    <strong>Dr Swapnil Raulji</strong> (First Year resident)<br />
+                                    <strong>Dr Swapnil Raulji</strong><br />
                                     Contact number - 7046653327
                                 </p>
                                 <p>
-                                    <strong>Dr Aditya Babaria</strong> (Senior Resident)<br />
+                                    <strong>Dr Aditya Babaria</strong><br />
                                     Contact number - 9601490880
                                 </p>
                             </div>

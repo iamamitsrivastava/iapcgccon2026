@@ -232,6 +232,12 @@ export const conference = {
     ],
     officeBearers: [
       {
+        name: "Dr Nilesh Thakor",
+        role: "Secretory",
+        affiliation: "Professor & Head\nGMERS Medical college, Vadnagar",
+        image: "/images/nilesh-thakor.png"
+      },
+      {
         name: "Dr Sunil Nayak",
         role: "President",
         affiliation: "Professor and Head\nGMERS Medical college, Vadodara",
@@ -242,12 +248,6 @@ export const conference = {
         role: "Vice President",
         affiliation: "Associate Professor\nGovernment Medical college, Vadodara",
         image: "/images/raman-damor.png"
-      },
-      {
-        name: "Dr Nilesh Thakor",
-        role: "Secretory",
-        affiliation: "Professor & Head\nGMERS Medical college, Vadnagar",
-        image: "/images/nilesh-thakor.png"
       }
     ],
     nationalAdvisory: [
@@ -403,7 +403,7 @@ export const conference = {
         name: "Dr. Utkarsh Shah",
         role: "Co-Chairperson",
         affiliation: "Professor, Dept. of Community medicine",
-        image: "/images/utkarsh-shah.png"
+        image: "/images/utkarsh-shah.jpg"
       }
     ],
     patrons: [], // Removed as per request, merged into Chief Patrons or Conveners if needed, but keeping empty for structure
@@ -412,7 +412,7 @@ export const conference = {
         name: "Dr. Prashant Dave",
         role: "Organizing Secretary",
         affiliation: "Associate Professor, Dept. of Community medicine", // Assuming Parul University
-        image: "/images/prashant-dave.png"
+        image: "/images/prashant-dave.jpg"
       }
     ],
     advisory: [

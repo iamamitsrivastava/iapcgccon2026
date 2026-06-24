@@ -300,8 +300,8 @@ export default function Hero() {
               <div className={styles.metaItem}>
                 <Calendar className={styles.metaIcon} size={24} />
                 <span>
-                  <strong>Pre-Conference:</strong> 26 Nov 2026 &nbsp;|&nbsp;
-                  <strong>Main:</strong> 27–28 Nov 2026
+                  <strong>Pre-Conference: </strong>26 Nov 2026 &nbsp;|&nbsp;
+                  <strong>Conference: </strong>27–28 Nov 2026
                 </span>
               </div>
               <div className={styles.metaItem}>
@@ -328,14 +328,6 @@ export default function Hero() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', lineHeight: 1 }}>
                     Submit Abstract <FileText size={18} />
                   </div>
-                  {isMounted && !isExpired && (
-                    <div style={{ fontSize: '0.75rem', opacity: 0.9, display: 'flex', alignItems: 'center', gap: '0.25rem', fontWeight: 600, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
-                      <span style={{ color: '#FACC15' }}>{timeLeft.days}D</span> :
-                      <span style={{ color: '#FACC15' }}>{timeLeft.hours}H</span> :
-                      <span style={{ color: '#FACC15' }}>{timeLeft.minutes}M</span> :
-                      <span style={{ color: '#FACC15' }}>{timeLeft.seconds}S</span>
-                    </div>
-                  )}
                 </button>
               )}
             </div>

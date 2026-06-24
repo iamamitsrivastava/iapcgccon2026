@@ -141,18 +141,6 @@ export default function Travel() {
                     <TouristSlider aspectRatio="21 / 9" maxWidth="1200px" />
                 </div>
 
-                <div className={styles.visaBox}>
-                    <h2 className={styles.sectionTitle} style={{ justifyContent: 'center' }}>
-                        <Info size={32} /> Visa Information
-                    </h2>
-
-                    <p>
-                        International attendees may require a visa to enter India. We recommend applying for a conference visa well in advance.
-                        Please check the official website of the Indian embassy or consulate in your country for the most up-to-date information
-                        on visa requirements and application procedures. The conference organizers can provide an invitation letter upon request
-                        after registration is complete.
-                    </p>
-                </div>
             </div>
         </section>
     );

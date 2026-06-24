@@ -6,8 +6,11 @@ import Image from "next/image";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { CommitteeMember } from "@/types";
 
-export default function OfficeBearersPage() {
-    const members: CommitteeMember[] = (conference.committees as any).officeBearers || [];
+export default function PatronsPage() {
+    const members: CommitteeMember[] = [
+        conference.committees.president as CommitteeMember,
+        ...(conference.committees.vicePresidents?.filter((p: CommitteeMember) => p.name.includes("Parul") || p.name.includes("Komal")) || []) as CommitteeMember[],
+    ].filter(Boolean);
 
     return (
         <main style={{ backgroundColor: '#0B1C35', minHeight: '100vh', color: 'white' }}>
@@ -20,7 +23,7 @@ export default function OfficeBearersPage() {
                     <p style={{ color: '#FACC15', fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
                         <a href="/committee" style={{ color: '#FACC15', textDecoration: 'none', opacity: 0.7, transition: 'opacity 0.2s' }}>Committee</a>
                         <span style={{ opacity: 0.4, margin: '0 0.75rem' }}>›</span>
-                        Office Bearers
+                        Patron
                     </p>
 
                     <h1 style={{
@@ -32,7 +35,7 @@ export default function OfficeBearersPage() {
                         letterSpacing: '0.05em',
                         textTransform: 'uppercase',
                     }}>
-                        Office Bearers
+                        Patron
                     </h1>
 
                     <div style={{ width: '80px', height: '4px', background: 'linear-gradient(to right, #FACC15, #d4af37)', borderRadius: '2px', margin: '1.5rem auto' }} />
@@ -44,7 +47,7 @@ export default function OfficeBearersPage() {
                         fontSize: '1.1rem',
                         lineHeight: 1.7,
                     }}>
-                        Meet the key office bearers of the Indian Association of Preventive and Social Medicine Gujarat Chapter.
+                        Meet the honorable Patrons of Parul University supporting IAPSMGC CON 2026.
                     </p>
                 </ScrollReveal>
             </section>
@@ -90,7 +93,7 @@ export default function OfficeBearersPage() {
                                                 src={person.image}
                                                 alt={person.name}
                                                 fill
-                                                style={{ objectFit: 'cover', objectPosition: person.name.includes("Nilesh") ? 'center 15%' : 'top' }}
+                                                style={{ objectFit: 'cover', objectPosition: 'top' }}
                                             />
                                         ) : (
                                             <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1e293b' }}>
@@ -108,7 +111,7 @@ export default function OfficeBearersPage() {
                                         letterSpacing: '0.05em',
                                         marginBottom: '0.5rem'
                                     }}>
-                                        {person.role}
+                                        {person.role || 'Patron'}
                                     </p>
                                     <h3 style={{
                                         fontSize: '1.5rem',

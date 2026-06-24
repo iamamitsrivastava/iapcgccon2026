@@ -43,6 +43,7 @@ const navItems: NavItem[] = [
         label: 'Committee',
         href: '/committee',
         children: [
+            { label: 'Patron', href: '/committee/patron' },
             { label: 'Committee', href: '/committee' },
             { label: 'Office Bearers', href: '/committee/office-bearers' },
         ]
@@ -64,10 +65,11 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
     const isSolid = variant === 'solid';
 
     const isActive = (href: string) => {
+        if (href.includes('#') && href.length > 1) return false;
         const path = href.split('#')[0];
         if (!path) return pathname === '/';
         if (path === '/' && pathname !== '/') return false;
-        return pathname === path || pathname.startsWith(path + '/');
+        return pathname === path;
     };
 
     const isGroupActive = (item: NavItem) => {
@@ -102,9 +104,9 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                     <Link href="/" className={styles.logoCluster} onClick={() => setMobileOpen(false)}>
                         <div className={styles.logoGroup}>
                             <Image
-                                src="/parul-university-logo.svg"
-                                alt="Parul University"
-                                width={110}
+                                src="/images/iapsmgc-logo.png"
+                                alt="IAPSM Gujarat Chapter"
+                                width={38}
                                 height={38}
                                 className={styles.logoImg}
                                 priority
@@ -113,9 +115,9 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                         <div className={styles.logoSeparator} />
                         <div className={styles.logoGroup}>
                             <Image
-                                src="/images/iapsmgc-logo.png"
-                                alt="IAPSM Gujarat Chapter"
-                                width={38}
+                                src="/parul-university-logo.svg"
+                                alt="Parul University"
+                                width={110}
                                 height={38}
                                 className={styles.logoImg}
                                 priority

@@ -185,7 +185,7 @@ export default function Themes() {
                 {/* Theme Cards Grid */}
                 <div className={styles.grid}>
                     {themes.map((theme, i) => (
-                        <ScrollReveal key={theme.id} animation="fade-up" delay={(Math.min(i, 5) * 100) as 0|100|200|300|400|500}>
+                        <ScrollReveal key={theme.id} animation="fade-up" delay={(Math.min(i, 5) * 100) as 0 | 100 | 200 | 300 | 400 | 500}>
                             <div
                                 className={`${styles.card} ${active === theme.id ? styles.cardActive : ''}`}
                                 onClick={() => setActive(active === theme.id ? null : theme.id)}
@@ -236,7 +236,7 @@ export default function Themes() {
                 <ScrollReveal animation="fade-up" delay={300}>
                     <div style={{ marginTop: '4rem', padding: '2.5rem', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '1rem', border: '1px solid rgba(255, 255, 255, 0.08)', color: 'rgba(255, 255, 255, 0.85)', lineHeight: '1.6' }}>
                         <h3 style={{ fontSize: '2rem', color: 'white', marginBottom: '1.2rem' }}>Call for Abstract</h3>
-                        
+
                         <p style={{ marginBottom: '1rem' }}>
                             Abstract submission is invited for the presentations under the Oral, Poster and Shri H M Patel Award sessions.
                         </p>
@@ -249,14 +249,10 @@ export default function Themes() {
 
                         <h4 style={{ fontSize: '1.3rem', color: '#D4AF37', marginBottom: '1rem' }}>Guidelines for Abstract Submission</h4>
                         <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginBottom: '1.5rem' }}>
-                            <li style={{ marginBottom: '0.5rem' }}>Abstracts should be submitted through the official conference website.<br />Website- </li>
+                            <li style={{ marginBottom: '0.5rem' }}>Abstracts should be submitted through the official conference website.<br />Website- iapsmgccon2026.paruluniversity.ac.in</li>
                             <li style={{ marginBottom: '0.5rem' }}>Abstract should be submitted after the registration for the conference</li>
                             <li style={{ marginBottom: '0.5rem' }}>Last date of abstract submission: </li>
                         </ul>
-                        
-                        <p style={{ marginBottom: '0.75rem' }}>
-                            Detailed guidelines, eligibility criteria, submission process, important dates, and presentation instructions are available on the conference website.
-                        </p>
                         <p style={{ marginBottom: '0.75rem' }}>
                             Submission of an abstract implies consent for publication in conference materials.
                         </p>

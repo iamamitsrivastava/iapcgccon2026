@@ -44,26 +44,32 @@ export default function RegistrationPage() {
     const fees = [
         {
             category: 'IAPSM Member',
-            earlyBird: '₹4000',
-            lateBird: '₹4500',
+            earlyBird: { conf: '₹4000', preConf: '₹1500' },
+            lateBird: { conf: '₹4500', preConf: '₹2000' },
             spot: '₹5000',
         },
         {
-            category: 'IAPSM Non-Member',
-            earlyBird: '₹4500',
-            lateBird: '₹5000',
+            category: 'IAPSM Non Member',
+            earlyBird: { conf: '₹4500', preConf: '₹1500' },
+            lateBird: { conf: '₹5000', preConf: '₹2000' },
             spot: '₹6000',
         },
         {
-            category: 'PG Students/SRs',
-            earlyBird: '₹3500',
-            lateBird: '₹4000',
+            category: 'Post Graduate Students / Senior Residents',
+            earlyBird: { conf: '₹3500', preConf: '₹1000' },
+            lateBird: { conf: '₹4000', preConf: '₹1500' },
             spot: '₹5000',
         },
         {
-            category: 'Interns/UG/Co-Delegates',
-            earlyBird: '₹2500',
-            lateBird: '₹3000',
+            category: 'Co Delegates',
+            earlyBird: { conf: '₹2500' },
+            lateBird: { conf: '₹2500' },
+            spot: '₹2500',
+        },
+        {
+            category: 'Interns & UG students',
+            earlyBird: { conf: '₹2500', preConf: '₹750' },
+            lateBird: { conf: '₹3000', preConf: '₹1500' },
             spot: '₹3500',
         },
     ];
@@ -132,10 +138,10 @@ export default function RegistrationPage() {
                         <table className={styles.feeTable}>
                             <thead>
                                 <tr>
-                                    <th className={styles.categoryHeader}>Category</th>
-                                    <th className={`${styles.groupHeader}`}>Early Bird</th>
-                                    <th className={`${styles.groupHeader}`}>Late Bird</th>
-                                    <th className={`${styles.groupHeader}`}>
+                                    <th className={styles.categoryHeader} rowSpan={2} style={{ verticalAlign: 'middle' }}>Category</th>
+                                    <th className={`${styles.groupHeader}`} colSpan={2} style={{ textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Early Bird</th>
+                                    <th className={`${styles.groupHeader}`} colSpan={2} style={{ textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Late Bird</th>
+                                    <th className={`${styles.groupHeader}`} rowSpan={2} style={{ verticalAlign: 'middle', textAlign: 'center' }}>
                                         <div style={{ 
                                             display: 'flex', 
                                             flexDirection: 'column', 
@@ -158,6 +164,12 @@ export default function RegistrationPage() {
                                         </div>
                                     </th>
                                 </tr>
+                                <tr>
+                                    <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em' }}>CONFERENCE</th>
+                                    <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em', borderRight: '1px solid rgba(255,255,255,0.1)' }}>PRE-CONFERENCE</th>
+                                    <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em' }}>CONFERENCE</th>
+                                    <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em' }}>PRE-CONFERENCE</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 {fees.map((item, index) => (
@@ -167,24 +179,49 @@ export default function RegistrationPage() {
                                                 {renderCategory(item.category)}
                                             </div>
                                         </td>
-                                        <td data-label="Early Bird" className={styles.attendingCol}>
-                                            <a 
-                                                href="#" 
-                                                className={`${styles.feeGridButton}`}
-                                            >
-                                                <span className={styles.feeText}>{item.earlyBird}</span>
+                                        <td data-label="Early Bird Conf" className={styles.attendingCol}>
+                                            <a href="#" className={`${styles.feeGridButton}`}>
+                                                <span className={styles.feeText}>{item.earlyBird.conf}</span>
                                             </a>
                                         </td>
-                                        <td data-label="Late Bird" className={styles.attendingCol}>
+                                        <td data-label="Early Bird Pre-Conf" className={styles.attendingCol} style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
+                                            {item.earlyBird.preConf ? (
+                                                <a href="#" className={`${styles.feeGridButton}`}>
+                                                    <span className={styles.feeText}>{item.earlyBird.preConf}</span>
+                                                </a>
+                                            ) : (
+                                                <span style={{ display: 'flex', justifyContent: 'center', opacity: 0.3, fontWeight: 'bold' }}>-</span>
+                                            )}
+                                        </td>
+                                        <td data-label="Late Bird Conf" className={styles.attendingCol}>
                                             <a 
                                                 href="#" 
                                                 className={`${styles.feeGridButton} ${areOthersLocked ? styles.lockedButton : ''}`}
                                                 onClick={(e) => areOthersLocked && e.preventDefault()}
                                                 style={areOthersLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                             >
-                                                <span className={styles.feeText}>{item.lateBird}</span>
-                                                {areOthersLocked && <Lock size={14} style={{ marginLeft: '4px' }} />}
+                                                <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                                                    {item.lateBird.conf}
+                                                    {areOthersLocked && <Lock size={14} />}
+                                                </span>
                                             </a>
+                                        </td>
+                                        <td data-label="Late Bird Pre-Conf" className={styles.attendingCol}>
+                                            {item.lateBird.preConf ? (
+                                                <a 
+                                                    href="#" 
+                                                    className={`${styles.feeGridButton} ${areOthersLocked ? styles.lockedButton : ''}`}
+                                                    onClick={(e) => areOthersLocked && e.preventDefault()}
+                                                    style={areOthersLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
+                                                >
+                                                    <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                                                        {item.lateBird.preConf}
+                                                        {areOthersLocked && <Lock size={14} />}
+                                                    </span>
+                                                </a>
+                                            ) : (
+                                                <span style={{ display: 'flex', justifyContent: 'center', opacity: 0.3, fontWeight: 'bold' }}>-</span>
+                                            )}
                                         </td>
                                         <td data-label="Spot" className={styles.contributorCol}>
                                             <a 
@@ -222,13 +259,7 @@ export default function RegistrationPage() {
                             </ul>
                         </div>
                         <div className={styles.infoCard}>
-                            <h3 className={styles.infoSectionTitle}>
-                                <AlertCircle className={styles.infoIcon} size={24} />
-                                Refund Policy
-                            </h3>
-                            <p className={styles.infoText}>
-                                Refunds will be issued only for cancellation requests submitted at least one week prior to the early-bird registration deadline. No refunds will be processed after this period.
-                            </p>
+                            {/* Refund Policy Removed */}
                             <div className={styles.noteBox}>
                                 <strong>Note:</strong>  Note: The above amount covers only the registration fee. Additional charges will apply for papers accepted for the publication as per receptive guidelines.
                             </div>

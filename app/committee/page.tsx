@@ -54,55 +54,7 @@ export default function CommitteePage() {
                 <div id="leadership" style={{ marginBottom: '6rem', scrollMarginTop: '6rem' }}>
                     {/* President & Vice President Section */}
                     <section style={{ marginBottom: '8rem' }}>
-                        {/* Leadership Row 1 */}
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                            gap: '3rem',
-                            maxWidth: '1200px',
-                            margin: '0 auto',
-                            marginBottom: '4rem',
-                            justifyContent: 'center'
-                        }}>
-                            {([
-                                conference.committees.president as CommitteeMember,
-                                conference.committees.vicePresidents?.find((p: CommitteeMember) => p.name.includes("Parul")),
-                                conference.committees.vicePresidents?.find((p: CommitteeMember) => p.name.includes("Komal"))
-                            ].filter(Boolean) as CommitteeMember[]).map((person: CommitteeMember, idx: number) => (
-                                <ScrollReveal key={`row1-${idx}`}>
-                                    <div style={{ textAlign: 'center' }}>
-                                        <div style={{
-                                            position: 'relative',
-                                            aspectRatio: '1/1',
-                                            borderRadius: '50%',
-                                            maxWidth: '250px',
-                                            margin: '0 auto',
-                                            overflow: 'hidden',
-                                            border: '4px solid #FACC15',
-                                            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
-                                            transition: 'transform 0.3s ease',
-                                            marginBottom: '2rem'
-                                        }}>
-                                            {person.image ? (
-                                                <Image
-                                                    src={person.image}
-                                                    alt={person.name}
-                                                    fill
-                                                    style={{ objectFit: 'cover', objectPosition: 'top' }}
-                                                />
-                                            ) : (
-                                                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#1e293b' }}>
-                                                    <span style={{ color: '#94a3b8' }}>No Image</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
-                                        <h4 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
-                                        <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
-                                    </div>
-                                </ScrollReveal>
-                            ))}
-                        </div>
+                        {/* Patrons have been moved to the Patron page */}
 
                         {/* Leadership Row 2 */}
                         <div style={{
@@ -150,7 +102,7 @@ export default function CommitteePage() {
                     </section>
 
 
-                    {/* Chief Patrons Section */}
+                    {/* Chief Patrons & Secretary Section */}
                     <section style={{ marginBottom: '8rem' }}>
                         <ScrollReveal>
                             <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
@@ -159,11 +111,14 @@ export default function CommitteePage() {
                                 display: 'grid',
                                 gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
                                 gap: '3rem',
-                                maxWidth: '1000px',
+                                maxWidth: '1200px',
                                 margin: '0 auto',
                                 justifyContent: 'center'
                             }}>
-                                {conference.committees.chiefPatrons.slice(0, 2).map((person, idx) => (
+                                {[
+                                    ...(conference.committees.chiefPatrons || []),
+                                    ...(conference.committees.secretaries || [])
+                                ].map((person, idx) => (
                                     <div key={idx} style={{ textAlign: 'center' }}>
                                         <div style={{
                                             position: 'relative',
@@ -191,59 +146,6 @@ export default function CommitteePage() {
                             </div>
                         </ScrollReveal>
                     </section>
-
-
-                </div>
-
-                {/* --- ORGANIZING TEAM --- */}
-                <div id="organizing" style={{ marginBottom: '6rem', scrollMarginTop: '6rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '4rem' }}>
-                        <div style={{ height: '2px', flex: 1, background: 'linear-gradient(to right, transparent, rgba(250, 204, 21, 0.3))' }}></div>
-                        <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#FACC15', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Organizing Team</h2>
-                        <div style={{ height: '2px', flex: 1, background: 'linear-gradient(to left, transparent, rgba(250, 204, 21, 0.3))' }}></div>
-                    </div>
-
-                    {/* Secretary Section - Separate Row */}
-                    {conference.committees.secretaries && conference.committees.secretaries.length > 0 && (
-                        <section style={{ marginBottom: '6rem' }}>
-                            <ScrollReveal>
-                                <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-                                </div>
-                                <div style={{
-                                    maxWidth: '400px',
-                                    margin: '0 auto',
-                                    textAlign: 'center'
-                                }}>
-                                    {conference.committees.secretaries.map((person: CommitteeMember, idx: number) => (
-                                        <div key={`sec-${idx}`}>
-                                            <div style={{
-                                                position: 'relative',
-                                                aspectRatio: '1/1',
-                                                borderRadius: '50%',
-                                                maxWidth: '250px',
-                                                margin: '0 auto',
-                                                overflow: 'hidden',
-                                                border: '4px solid #FACC15',
-                                                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
-                                                marginBottom: '2rem',
-                                                transition: 'transform 0.3s ease'
-                                            }}>
-                                                <Image
-                                                    src={person.image!}
-                                                    alt={person.name}
-                                                    fill
-                                                    style={{ objectFit: 'cover', objectPosition: 'top' }}
-                                                />
-                                            </div>
-                                            <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
-                                            <h4 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
-                                            <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </ScrollReveal>
-                        </section>
-                    )}
 
                     {/* Convener & Co-Conveners Section */}
                     {((conference.committees as any).conveners?.length || (conference.committees as any).coConveners?.length) ? (
@@ -280,7 +182,7 @@ export default function CommitteePage() {
                                                     src={person.image!}
                                                     alt={person.name}
                                                     fill
-                                                    style={{ objectFit: 'cover', objectPosition: 'top' }}
+                                                    style={{ objectFit: 'cover', objectPosition: person.name.includes("Nilesh") ? 'center 15%' : 'top' }}
                                                 />
                                             </div>
                                             <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
@@ -415,7 +317,7 @@ export default function CommitteePage() {
                                         {comm.list.map((name: string, itemIdx: number) => (
                                             <li key={itemIdx} style={{ padding: '0.55rem 0', color: '#e2e8f0', fontSize: '0.95rem', display: 'flex', alignItems: 'flex-start', gap: '0.75rem', borderBottom: itemIdx !== comm.list.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
                                                 <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#FACC15', display: 'inline-block', flexShrink: 0, marginTop: '8px', boxShadow: '0 0 8px rgba(250,204,21,0.5)' }}></span>
-                                                <span style={{ fontWeight: String(name).includes('(Lead)') || String(name).includes('(Chairman)') ? 700 : 500, color: String(name).includes('(Lead)') || String(name).includes('(Chairman)') ? '#FACC15' : 'inherit', lineHeight: 1.4 }}>{String(name)}</span>
+                                                <span style={{ fontWeight: String(name).includes('(Lead)') ? 700 : 500, color: String(name).includes('(Lead)') ? '#FACC15' : 'inherit', lineHeight: 1.4 }}>{String(name)}</span>
                                             </li>
                                         ))}
                                     </ul>
