@@ -66,16 +66,14 @@ export default function Footer() {
                     <div className={styles.footerCol}>
                         <h4 className={styles.footerHeading}>Support</h4>
                         <ul className={styles.footerList}>
-                            <li><Link href="/contact">Contact Us</Link></li>
-                            <li style={{ marginTop: '0.5rem', lineHeight: '1.4' }}>
+                            <li><Link href="/contact" style={{ marginBottom: '0.5rem', display: 'inline-block' }}>Contact Us</Link></li>
+                            <li style={{ marginTop: '0.5rem', lineHeight: '1.2' }}>
                                 <strong>Dr Keyur Mistry</strong><br />
-                                <span style={{ fontSize: '0.9em', opacity: 0.8 }}></span><br />
-                                <a href="tel:9727913272">9727913272</a>
+                                <a href="tel:9727913272" style={{ color: '#94a3b8' }}>9727913272</a>
                             </li>
-                            <li style={{ marginTop: '1rem', lineHeight: '1.4' }}>
+                            <li style={{ marginTop: '0.75rem', lineHeight: '1.2' }}>
                                 <strong>Dr Swapnil Raulji</strong><br />
-                                <span style={{ fontSize: '0.9em', opacity: 0.8 }}></span><br />
-                                <a href="tel:7046653327">7046653327</a>
+                                <a href="tel:7046653327" style={{ color: '#94a3b8' }}>7046653327</a>
                             </li>
                         </ul>
                     </div>
@@ -104,10 +102,8 @@ export default function Footer() {
                         </div>
 
                         <div className={styles.socialIcons}>
-                            <a href="https://www.linkedin.com/school/paruluniversity/posts/?feedView=all" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className={styles.socialIconLink}><Linkedin size={20} /></a>
                             <a href="https://www.instagram.com/com_med_pu?igsh=Y3MzNzZ1c3U4a3dn&utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className={styles.socialIconLink}><Instagram size={20} /></a>
                             <a href="https://www.facebook.com/ParulUniversity/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className={styles.socialIconLink}><Facebook size={20} /></a>
-                            <a href="https://x.com/ParulUniversity" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className={styles.socialIconLink}><Twitter size={20} /></a>
                         </div>
                     </div>
                 </div>

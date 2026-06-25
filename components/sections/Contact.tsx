@@ -14,10 +14,13 @@ export default function Contact() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        if (name === 'phone') {
+            // Only allow digits, max 10
+            const digitsOnly = value.replace(/\D/g, '').slice(0, 10);
+            setFormData(prev => ({ ...prev, phone: digitsOnly }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -128,11 +131,26 @@ export default function Contact() {
                                 <input
                                     type="tel"
                                     name="phone"
-                                    placeholder="Your Contact Number"
+                                    placeholder="Your Contact Number (10 digits)"
                                     value={formData.phone}
                                     onChange={handleChange}
                                     className={styles.input}
+                                    inputMode="numeric"
+                                    maxLength={10}
+                                    pattern="[0-9]{10}"
+                                    title="Please enter exactly 10 digits"
                                 />
+                                {formData.phone.length > 0 && (
+                                    <p style={{
+                                        fontSize: '0.75rem',
+                                        marginTop: '0.35rem',
+                                        color: formData.phone.length === 10 ? '#4ade80' : '#f0c040',
+                                        textAlign: 'right'
+                                    }}>
+                                        {formData.phone.length}/10 digits
+                                        {formData.phone.length === 10 ? ' ✓' : ''}
+                                    </p>
+                                )}
                             </div>
 
                             <div className={styles.formGroup}>

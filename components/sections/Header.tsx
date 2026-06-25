@@ -112,6 +112,10 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                                 priority
                             />
                         </div>
+                        <div className={styles.logoText}>
+                            <span className={styles.logoTitle}>IAPSMGC CON</span>
+                            <span className={styles.logoYear}>2026</span>
+                        </div>
                         <div className={styles.logoSeparator} />
                         <div className={styles.logoGroup}>
                             <Image
@@ -122,10 +126,6 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                                 className={styles.logoImg}
                                 priority
                             />
-                        </div>
-                        <div className={styles.logoText}>
-                            <span className={styles.logoTitle}>IAPSMGC CON</span>
-                            <span className={styles.logoYear}>2026</span>
                         </div>
                     </Link>
 

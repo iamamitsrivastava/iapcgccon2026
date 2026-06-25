@@ -80,7 +80,7 @@ export function Venue() {
 
                         {/* Location */}
                         <a
-                            href="https://www.google.com/maps/place/Parul+University/@22.2930981,73.2242498,17z"
+                            href="https://www.google.com/maps/place/Parul+University,+Limda,+Ta.+Waghodiya,+Vadodara,+Gujarat+391760/@22.2930981,73.2242498,17z"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.locationLink}
@@ -90,7 +90,7 @@ export function Venue() {
                             </div>
                             <div className={styles.locationInfo}>
                                 <span className={styles.locationLabel}>CONFERENCE VENUE</span>
-                                <span className={styles.locationText}>Vadodara, Gujarat, India</span>
+                                <span className={styles.locationText}>Parul University, Vadodara, Gujarat, India</span>
                             </div>
                             <ChevronRight size={16} className={styles.locationArrow} />
                         </a>
@@ -136,8 +136,43 @@ export function Venue() {
                                 <span>First Cycle</span>
                             </div>
                         </div>
-                    </div>
-                </div>
+
+                        {/* Stats inside image column — fills white space */}
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: '0.75rem',
+                            marginTop: '1rem',
+                        }}>
+                            <div className={styles.statCard} style={{ padding: '1rem 1rem' }}>
+                                <div className={styles.statIconWrap} style={{ marginBottom: '0.5rem' }}><Award size={22} /></div>
+                                <div className={styles.statNumber} style={{ fontSize: '1.1rem' }}>NAAC A++</div>
+                                <div className={styles.statTitle} style={{ fontSize: '0.75rem' }}>Youngest Pvt University</div>
+                                <div className={styles.statDescription} style={{ fontSize: '0.7rem' }}>First Cycle Accreditation</div>
+                            </div>
+                            <div className={styles.statCard} style={{ padding: '1rem 1rem' }}>
+                                <div className={styles.statIconWrap} style={{ marginBottom: '0.5rem' }}><Users size={22} /></div>
+                                <div className={styles.statNumber} style={{ fontSize: '1.1rem' }}>65,000+</div>
+                                <div className={styles.statTitle} style={{ fontSize: '0.75rem' }}>Total Students</div>
+                                <div className={styles.statDescription} style={{ fontSize: '0.7rem' }}>From every state in India</div>
+                            </div>
+                            <div className={styles.statCard} style={{ padding: '1rem 1rem' }}>
+                                <div className={styles.statIconWrap} style={{ marginBottom: '0.5rem' }}><Globe size={22} /></div>
+                                <div className={styles.statNumber} style={{ fontSize: '1.1rem' }}>75+</div>
+                                <div className={styles.statTitle} style={{ fontSize: '0.75rem' }}>Global Countries</div>
+                                <div className={styles.statDescription} style={{ fontSize: '0.7rem' }}>4,500+ International Students</div>
+                            </div>
+                            <div className={styles.statCard} style={{ padding: '1rem 1rem' }}>
+                                <div className={styles.statIconWrap} style={{ marginBottom: '0.5rem' }}><TreePine size={22} /></div>
+                                <div className={styles.statNumber} style={{ fontSize: '1.1rem' }}>150+</div>
+                                <div className={styles.statTitle} style={{ fontSize: '0.75rem' }}>Acres Campus</div>
+                                <div className={styles.statDescription} style={{ fontSize: '0.7rem' }}>Eco-friendly Environment</div>
+                            </div>
+                        </div>
+                    </div>{/* end imageSection */}
+                </div>{/* end contentGrid */}
+
+
 
 
 
@@ -195,42 +230,7 @@ export function Venue() {
                     </div>
                 </div>
 
-                {/* Statistics Grid */}
 
-                <div className={styles.statsGrid}>
-                    <div className={styles.statCard}>
-                        <div className={styles.statIconWrap}>
-                            <Award size={28} />
-                        </div>
-                        <div className={styles.statNumber}>NAAC A++</div>
-                        <div className={styles.statTitle}>Youngest Pvt University</div>
-                        <div className={styles.statDescription}>First Cycle Accreditation</div>
-                    </div>
-                    <div className={styles.statCard}>
-                        <div className={styles.statIconWrap}>
-                            <Users size={28} />
-                        </div>
-                        <div className={styles.statNumber}>65,000+</div>
-                        <div className={styles.statTitle}>Total Students</div>
-                        <div className={styles.statDescription}>From every state in India</div>
-                    </div>
-                    <div className={styles.statCard}>
-                        <div className={styles.statIconWrap}>
-                            <Globe size={28} />
-                        </div>
-                        <div className={styles.statNumber}>75+</div>
-                        <div className={styles.statTitle}>Global Countries</div>
-                        <div className={styles.statDescription}>4,500+ International Students</div>
-                    </div>
-                    <div className={styles.statCard}>
-                        <div className={styles.statIconWrap}>
-                            <TreePine size={28} />
-                        </div>
-                        <div className={styles.statNumber}>150+</div>
-                        <div className={styles.statTitle}>Acres Campus</div>
-                        <div className={styles.statDescription}>Eco-friendly Environment</div>
-                    </div>
-                </div>
             </div>
         </section>
     );

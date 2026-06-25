@@ -314,6 +314,8 @@
 
 .imageSection {
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .imageWrapper {
@@ -435,7 +437,8 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
-    margin-top: 4rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
 }
 
 .statCard {
