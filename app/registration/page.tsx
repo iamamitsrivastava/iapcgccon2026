@@ -6,13 +6,13 @@ import { Landmark, FileText, AlertCircle, Download, Lock } from 'lucide-react';
 import styles from './page.module.css';
 
 export default function RegistrationPage() {
-    // UNLOCK DATE: 15th July 2026 (Registration deadline is July 10, so On-Spot starts after)
-    const unlockTarget = new Date('2026-07-15T00:00:00').getTime();
+    // UNLOCK DATE: 15th November 2026 (Registration deadline is Nov 15, so On-Spot starts after)
+    const unlockTarget = new Date('2026-11-15T00:00:00').getTime();
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
     
-    // On-Spot is locked BEFORE July 15
+    // On-Spot is locked BEFORE November 15
     const isOnSpotLocked = currentTime < unlockTarget;
-    // Other categories are locked AFTER July 15
+    // Other categories are locked AFTER November 15
     const areOthersLocked = !isOnSpotLocked;
 
     useEffect(() => {
@@ -35,10 +35,10 @@ export default function RegistrationPage() {
     };
 
     const keyDates = [
-        { label: 'Abstract Submission Deadline', value: '30th June, 2026' },
-        { label: 'Full Paper Submission Deadline', value: '5th July, 2026' },
-        { label: 'Registration Deadline', value: '10th July, 2026' },
-        { label: 'Conference Date', value: '16th - 17th July 2026' },
+        { label: 'Abstract Submission Deadline', value: '15th October, 2026' },
+        { label: 'Notification of Acceptance', value: '31st October, 2026' },
+        { label: 'Registration Deadline', value: '15th November, 2026' },
+        { label: 'Conference Date', value: '27th - 28th November 2026' },
     ];
     
     const fees = [
@@ -251,11 +251,11 @@ export default function RegistrationPage() {
                                 Bank Details
                             </h3>
                             <ul className={styles.bankDetailsList}>
-                                <li><strong>Account Name:</strong> <span></span></li>
-                                <li><strong>Bank Name:</strong> <span></span></li>
-                                <li><strong>Branch:</strong> <span></span></li>
-                                <li><strong>Account Number:</strong> <span></span></li>
-                                <li><strong>IFSC Code:</strong> <span></span></li>
+                                <li><strong>Account Name:</strong> <span>Parul University / IAPSMGC CON2026 Parul University</span></li>
+                                <li><strong>Bank Name:</strong> <span>CENTRAL BANK OF INDIA</span></li>
+                                <li><strong>Branch:</strong> <span>PARUL INSTITUTE OF ENGG TECH, VILL AND PO LIMDA TAL WAGHODIA (Branch Code: 4063)</span></li>
+                                <li><strong>Account Number:</strong> <span>5968757282</span></li>
+                                <li><strong>IFSC Code:</strong> <span>CBIN0284063</span></li>
                             </ul>
                         </div>
                         <div className={styles.infoCard}>

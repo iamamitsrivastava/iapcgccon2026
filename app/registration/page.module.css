@@ -406,13 +406,14 @@
 
 .bankDetailsList li {
     margin-bottom: 1rem;
-    font-size: 1.05rem;
+    font-size: 1rem;
     color: #475569;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 1rem;
+    align-items: start;
     border-bottom: 1px dashed #e2e8f0;
-    padding-bottom: 0.5rem;
+    padding-bottom: 1rem;
 }
 
 .bankDetailsList li:last-child {
@@ -428,6 +429,8 @@
 
 .bankDetailsList span {
     font-weight: 500;
+    text-align: right;
+    display: block;
 }
 
 .infoText {
