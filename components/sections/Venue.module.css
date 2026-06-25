@@ -441,43 +441,61 @@
     margin-bottom: 1rem;
 }
 
-.statCard {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    padding: 2rem 1.5rem;
-    border-radius: 20px;
-    border: 1px solid var(--color-border);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.imageStatsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.statCardSmall {
+    background: #f8fafc;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     position: relative;
     overflow: hidden;
 }
 
-.statCard::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--color-secondary), #f59e0b);
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
+.statCardSmall:hover {
+    transform: translateY(-2px);
+    background: #f1f5f9;
 }
 
-.statCard:hover::before {
-    transform: scaleX(1);
+.statIconWrapSmall {
+    color: var(--color-secondary);
+    margin-bottom: 0.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.statCard:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
-    border-color: rgba(218, 165, 32, 0.3);
+.statNumberSmall {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1.2;
+}
+
+.statTitleSmall {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: 0.15rem;
+    line-height: 1.2;
+}
+
+.statDescriptionSmall {
+    font-size: 0.65rem;
+    color: var(--color-text-light);
+    margin-top: 0.1rem;
+    line-height: 1.2;
 }
 
 .statCardHighlight {
-    border: 2px solid var(--color-secondary);
-    background: linear-gradient(135deg, rgba(218, 165, 32, 0.06) 0%, rgba(255, 255, 255, 1) 100%);
+    border: 1px solid var(--color-secondary);
+    background: #fffbdf;
     box-shadow: 0 6px 20px rgba(218, 165, 32, 0.1);
 }
 

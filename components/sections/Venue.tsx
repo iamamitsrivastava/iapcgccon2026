@@ -98,8 +98,9 @@ export function Venue() {
 
                     {/* Image & Badge Side */}
                     <div className={styles.imageSection}>
-                        <div className={styles.imageWrapper}>
-                            {images.map((src, index) => (
+                        <div style={{ position: 'relative' }}>
+                            <div className={styles.imageWrapper}>
+                                {images.map((src, index) => (
                                 <Image
                                     key={index}
                                     src={src}
@@ -136,37 +137,33 @@ export function Venue() {
                                 <span>First Cycle</span>
                             </div>
                         </div>
+                        </div>
 
                         {/* Stats inside image column — fills white space */}
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1fr 1fr',
-                            gap: '0.75rem',
-                            marginTop: '1rem',
-                        }}>
-                            <div className={styles.statCard} style={{ padding: '1rem 1rem' }}>
-                                <div className={styles.statIconWrap} style={{ marginBottom: '0.5rem' }}><Award size={22} /></div>
-                                <div className={styles.statNumber} style={{ fontSize: '1.1rem' }}>NAAC A++</div>
-                                <div className={styles.statTitle} style={{ fontSize: '0.75rem' }}>Youngest Pvt University</div>
-                                <div className={styles.statDescription} style={{ fontSize: '0.7rem' }}>First Cycle Accreditation</div>
+                        <div className={styles.imageStatsGrid}>
+                            <div className={styles.statCardSmall}>
+                                <div className={styles.statIconWrapSmall}><Award size={18} /></div>
+                                <div className={styles.statNumberSmall}>NAAC A++</div>
+                                <div className={styles.statTitleSmall}>Youngest Pvt University</div>
+                                <div className={styles.statDescriptionSmall}>First Cycle Accreditation</div>
                             </div>
-                            <div className={styles.statCard} style={{ padding: '1rem 1rem' }}>
-                                <div className={styles.statIconWrap} style={{ marginBottom: '0.5rem' }}><Users size={22} /></div>
-                                <div className={styles.statNumber} style={{ fontSize: '1.1rem' }}>65,000+</div>
-                                <div className={styles.statTitle} style={{ fontSize: '0.75rem' }}>Total Students</div>
-                                <div className={styles.statDescription} style={{ fontSize: '0.7rem' }}>From every state in India</div>
+                            <div className={styles.statCardSmall}>
+                                <div className={styles.statIconWrapSmall}><Users size={18} /></div>
+                                <div className={styles.statNumberSmall}>65,000+</div>
+                                <div className={styles.statTitleSmall}>Total Students</div>
+                                <div className={styles.statDescriptionSmall}>From every state in India</div>
                             </div>
-                            <div className={styles.statCard} style={{ padding: '1rem 1rem' }}>
-                                <div className={styles.statIconWrap} style={{ marginBottom: '0.5rem' }}><Globe size={22} /></div>
-                                <div className={styles.statNumber} style={{ fontSize: '1.1rem' }}>75+</div>
-                                <div className={styles.statTitle} style={{ fontSize: '0.75rem' }}>Global Countries</div>
-                                <div className={styles.statDescription} style={{ fontSize: '0.7rem' }}>4,500+ International Students</div>
+                            <div className={styles.statCardSmall}>
+                                <div className={styles.statIconWrapSmall}><Globe size={18} /></div>
+                                <div className={styles.statNumberSmall}>75+</div>
+                                <div className={styles.statTitleSmall}>Global Countries</div>
+                                <div className={styles.statDescriptionSmall}>4,500+ International Students</div>
                             </div>
-                            <div className={styles.statCard} style={{ padding: '1rem 1rem' }}>
-                                <div className={styles.statIconWrap} style={{ marginBottom: '0.5rem' }}><TreePine size={22} /></div>
-                                <div className={styles.statNumber} style={{ fontSize: '1.1rem' }}>150+</div>
-                                <div className={styles.statTitle} style={{ fontSize: '0.75rem' }}>Acres Campus</div>
-                                <div className={styles.statDescription} style={{ fontSize: '0.7rem' }}>Eco-friendly Environment</div>
+                            <div className={styles.statCardSmall}>
+                                <div className={styles.statIconWrapSmall}><TreePine size={18} /></div>
+                                <div className={styles.statNumberSmall}>150+</div>
+                                <div className={styles.statTitleSmall}>Acres Campus</div>
+                                <div className={styles.statDescriptionSmall}>Eco-friendly Environment</div>
                             </div>
                         </div>
                     </div>{/* end imageSection */}
