@@ -250,6 +250,26 @@ export const conference = {
         image: "/images/raman-damor.jpg"
       }
     ],
+    nationalSpeakers: [
+      {
+        name: "Dr Ashok Bhardwaj",
+        role: "President",
+        affiliation: "IAPSM",
+        image: "/images/ashok-bhardwaj.png"
+      },
+      {
+        name: "Dr Atul Kotwal",
+        role: "President elect",
+        affiliation: "IAPSM",
+        image: "/images/atul-kotwal.png"
+      },
+      {
+        name: "Dr. Manish Kumar Singh",
+        role: "Contestant for Secretary General",
+        affiliation: "IAPSM",
+        image: "/images/manish-kumar-singh.jpg"
+      }
+    ],
     nationalAdvisory: [
       {
         name: "Shri Ram Madhav",
