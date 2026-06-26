@@ -119,11 +119,11 @@
 
 .btnPrimary {
     background: linear-gradient(135deg, var(--color-secondary) 0%, #b8860b 100%);
-    color: white;
+    color: black;
     padding: 1rem 2.5rem;
-    border-radius: 2px;
-    /* Square academic look */
-    font-weight: 600;
+    border-radius: 4px;
+    font-weight: 900;
+    font-size: 1.05rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     border: none;
@@ -137,22 +137,23 @@
 }
 
 .btnSecondary {
-    background-color: transparent;
-    color: white;
+    background: linear-gradient(135deg, var(--color-secondary) 0%, #b8860b 100%);
+    color: black;
     padding: 1rem 2.5rem;
     border-radius: 4px;
-    font-weight: 600;
+    font-weight: 900;
+    font-size: 1.05rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     text-decoration: none;
     transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: none;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
 }
 
 .btnSecondary:hover {
-    border-color: white;
-    background-color: rgba(255, 255, 255, 0.05);
     transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
 }
 
 /* Trust Indicators */
@@ -183,9 +184,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 3rem;
+    gap: 6rem;
     margin: 3rem auto 0;
-    padding: 1.5rem 3rem;
+    padding: 1.5rem 5rem;
     background: rgba(255, 255, 255, 0.03);
     /* Very subtle glass */
     backdrop-filter: blur(12px);

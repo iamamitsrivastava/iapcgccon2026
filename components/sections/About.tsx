@@ -15,17 +15,17 @@ export function AboutConference() {
                 <div className={styles.split}>
                     <ScrollReveal animation="fade-right">
                         <div className={styles.textBlock}>
-                            <span className="text-uppercase" style={{ color: 'var(--color-secondary)', fontWeight: 600 }}>INTRODUCTION</span>
+                            <span className="text-uppercase" style={{ color: 'var(--color-secondary)', fontWeight: 600 }}></span>
                             <h2>About the Conference</h2>
                             <p>
-                                <strong>IAPSMGC CON 2026</strong> is the annual national conference of the{' '}
+                                <strong>IAPSMGC CON 2026</strong> is the annual state conference of the{' '}
                                 <strong>Indian Association of Preventive &amp; Social Medicine (IAPSM) &mdash; Gujarat Chapter</strong>,
-                                hosted at <strong>Parul Institute of Medical Sciences &amp; Research (PIMSR)</strong>,
+                                hosted by <strong style={{ color: '#050506ff' }}>Department Of Community Medicine</strong>, <strong>Parul Institute of Medical Sciences &amp; Research (PIMSR)</strong>,
                                 Parul University, Vadodara.
                             </p>
                             <p>
                                 The conference is centred on the theme{' '}
-                                <strong>&ldquo;Digital Health for All: Bridging Equity, Access, and Innovation&rdquo;</strong>.
+                                <strong>&ldquo;Digital Health for All: Bridging Equity, Access and Innovation&rdquo;</strong>.
                                 It brings together public health professionals, community medicine experts, researchers, policymakers,
                                 and students to deliberate on bridging the gap between health policy formulation and its on-ground
                                 implementation, contributing towards India&apos;s vision of becoming a developed nation by 2047.
@@ -41,11 +41,12 @@ export function AboutConference() {
                     <ScrollReveal delay={200}>
                         <div className={styles.imageWrapper} style={{ marginTop: '0' }}>
                             <Image
-                                src="/images/boardroom-meeting.png"
+                                src="/images/about-conference.jpg"
                                 alt="Conference Boardroom"
                                 fill
                                 className={styles.image}
                                 sizes="(max-width: 768px) 100vw, 50vw"
+                                style={{ objectFit: 'cover' }}
                             />
                         </div>
                     </ScrollReveal>
@@ -55,24 +56,47 @@ export function AboutConference() {
                 <ScrollReveal animation="fade-up" delay={200}>
                     <div className={styles.missionBanner}>
                         <div className={styles.missionIcon}>
-                            <Image 
-                                src="/images/viksit-bharat-logo.png" 
-                                alt="Viksit Bharat 2047 Logo" 
-                                width={140} 
+                            <Image
+                                src="/images/word-cloud-logo.png"
+                                alt="Community Medicine Word Cloud"
+                                width={140}
                                 height={70}
                                 style={{ objectFit: 'contain' }}
                             />
                         </div>
                         <div className={styles.missionContent}>
-                            <span className={styles.missionLabel}>Conference Mission</span>
+                            <span className={styles.missionLabel}>Conference Theme</span>
                             <p className={styles.missionText}>
-                                Digital Health for All: Bridging Equity, <strong>Access, and Innovation</strong>
+                                <strong>Digital Health for All: Bridging Equity, Access and Innovation</strong>
                             </p>
                         </div>
                     </div>
                 </ScrollReveal>
 
+                {/* ── SDG Marquee ── */}
+                <div className={styles.sdgMarqueeContainer}>
+                    <div className={styles.sdgMarquee}>
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-03.jpg" alt="Good Health and Well-being" className={styles.sdgIcon} />
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-04.jpg" alt="Quality Education" className={styles.sdgIcon} />
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-09.jpg" alt="Industry, Innovation and Infrastructure" className={styles.sdgIcon} />
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-10.jpg" alt="Reduced Inequalities" className={styles.sdgIcon} />
+
+                        {/* Duplicated for seamless scrolling */}
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-03.jpg" alt="Good Health and Well-being" className={styles.sdgIcon} />
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-04.jpg" alt="Quality Education" className={styles.sdgIcon} />
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-09.jpg" alt="Industry, Innovation and Infrastructure" className={styles.sdgIcon} />
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-10.jpg" alt="Reduced Inequalities" className={styles.sdgIcon} />
+
+                        {/* Duplicated again for wider screens */}
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-03.jpg" alt="Good Health and Well-being" className={styles.sdgIcon} />
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-04.jpg" alt="Quality Education" className={styles.sdgIcon} />
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-09.jpg" alt="Industry, Innovation and Infrastructure" className={styles.sdgIcon} />
+                        <img src="https://sdgs.un.org/sites/default/files/goals/E_SDG_Icons-10.jpg" alt="Reduced Inequalities" className={styles.sdgIcon} />
+                    </div>
+                </div>
+
             </div>
+
         </section>
     );
 }
@@ -136,6 +160,7 @@ export function About() {
                                 fill
                                 className={styles.image}
                                 sizes="(max-width: 768px) 100vw, 50vw"
+                                style={{ objectFit: 'cover' }}
                             />
                         </div>
                     </ScrollReveal>
@@ -181,6 +206,7 @@ export function About() {
                                 fill
                                 className={styles.image}
                                 sizes="(max-width: 768px) 100vw, 50vw"
+                                style={{ objectFit: 'cover' }}
                             />
                         </div>
                     </ScrollReveal>
@@ -223,11 +249,6 @@ export function About() {
 export function Objectives() {
     const objectivesList = [
         {
-            icon: <Target size={24} />,
-            title: "Policy to Practice",
-            text: "To identify and deliberate on gaps between public health policy formulation and its on-ground implementation across India"
-        },
-        {
             icon: <Heart size={24} />,
             title: "Public Health Excellence",
             text: "To promote evidence-based approaches in preventive and social medicine towards achieving health equity and universal health coverage"
@@ -238,14 +259,19 @@ export function Objectives() {
             text: "To provide a platform for sharing cutting-edge research, case studies, and innovations in community medicine and public health"
         },
         {
+            icon: <GraduationCap size={24} />,
+            title: "Capacity Building",
+            text: "To strengthen the capacity of public health professionals and medical students through workshops, CME sessions, and expert mentorship"
+        },
+        {
             icon: <Users size={24} />,
             title: "Networking & Collaboration",
             text: "To foster meaningful engagement and sustained collaboration among academics, practitioners, policymakers, and NGOs"
         },
         {
-            icon: <GraduationCap size={24} />,
-            title: "Capacity Building",
-            text: "To strengthen the capacity of public health professionals and medical students through workshops, CME sessions, and expert mentorship"
+            icon: <Target size={24} />,
+            title: "Policy to Practice",
+            text: "To identify and deliberate on gaps between public health policy formulation and its on-ground implementation across India"
         },
         {
             icon: <Shield size={24} />,
@@ -259,7 +285,7 @@ export function Objectives() {
             <div className="container">
                 <ScrollReveal>
                     <div className="text-center">
-                        <span className="text-uppercase" style={{ color: 'var(--color-secondary)', fontWeight: 600 }}>Our Goals</span>
+                        <span className="text-uppercase" style={{ color: 'var(--color-secondary)', fontWeight: 600 }}></span>
                         <h2>Conference Objectives</h2>
                     </div>
                 </ScrollReveal>

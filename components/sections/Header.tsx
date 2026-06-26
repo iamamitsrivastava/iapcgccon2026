@@ -37,13 +37,10 @@ interface HeaderProps {
 
 const navItems: NavItem[] = [
     { label: 'About', href: '/#about' },
-    { label: 'Pre-Conference', href: '/pre-conference' },
-    { label: 'Scientific Program', href: '/program' },
     {
         label: 'Committee',
         href: '/committee',
         children: [
-            { label: 'Patron', href: '/committee/patron' },
             { label: 'Committee', href: '/committee' },
             { label: 'Office Bearers', href: '/committee/office-bearers' },
         ]
@@ -65,6 +62,7 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
     const isSolid = variant === 'solid';
 
     const isActive = (href: string) => {
+        if (href === '#') return false;
         if (href.includes('#') && href.length > 1) return false;
         const path = href.split('#')[0];
         if (!path) return pathname === '/';
@@ -138,7 +136,7 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                                 onMouseEnter={() => item.children && setOpenDropdown(item.label)}
                                 onMouseLeave={() => setOpenDropdown(null)}
                             >
-                                <Link href={item.href} className={`${styles.navLink} ${isActive(item.href) || isGroupActive(item) ? styles.active : ''}`}>
+                                <Link href={item.href} className={`${styles.navLink} ${item.label !== 'Coming Soon' && (isActive(item.href) || isGroupActive(item)) ? styles.active : ''}`}>
                                     {item.label}
                                     {item.children && (
                                         <span className={`${styles.chevron} ${openDropdown === item.label ? styles.chevronOpen : ''}`}>
@@ -208,11 +206,11 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                         <div key={item.label} className={styles.drawerGroup}>
                             {item.children ? (
                                 <>
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', background: isGroupActive(item) ? 'rgba(212, 175, 55, 0.06)' : 'transparent' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', background: item.label !== 'Coming Soon' && isGroupActive(item) ? 'rgba(212, 175, 55, 0.06)' : 'transparent' }}>
                                         <Link
                                             href={item.href}
                                             className={styles.drawerLink}
-                                            style={{ flex: 1, borderBottom: 'none', background: 'none', margin: 0, paddingLeft: isActive(item.href) ? '2rem' : '1.5rem' }}
+                                            style={{ flex: 1, borderBottom: 'none', background: 'none', margin: 0, paddingLeft: item.label !== 'Coming Soon' && isActive(item.href) ? '2rem' : '1.5rem' }}
                                             onClick={() => setMobileOpen(false)}
                                         >
                                             {item.label}

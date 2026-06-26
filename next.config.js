@@ -56,13 +56,8 @@ module.exports = {
           { key: 'Referrer-Policy', value: 'origin-when-cross-origin' },
         ],
       },
-      // Cache static assets aggressively
       {
         source: '/images/:path*',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
-      },
-      {
-        source: '/_next/static/:path*',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
       },
       // Cache HTML pages with revalidation

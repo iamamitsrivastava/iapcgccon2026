@@ -7,10 +7,10 @@ import styles from './Venue.module.css';
 export function Venue() {
     const images = [
         "/images/venue-slider-3.jpg",
-        "/images/venue-slider-2.jpg",
+        "/images/slider-new-2.png",
         "/images/venue-slider-4.jpg",
-        "/images/about-buddha.jpg",
-        "/images/gate-hero.jpg",
+        "/images/slider-new-4.png",
+        "/images/slider-new-5.png",
     ];
     const [currentIndex, setCurrentIndex] = useState(0);
 

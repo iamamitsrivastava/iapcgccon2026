@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Calendar, MapPin, ArrowRight, FileText, Award, Layers, Search, Globe, X, CheckCircle2 } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, FileText, Award, Layers, Search, Globe, X, CheckCircle2, Clock } from 'lucide-react';
 import Image from 'next/image';
 import { conference } from '@/data/conference';
 import styles from './Hero.module.css';
@@ -111,8 +111,8 @@ export default function Hero() {
 
   useEffect(() => {
     setIsMounted(true);
-    // Target date: 30th June 2026, 23:59:59
-    const targetDate = new Date('2026-06-30T23:59:59').getTime();
+    // Target date: 27th Nov 2026, 09:00:00 IST
+    const targetDate = new Date('2026-11-27T09:00:00+05:30').getTime();
 
     const updateTimer = () => {
       const now = new Date().getTime();
@@ -198,9 +198,13 @@ export default function Hero() {
   return (
     <section className={styles.hero} id="home">
       <div className={styles.background}>
-        <div
+        <Image
+          src="/images/gate-hero-new.jpg"
+          alt="Hero Background"
+          fill
+          priority
           className={styles.backgroundImage}
-          style={{ width: '100%', height: '100%', position: 'absolute', background: 'url(/images/gate-hero.jpg) center/cover' }}
+          style={{ objectFit: 'cover' }}
         />
         <div className={styles.overlay} />
       </div>
@@ -208,6 +212,7 @@ export default function Hero() {
       <div className={styles.container}>
         <div className={styles.heroGrid}>
           <div className={styles.content}>
+            <div className={`${styles.presenter} ${styles.animate} ${styles['delay-100']}`} style={{ borderBottom: 'none', marginBottom: '0.25rem', display: 'block' }}>DEPARTMENT OF COMMUNITY MEDICINE</div>
             <div className={`${styles.presenter} ${styles.animate} ${styles['delay-100']}`}>PARUL INSTITUTE OF MEDICAL SCIENCES &amp; RESEARCH PRESENTS</div>
 
             <h1 className={`${styles.title} ${styles.animate} ${styles['delay-200']}`}>
@@ -215,9 +220,7 @@ export default function Hero() {
             </h1>
 
             <p className={`${styles.subtitle} ${styles.animate} ${styles['delay-300']}`}>
-              International Conference on Digital Health for All: Bridging Equity,
-              <br />
-              <span style={{ fontWeight: 600, color: 'white' }}>Access, and Innovation</span>
+              Digital Health for All: Bridging Equity, Access and Innovation
             </p>
 
             <div className={`${styles.meta} ${styles.animate} ${styles['delay-400']}`}>
@@ -235,10 +238,6 @@ export default function Hero() {
             </div>
 
             <div className={`${styles.actions} ${styles.animate} ${styles['delay-500']}`}>
-              <button onClick={() => setIsModalOpen(true)} className={styles.btnPrimary} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', border: 'none' }}>
-                Submit Full Paper <ArrowRight size={20} />
-              </button>
-
               {(!isMounted || !isExpired) && (
                 <button
                   type="button"
@@ -254,6 +253,10 @@ export default function Hero() {
                   </div>
                 </button>
               )}
+
+              <button onClick={() => setIsModalOpen(true)} className={styles.btnPrimary} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', border: 'none' }}>
+                Submit Full Paper <ArrowRight size={20} />
+              </button>
             </div>
 
             {/* Trust Indicators */}
@@ -302,28 +305,30 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Stats Row */}
-        <div className={`${styles.statsRow} ${styles.animate} ${styles['delay-700']}`}>
-          <div className={styles.statItem}>
-            <span className={styles.statNumber}>300+</span>
-            <span className={styles.statLabel}>Attendees</span>
+        {/* Timer Row */}
+        {isMounted && !isExpired && (
+          <div className={`${styles.statsRow} ${styles.animate} ${styles['delay-700']}`}>
+            <div className={styles.statItem} style={{ justifyContent: 'center' }}>
+              <Clock size={42} color="var(--color-secondary)" strokeWidth={1.5} style={{ marginBottom: '0.5rem' }} />
+              <span className={styles.statLabel}>Countdown</span>
+            </div>
+            <div className={styles.statLine}></div>
+            <div className={styles.statItem}>
+              <span className={styles.statNumber}>{String(timeLeft.days).padStart(2, '0')}</span>
+              <span className={styles.statLabel}>Days</span>
+            </div>
+            <div className={styles.statLine}></div>
+            <div className={styles.statItem}>
+              <span className={styles.statNumber}>{String(timeLeft.hours).padStart(2, '0')}</span>
+              <span className={styles.statLabel}>Hours</span>
+            </div>
+            <div className={styles.statLine}></div>
+            <div className={styles.statItem}>
+              <span className={styles.statNumber}>{String(timeLeft.minutes).padStart(2, '0')}</span>
+              <span className={styles.statLabel}>Minutes</span>
+            </div>
           </div>
-          <div className={styles.statLine}></div>
-          <div className={styles.statItem}>
-            <span className={styles.statNumber}>20+</span>
-            <span className={styles.statLabel}>Speakers</span>
-          </div>
-          <div className={styles.statLine}></div>
-          <div className={styles.statItem}>
-            <span className={styles.statNumber}>5+</span>
-            <span className={styles.statLabel}>Countries</span>
-          </div>
-          <div className={styles.statLine}></div>
-          <div className={styles.statItem}>
-            <span className={styles.statNumber}>2+</span>
-            <span className={styles.statLabel}>Workshops / Panel Discussion</span>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Submission Modal */}

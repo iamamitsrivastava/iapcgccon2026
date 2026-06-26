@@ -93,7 +93,6 @@ export function BankDetails() {
 }
 
 const tabs = [
-    { id: 'chiefPatrons', label: 'Chief Patrons' },
     { id: 'conveners', label: 'Conveners' },
     { id: 'coConveners', label: 'Co-Conveners' },
     { id: 'hospitality', label: 'Hospitality' },
@@ -103,7 +102,7 @@ const tabs = [
 ];
 
 export function Committees() {
-    const [activeTab, setActiveTab] = useState('chiefPatrons');
+    const [activeTab, setActiveTab] = useState('conveners');
 
     useEffect(() => {
         const handleHashChange = () => {
@@ -127,7 +126,7 @@ export function Committees() {
 
     const currentMembers = conference.committees[activeTab as keyof typeof conference.committees] || [];
 
-    const visualTabs = ['chiefPatrons', 'conveners', 'coConveners'];
+    const visualTabs = ['conveners', 'coConveners'];
     const isVisualTab = visualTabs.includes(activeTab);
 
     return (

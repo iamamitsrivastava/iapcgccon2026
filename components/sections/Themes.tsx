@@ -173,12 +173,12 @@ export default function Themes() {
                 <ScrollReveal>
                     <div className="text-center" style={{ marginBottom: '3.5rem' }}>
                         <span className="text-uppercase" style={{ color: 'var(--color-secondary)', fontWeight: 700, letterSpacing: '0.12em', fontSize: '0.8rem' }}>
-                            SCIENTIFIC TRACKS
                         </span>
-                        <h2 style={{ marginTop: '0.5rem', fontSize: '2.5rem', color: 'white' }}>Scientific Themes</h2>
-                        <p style={{ color: 'rgba(255, 255, 255, 0.7)', maxWidth: '600px', margin: '1rem auto 0', fontSize: '1.05rem' }}>
-                            Ten curated tracks spanning the full spectrum of public health and preventive medicine
+                        <h2 style={{ marginTop: '0.5rem', fontSize: '2.5rem', color: 'var(--color-secondary)' }}>Scientific Theme</h2>
+                        <p style={{ color: 'white', maxWidth: '600px', margin: '1rem auto 0', fontSize: '1.25rem', fontFamily: 'var(--font-heading)', textShadow: '0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4)' }}>
+                            <strong>Digital Health for All: Bridging Equity, Access and Innovation</strong>
                         </p>
+                        <h2 style={{ marginTop: '1rem', fontSize: '2.5rem', color: 'var(--color-secondary)' }}>Sub-themes</h2>
                     </div>
                 </ScrollReveal>
 

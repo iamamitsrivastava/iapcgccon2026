@@ -1,6 +1,6 @@
 export const conference = {
   title: "IAPSMGC CON 2026",
-  subtitle: "Digital Health for All: Bridging Equity, Access, and Innovation",
+  subtitle: "Digital Health for All: Bridging Equity, Access and Innovation",
   preConferenceDate: "26th November 2026",
   mainConferenceDates: "27th – 28th November 2026",
   dates: "26–28 November 2026",
@@ -72,7 +72,7 @@ export const conference = {
   // SECTION 5: KEY DATES
   timeline: [
     { label: "Abstract / Research Paper Submission Deadline", date: "15th October, 2026" },
-    { label: "Notification of Acceptance", date: "31st October, 2026" },
+    { label: "Notification of Acceptance for Abstracts", date: "15st October, 2026" },
     { label: "Registration Deadline", date: "15th November, 2026" },
     { label: "Pre-Conference Workshop", date: "26th November 2026" },
     { label: "Main Conference", date: "27th – 28th November 2026" },

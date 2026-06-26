@@ -28,9 +28,6 @@ export default function RegistrationPage() {
                 {/* Title Section */}
                 <div className={styles.titleSection}>
                     <h1 className={styles.title}>Registration</h1>
-                    <p className={styles.subtitle}>
-                        Join us for the International Conference on Bridging Disciplines. Review the fee structure below and proceed to register.
-                    </p>
                 </div>
 
                 {/* Key Dates Section */}
@@ -112,18 +109,6 @@ export default function RegistrationPage() {
                     </div>
                 </div>
 
-                <div className={styles.infoSection}>
-                    <h3 className={styles.infoSectionTitle}>
-                        <FileText className={styles.infoIcon} size={24} />
-                        Submission Guidelines
-                    </h3>
-                    <ul className={styles.guidelinesList}>
-                        <li>Abstracts should not exceed <strong>300 words</strong> and full papers should be a maximum <strong>4500 words</strong> formatted in APA / MLA.</li>
-                        <li>Up to <strong>three authors</strong> are allowed per paper.</li>
-                        <li>Papers must be submitted in Word format to <a href="mailto:NCBD25@gmail.com" className={styles.emailLink}>NCBD25@gmail.com</a></li>
-                        <li>A <strong>copyright declaration</strong> is mandatory.</li>
-                    </ul>
-                </div>
 
                 {/* CTA Section */}
                 <div className={styles.ctaSection}>

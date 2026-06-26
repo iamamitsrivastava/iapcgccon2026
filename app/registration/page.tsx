@@ -9,7 +9,7 @@ export default function RegistrationPage() {
     // UNLOCK DATE: 15th November 2026 (Registration deadline is Nov 15, so On-Spot starts after)
     const unlockTarget = new Date('2026-11-15T00:00:00').getTime();
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
-    
+
     // On-Spot is locked BEFORE November 15
     const isOnSpotLocked = currentTime < unlockTarget;
     // Other categories are locked AFTER November 15
@@ -29,18 +29,18 @@ export default function RegistrationPage() {
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        
+
         if (days > 0) return `${days}d ${hours}h`;
         return `${minutes}m ${seconds}s`;
     };
 
     const keyDates = [
-        { label: 'Abstract Submission Deadline', value: '15th October, 2026' },
-        { label: 'Notification of Acceptance', value: '31st October, 2026' },
+        { label: 'Abstract Submission Deadline', value: '15th September, 2026' },
+        { label: 'Notification of Acceptance for Abstracts', value: '15st October, 2026' },
         { label: 'Registration Deadline', value: '15th November, 2026' },
         { label: 'Conference Date', value: '27th - 28th November 2026' },
     ];
-    
+
     const fees = [
         {
             category: 'IAPSM Member',
@@ -104,9 +104,6 @@ export default function RegistrationPage() {
             <div className={styles.container}>
                 <div className={styles.titleSection}>
                     <h1 className={styles.title}>Registration</h1>
-                    <p className={styles.subtitle}>
-                        Join us for the International Conference on Bridging Disciplines. Review the fee structure below and proceed to register.
-                    </p>
                 </div>
 
                 <div className={styles.datesSection}>
@@ -142,11 +139,11 @@ export default function RegistrationPage() {
                                     <th className={`${styles.groupHeader}`} colSpan={2} style={{ textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Early Bird</th>
                                     <th className={`${styles.groupHeader}`} colSpan={2} style={{ textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Late Bird</th>
                                     <th className={`${styles.groupHeader}`} rowSpan={2} style={{ verticalAlign: 'middle', textAlign: 'center' }}>
-                                        <div style={{ 
-                                            display: 'flex', 
-                                            flexDirection: 'column', 
-                                            alignItems: 'center', 
-                                            justifyContent: 'center', 
+                                        <div style={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
                                             gap: '0.1rem',
                                             backgroundColor: 'rgba(231, 173, 27, 0.1)',
                                             padding: '0.4rem',
@@ -194,8 +191,8 @@ export default function RegistrationPage() {
                                             )}
                                         </td>
                                         <td data-label="Late Bird Conf" className={styles.attendingCol}>
-                                            <a 
-                                                href="#" 
+                                            <a
+                                                href="#"
                                                 className={`${styles.feeGridButton} ${areOthersLocked ? styles.lockedButton : ''}`}
                                                 onClick={(e) => areOthersLocked && e.preventDefault()}
                                                 style={areOthersLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
@@ -208,8 +205,8 @@ export default function RegistrationPage() {
                                         </td>
                                         <td data-label="Late Bird Pre-Conf" className={styles.attendingCol}>
                                             {item.lateBird.preConf ? (
-                                                <a 
-                                                    href="#" 
+                                                <a
+                                                    href="#"
                                                     className={`${styles.feeGridButton} ${areOthersLocked ? styles.lockedButton : ''}`}
                                                     onClick={(e) => areOthersLocked && e.preventDefault()}
                                                     style={areOthersLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
@@ -224,8 +221,8 @@ export default function RegistrationPage() {
                                             )}
                                         </td>
                                         <td data-label="Spot" className={styles.contributorCol}>
-                                            <a 
-                                                href="#" 
+                                            <a
+                                                href="#"
                                                 className={`${styles.feeGridButton} ${isOnSpotLocked ? styles.lockedButton : ''}`}
                                                 onClick={(e) => isOnSpotLocked && e.preventDefault()}
                                                 style={isOnSpotLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
@@ -266,45 +263,7 @@ export default function RegistrationPage() {
                         </div>
                     </div>
                 </div>
-                <div className={styles.infoSection}>
-                    <h3 className={styles.infoSectionTitle}>
-                        <FileText className={styles.infoIcon} size={24} />
-                        Submission Guidelines
-                    </h3>
-                    <ul className={styles.guidelinesList}>
-                        <li>Abstracts should be <strong>250-300 words</strong>, and full papers should be a minimum of <strong>7000 words</strong>, formatted in APA or MLA 9th Edition.</li>
-                        <li>
-                            Up to <strong>Four authors</strong> are permitted per paper.
-                            <a
-                                href="/Author_Guidelines_ICBD_2026.pdf"
-                                download
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.downloadFormLink}
-                                style={{ marginLeft: '12px' }}
-                            >
-                                <Download size={14} />
-                                Download Author Guideline
-                            </a>
-                        </li>
-                        <li>
-                            Submissions must be made in prescribed format.
-                        </li>
-                        <li>
-                            A <strong>signed copyright declaration</strong> is mandatory.
-                            <a
-                                href="/Author_Copyright_Declaration_Form.pdf"
-                                download
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.downloadFormLink}
-                            >
-                                <Download size={14} />
-                                Download Form
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+
             </div>
 
             <Footer />
