@@ -142,31 +142,7 @@ export const conference = {
       ifsc: "BARB0PARULX",
       swift: "BARBINBBXXX",
     }
-  },
-
-  // SECTION 10: COMMITTEES
-  committees: {
-    president: {
-      name: "Dr. Devanshu Patel",
-      affiliation: "President, Parul University",
-      image: "/images/president.jpg" // Added image path
-    },
-    vicePresidents: [
-      {
-        name: "Dr. Geetika Patel",
-        affiliation: "Vice President, Parul University",
-        image: "/images/geetika-patel.jpg"
-      },
-      {
-        name: "Dr. Parul Patel",
-        affiliation: "Vice President, Parul University",
-        image: "/images/parul-patel.jpg"
-      },
-      {
-        name: "Dr. Komal Patel",
-        affiliation: "Vice President, Parul University",
-        image: "/images/komal-patel-v2.png"
-      }
+  }
     ],
     nationalAdvisory: [
       {

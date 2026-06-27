@@ -6,14 +6,13 @@ import { Landmark, FileText, AlertCircle, Download, Lock } from 'lucide-react';
 import styles from './page.module.css';
 
 export default function RegistrationPage() {
-    // UNLOCK DATE: 15th November 2026 (Registration deadline is Nov 15, so On-Spot starts after)
-    const unlockTarget = new Date('2026-11-15T00:00:00').getTime();
+    const earlyBirdEnd = new Date('2026-07-31T23:59:59').getTime();
+    const lateBirdEnd = new Date('2026-11-26T23:59:59').getTime();
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
 
-    // On-Spot is locked BEFORE November 15
-    const isOnSpotLocked = currentTime < unlockTarget;
-    // Other categories are locked AFTER November 15
-    const areOthersLocked = !isOnSpotLocked;
+    const isEarlyBirdLocked = currentTime > earlyBirdEnd;
+    const isLateBirdLocked = currentTime <= earlyBirdEnd || currentTime > lateBirdEnd;
+    const isSpotLocked = currentTime <= lateBirdEnd;
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -23,7 +22,7 @@ export default function RegistrationPage() {
     }, []);
 
     const formatCountdown = () => {
-        const diff = unlockTarget - currentTime;
+        const diff = lateBirdEnd - currentTime;
         if (diff <= 0) return null;
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -35,10 +34,11 @@ export default function RegistrationPage() {
     };
 
     const keyDates = [
-        { label: 'Abstract Submission Deadline', value: '15th September, 2026' },
-        { label: 'Notification of Acceptance for Abstracts', value: '15st October, 2026' },
-        { label: 'Registration Deadline', value: '15th November, 2026' },
-        { label: 'Conference Date', value: '27th - 28th November 2026' },
+        { label: 'closing soon', value: '15th July' },
+        { label: 'Abstract Submission Deadline', value: '15th september' },
+        { label: 'Nortification for Acceptance(Abstract)', value: '15th October' },
+        { label: 'Pre-Conference Date', value: '26th November' },
+        { label: 'Conference Date', value: '27-28th November' },
     ];
 
     const fees = [
@@ -136,8 +136,12 @@ export default function RegistrationPage() {
                             <thead>
                                 <tr>
                                     <th className={styles.categoryHeader} rowSpan={2} style={{ verticalAlign: 'middle' }}>Category</th>
-                                    <th className={`${styles.groupHeader}`} colSpan={2} style={{ textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Early Bird</th>
-                                    <th className={`${styles.groupHeader}`} colSpan={2} style={{ textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Late Bird</th>
+                                    <th className={`${styles.groupHeader}`} colSpan={2} style={{ textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                                        Early Bird {isEarlyBirdLocked && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}<br /><span style={{ fontSize: '0.75rem', fontWeight: 500 }}>(Till 31st July 2026)</span>
+                                    </th>
+                                    <th className={`${styles.groupHeader}`} colSpan={2} style={{ textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                                        Late Bird {isLateBirdLocked && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}<br /><span style={{ fontSize: '0.75rem', fontWeight: 500 }}>(After 31st July 2026)</span>
+                                    </th>
                                     <th className={`${styles.groupHeader}`} rowSpan={2} style={{ verticalAlign: 'middle', textAlign: 'center' }}>
                                         <div style={{
                                             display: 'flex',
@@ -151,9 +155,9 @@ export default function RegistrationPage() {
                                             border: '1px solid rgba(218, 165, 32, 0.3)'
                                         }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#daa520', fontWeight: 'bold' }}>
-                                                Spot {isOnSpotLocked && <Lock size={14} />}
+                                                Spot {isSpotLocked && <Lock size={14} />}
                                             </div>
-                                            {isOnSpotLocked && (
+                                            {isSpotLocked && (
                                                 <span style={{ fontSize: '0.65rem', fontWeight: 600, color: '#FFD700', textTransform: 'uppercase' }}>
                                                     {formatCountdown()} left
                                                 </span>
@@ -177,14 +181,30 @@ export default function RegistrationPage() {
                                             </div>
                                         </td>
                                         <td data-label="Early Bird Conf" className={styles.attendingCol}>
-                                            <a href="#" className={`${styles.feeGridButton}`}>
-                                                <span className={styles.feeText}>{item.earlyBird.conf}</span>
+                                            <a
+                                                href="#"
+                                                className={`${styles.feeGridButton} ${isEarlyBirdLocked ? styles.lockedButton : ''}`}
+                                                onClick={(e) => isEarlyBirdLocked && e.preventDefault()}
+                                                style={isEarlyBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
+                                            >
+                                                <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                                                    {item.earlyBird.conf}
+                                                    {isEarlyBirdLocked && <Lock size={14} />}
+                                                </span>
                                             </a>
                                         </td>
                                         <td data-label="Early Bird Pre-Conf" className={styles.attendingCol} style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
                                             {item.earlyBird.preConf ? (
-                                                <a href="#" className={`${styles.feeGridButton}`}>
-                                                    <span className={styles.feeText}>{item.earlyBird.preConf}</span>
+                                                <a
+                                                    href="#"
+                                                    className={`${styles.feeGridButton} ${isEarlyBirdLocked ? styles.lockedButton : ''}`}
+                                                    onClick={(e) => isEarlyBirdLocked && e.preventDefault()}
+                                                    style={isEarlyBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
+                                                >
+                                                    <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                                                        {item.earlyBird.preConf}
+                                                        {isEarlyBirdLocked && <Lock size={14} />}
+                                                    </span>
                                                 </a>
                                             ) : (
                                                 <span style={{ display: 'flex', justifyContent: 'center', opacity: 0.3, fontWeight: 'bold' }}>-</span>
@@ -193,13 +213,13 @@ export default function RegistrationPage() {
                                         <td data-label="Late Bird Conf" className={styles.attendingCol}>
                                             <a
                                                 href="#"
-                                                className={`${styles.feeGridButton} ${areOthersLocked ? styles.lockedButton : ''}`}
-                                                onClick={(e) => areOthersLocked && e.preventDefault()}
-                                                style={areOthersLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
+                                                className={`${styles.feeGridButton} ${isLateBirdLocked ? styles.lockedButton : ''}`}
+                                                onClick={(e) => isLateBirdLocked && e.preventDefault()}
+                                                style={isLateBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                             >
                                                 <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
                                                     {item.lateBird.conf}
-                                                    {areOthersLocked && <Lock size={14} />}
+                                                    {isLateBirdLocked && <Lock size={14} />}
                                                 </span>
                                             </a>
                                         </td>
@@ -207,13 +227,13 @@ export default function RegistrationPage() {
                                             {item.lateBird.preConf ? (
                                                 <a
                                                     href="#"
-                                                    className={`${styles.feeGridButton} ${areOthersLocked ? styles.lockedButton : ''}`}
-                                                    onClick={(e) => areOthersLocked && e.preventDefault()}
-                                                    style={areOthersLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
+                                                    className={`${styles.feeGridButton} ${isLateBirdLocked ? styles.lockedButton : ''}`}
+                                                    onClick={(e) => isLateBirdLocked && e.preventDefault()}
+                                                    style={isLateBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                                 >
                                                     <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
                                                         {item.lateBird.preConf}
-                                                        {areOthersLocked && <Lock size={14} />}
+                                                        {isLateBirdLocked && <Lock size={14} />}
                                                     </span>
                                                 </a>
                                             ) : (
@@ -223,13 +243,13 @@ export default function RegistrationPage() {
                                         <td data-label="Spot" className={styles.contributorCol}>
                                             <a
                                                 href="#"
-                                                className={`${styles.feeGridButton} ${isOnSpotLocked ? styles.lockedButton : ''}`}
-                                                onClick={(e) => isOnSpotLocked && e.preventDefault()}
-                                                style={isOnSpotLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
+                                                className={`${styles.feeGridButton} ${isSpotLocked ? styles.lockedButton : ''}`}
+                                                onClick={(e) => isSpotLocked && e.preventDefault()}
+                                                style={isSpotLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                             >
                                                 <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                                                     {item.spot}
-                                                    {isOnSpotLocked && <Lock size={14} />}
+                                                    {isSpotLocked && <Lock size={14} />}
                                                 </span>
                                             </a>
                                         </td>

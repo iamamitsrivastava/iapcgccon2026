@@ -1,6 +1,6 @@
 .guidelines {
-    padding: 6rem 0;
-    background-color: #fafafa;
+    padding: 0 0 4rem 0;
+    background-color: transparent;
 }
 
 .header {
@@ -19,7 +19,7 @@
 }
 
 .title {
-    color: var(--color-primary, #0a0f1e);
+    color: white;
     font-family: var(--font-heading);
     font-size: 2.25rem;
     font-weight: 700;
@@ -27,7 +27,7 @@
 }
 
 .description {
-    color: #64748b;
+    color: #94a3b8;
     font-size: 0.95rem;
     max-width: 600px;
     margin: 0 auto;
@@ -47,10 +47,11 @@
     align-items: center;
     gap: 2rem;
     padding: 2rem 2.5rem;
-    background: #ffffff;
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-left: 4px solid #FACC15;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -63,7 +64,7 @@
     font-family: var(--font-heading);
     font-size: 3.5rem;
     font-weight: 800;
-    color: #fceea7;
+    color: #FACC15;
     /* Light gold/yellow color matching screenshot */
     line-height: 1;
     flex-shrink: 0;
@@ -74,16 +75,16 @@
 }
 
 .stepTitle {
-    color: #0f172a;
-    font-size: 1.1rem;
+    color: white;
+    font-size: 1.15rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
 }
 
 .stepText {
-    color: #475569;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.6;
     margin: 0;
 }
 

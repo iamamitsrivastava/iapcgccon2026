@@ -104,16 +104,7 @@ export function SubmissionGuidelines() {
     return (
         <section className={`section ${styles.guidelines}`} id="submit">
             <div className="container">
-                <ScrollReveal>
-                    <div className={styles.header}>
-                        <span className={styles.subtitle}>AUTHOR INSTRUCTIONS</span>
-                        <h2 className={styles.title}>Submission Guidelines</h2>
-                        <p className={styles.description}>
-                            Please ensure your research is original and has not been published elsewhere. Plagiarism checks will be conducted strictly.
-                        </p>
-                    </div>
-                </ScrollReveal>
-
+                
                 <div className={styles.list}>
                     {guidelinesData.map((item, index) => (
                         <ScrollReveal
@@ -128,30 +119,6 @@ export function SubmissionGuidelines() {
                                 <div className={styles.content}>
                                     <h3 className={styles.stepTitle}>{item.title}</h3>
                                     <p className={styles.stepText}>{item.text}</p>
-
-                                    {/* Action button added to step 02 */}
-                                    {item.number === "02" && (
-                                        <button
-                                            onClick={() => setIsModalOpen(true)}
-                                            style={{
-                                                marginTop: '1rem',
-                                                padding: '0.6rem 1.25rem',
-                                                backgroundColor: '#facc15',
-                                                color: '#0f172a',
-                                                border: 'none',
-                                                borderRadius: '6px',
-                                                fontWeight: 700,
-                                                fontSize: '0.9rem',
-                                                cursor: 'pointer',
-                                                boxShadow: '0 4px 12px rgba(250, 204, 21, 0.2)',
-                                                transition: 'transform 0.2s ease, box-shadow 0.2s ease'
-                                            }}
-                                            onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-                                            onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                                        >
-                                            Submit Abstract
-                                        </button>
-                                    )}
                                 </div>
                             </div>
                         </ScrollReveal>

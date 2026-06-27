@@ -32,7 +32,7 @@ export function AboutConference() {
                             </p>
                             <p>
                                 The conference spans three days: a <strong>Pre-Conference Workshop</strong> on{' '}
-                                <strong>26 November 2026</strong> followed by the <strong>Main Conference</strong> on{' '}
+                                <strong>26 November 2026</strong> followed by the <strong>Conference</strong> on{' '}
                                 <strong>27&ndash;28 November 2026</strong>, featuring keynote addresses, panel discussions,
                                 oral and poster presentations, and interactive workshops.
                             </p>
@@ -51,7 +51,15 @@ export function AboutConference() {
                         </div>
                     </ScrollReveal>
                 </div>
+            </div>
+        </section>
+    );
+}
 
+export function ConferenceTheme() {
+    return (
+        <section className={`section ${styles.about}`} id="conference-theme" style={{ paddingTop: '2rem' }}>
+            <div className="container">
                 {/* ── Mission Banner ── */}
                 <ScrollReveal animation="fade-up" delay={200}>
                     <div className={styles.missionBanner}>
@@ -96,7 +104,6 @@ export function AboutConference() {
                 </div>
 
             </div>
-
         </section>
     );
 }
@@ -262,21 +269,6 @@ export function Objectives() {
             icon: <GraduationCap size={24} />,
             title: "Capacity Building",
             text: "To strengthen the capacity of public health professionals and medical students through workshops, CME sessions, and expert mentorship"
-        },
-        {
-            icon: <Users size={24} />,
-            title: "Networking & Collaboration",
-            text: "To foster meaningful engagement and sustained collaboration among academics, practitioners, policymakers, and NGOs"
-        },
-        {
-            icon: <Target size={24} />,
-            title: "Policy to Practice",
-            text: "To identify and deliberate on gaps between public health policy formulation and its on-ground implementation across India"
-        },
-        {
-            icon: <Shield size={24} />,
-            title: "Viksit Bharat Vision",
-            text: "To align community health efforts with the national vision of a Developed India by 2047, addressing SDGs and national health policy goals"
         }
     ];
 

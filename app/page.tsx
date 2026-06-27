@@ -1,6 +1,6 @@
 import Header from "@/components/sections/Header";
 import Hero from "@/components/sections/Hero";
-import { AboutConference, Objectives } from "@/components/sections/About";
+import { AboutConference, Objectives, ConferenceTheme } from "@/components/sections/About";
 import Themes from "@/components/sections/Themes";
 import Timeline from "@/components/sections/Timeline";
 import { Venue } from "@/components/sections/Venue";
@@ -14,12 +14,12 @@ export default function Home() {
             <Header />
             <Hero />
             <AboutConference />
+            <Venue />
+            <ConferenceTheme />
             <Objectives />
             <Themes />
             <Timeline />
             <Highlights />
-            <SubmissionGuidelines />
-            <Venue />
             <Footer />
         </main>
     );

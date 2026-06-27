@@ -140,7 +140,7 @@ const themes = [
             'Implementation Science Frameworks',
             'Systematic Reviews & Meta-analysis',
             'Biostatistics & IBM SPSS / R',
-            'Scientific Writing & Publication Ethics',
+            'Scientific Writing & SUBMISSION Guidlines',
             'GIS Mapping & Spatial Epidemiology',
         ],
     },

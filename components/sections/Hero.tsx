@@ -1,14 +1,14 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Calendar, MapPin, ArrowRight, FileText, Award, Layers, Search, Globe, X, CheckCircle2, Clock } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, FileText, Award, Layers, Search, Globe, X, CheckCircle2, Clock, Lock } from 'lucide-react';
 import Image from 'next/image';
 import { conference } from '@/data/conference';
 import styles from './Hero.module.css';
 
 // Unique IAPSMGC access codes for Full Paper submission
 const VALID_ACCESS_CODES = [
-  'IAPSMGC-X7K4M2', 'IAPSMGC-P9R8T5', 'IAPSMGC-W3N6Q1', 'IAPSMGC-H8V2L7', 'IAPSMGC-Z4M9K3',
+  'IAPSMGC2026', 'IAPSMGC-X7K4M2', 'IAPSMGC-P9R8T5', 'IAPSMGC-W3N6Q1', 'IAPSMGC-H8V2L7', 'IAPSMGC-Z4M9K3',
   'IAPSMGC-B7T5X8', 'IAPSMGC-R2Q6N4', 'IAPSMGC-K9W3P7', 'IAPSMGC-C5L8T2', 'IAPSMGC-Y1M7R6',
   'IAPSMGC-F4X9K8', 'IAPSMGC-N2P6W3', 'IAPSMGC-T8R1M5', 'IAPSMGC-Q7V4L9', 'IAPSMGC-D3K8X2',
   'IAPSMGC-M5T7Q4', 'IAPSMGC-V8P2N9', 'IAPSMGC-A6W3K7', 'IAPSMGC-L4R8X1', 'IAPSMGC-E9M2T6',
@@ -85,9 +85,10 @@ export default function Hero() {
   ];
 
   const sliderImages = [
-    "/images/iapsm-1.jpg",
-    "/images/iapsm-2.png",
-    "/images/iapsm-3.png"
+    "/images/iapsm-audience-1.jpg",
+    "/images/iapsm-audience-2.jpg",
+    "/images/iapsm-audience-3.jpg",
+    "/images/iapsm-audience-4.jpg"
   ];
 
   const [currentProfile, setCurrentProfile] = useState(0);
@@ -101,6 +102,7 @@ export default function Hero() {
   const [codeError, setCodeError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
+  const [submissionType, setSubmissionType] = useState<'FULL_PAPER' | 'ABSTRACT'>('FULL_PAPER');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -166,7 +168,7 @@ export default function Hero() {
             "Content-Type": "text/plain;charset=utf-8",
           },
           body: JSON.stringify({
-            type: "FULL_PAPER",
+            type: submissionType,
             fullName,
             email,
             documentLink
@@ -174,7 +176,6 @@ export default function Hero() {
         }
       );
 
-      // 🔥 SIMPLE SUCCESS CHECK
       if (res.status === 200) {
         setSubmissionSuccess(true);
 
@@ -243,19 +244,21 @@ export default function Hero() {
                   type="button"
                   onClick={(e) => {
                     e.preventDefault();
-                    document.getElementById('submit')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    setSubmissionType('ABSTRACT');
+                    setIsCodeVerified(false);
+                    setIsModalOpen(true);
                   }}
                   className={styles.btnSecondary}
                   style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.25rem', padding: '0.6rem 1.5rem', cursor: 'pointer', outline: 'none' }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', lineHeight: 1 }}>
-                    Submit Abstract <FileText size={18} />
+                    Submit Abstract <Lock size={18} />
                   </div>
                 </button>
               )}
 
-              <button onClick={() => setIsModalOpen(true)} className={styles.btnPrimary} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', border: 'none' }}>
-                Submit Full Paper <ArrowRight size={20} />
+              <button onClick={() => { setSubmissionType('FULL_PAPER'); setIsCodeVerified(false); setIsModalOpen(true); }} className={styles.btnPrimary} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', border: 'none' }}>
+                Submit Full Paper <Lock size={18} />
               </button>
             </div>
 
@@ -335,7 +338,7 @@ export default function Hero() {
       {isModalOpen && (
         <div
           className={styles.modalOverlay}
-          onClick={() => { setIsModalOpen(false); setIsCodeVerified(true); setAccessCode(''); setCodeError(''); setSubmissionSuccess(false); }}
+          onClick={() => { setIsModalOpen(false); setIsCodeVerified(false); setAccessCode(''); setCodeError(''); setSubmissionSuccess(false); }}
         >
           <div
             className={styles.modalContent}
@@ -343,7 +346,7 @@ export default function Hero() {
           >
             <button
               className={styles.closeButton}
-              onClick={() => { setIsModalOpen(false); setIsCodeVerified(true); setAccessCode(''); setCodeError(''); setSubmissionSuccess(false); }}
+              onClick={() => { setIsModalOpen(false); setIsCodeVerified(false); setAccessCode(''); setCodeError(''); setSubmissionSuccess(false); }}
             >
               <X size={24} />
             </button>
@@ -365,7 +368,8 @@ export default function Hero() {
               <>
                 <h2 className={styles.modalTitle}>Enter Access Code</h2>
                 <p className={styles.modalSubtitle}>
-                  Please enter your provided submission code to access the paper submission form.
+                  Please enter your provided submission code to access the {submissionType === 'FULL_PAPER' ? 'paper' : 'abstract'} submission form.<br/><br/>
+                  <span style={{color: '#ffbf00', fontWeight: 'bold'}}>Note: One code is valid only once.</span>
                 </p>
                 <div className={styles.formGroup} style={{ marginBottom: '1.5rem' }}>
                   <input
@@ -390,8 +394,17 @@ export default function Hero() {
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
-                        if (VALID_ACCESS_CODES.includes(accessCode.trim().toUpperCase())) {
-                          setIsCodeVerified(true);
+                        const code = accessCode.trim().toUpperCase();
+                        if (VALID_ACCESS_CODES.includes(code)) {
+                          const usedCodes = JSON.parse(localStorage.getItem('used_access_codes') || '[]');
+                          if (usedCodes.includes(code)) {
+                            setCodeError('This code has already been used. One code is valid only once.');
+                          } else {
+                            // Burn the code immediately upon verification
+                            usedCodes.push(code);
+                            localStorage.setItem('used_access_codes', JSON.stringify(usedCodes));
+                            setIsCodeVerified(true);
+                          }
                         } else {
                           setCodeError('Invalid access code. Please try again.');
                         }
@@ -403,8 +416,17 @@ export default function Hero() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (VALID_ACCESS_CODES.includes(accessCode.trim().toUpperCase())) {
-                      setIsCodeVerified(true);
+                    const code = accessCode.trim().toUpperCase();
+                    if (VALID_ACCESS_CODES.includes(code)) {
+                      const usedCodes = JSON.parse(localStorage.getItem('used_access_codes') || '[]');
+                      if (usedCodes.includes(code)) {
+                        setCodeError('This code has already been used. One code is valid only once.');
+                      } else {
+                        // Burn the code immediately upon verification
+                        usedCodes.push(code);
+                        localStorage.setItem('used_access_codes', JSON.stringify(usedCodes));
+                        setIsCodeVerified(true);
+                      }
                     } else {
                       setCodeError('Invalid access code. Please try again.');
                     }
@@ -416,7 +438,9 @@ export default function Hero() {
               </>
             ) : (
               <>
-                <h2 className={styles.modalTitle}>Submit Full Paper</h2>
+                <h2 className={styles.modalTitle}>
+                  {submissionType === 'FULL_PAPER' ? 'Submit Full Paper' : 'Submit Abstract'}
+                </h2>
                 <p className={styles.modalSubtitle}>
                   Please fill the details below. Your submission will be recorded securely.
                 </p>

@@ -8,8 +8,9 @@ export default function Timeline() {
     const icons = [
         <Send key="1" size={24} />,        // Abstract Submission
         <FileText key="2" size={24} />,    // Full Paper Submission
-        <CheckCircle key="3" size={24} />, // Registration
-        <CalendarClock key="4" size={24} />, // Conference
+        <CheckCircle key="3" size={24} />, // Notification
+        <CheckCircle key="4" size={24} />, // Pre-Conference
+        <CalendarClock key="5" size={24} />, // Conference
     ];
 
     return (

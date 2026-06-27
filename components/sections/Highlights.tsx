@@ -15,18 +15,8 @@ const awardsData = [
     },
     {
         icon: <Award size={24} strokeWidth={1.5} />,
-        title: "Young Researcher Award",
-        text: "Celebrating the achievements of promising young researchers."
-    },
-    {
-        icon: <Award size={24} strokeWidth={1.5} />,
-        title: "Lifetime Contribution Award",
-        text: "A prestigious award honoring significant lifetime contributions to the field."
-    },
-    {
-        icon: <Award size={24} strokeWidth={1.5} />,
-        title: "Presidential Appreciation Awards",
-        text: "Special recognition from the President for exceptional dedication."
+        title: "Shri H.M. Patel Trophy for Young Scientist",
+        text: "it was initiated to increase the interest in research in junior members of IAPSM and encourage who is doing good work in research by awarding the trophy and certificate."
     }
 ];
 

@@ -8,8 +8,9 @@ import { CommitteeMember } from "@/types";
 
 export default function PatronsPage() {
     const members: CommitteeMember[] = [
-        conference.committees.president as CommitteeMember,
-        ...(conference.committees.vicePresidents?.filter((p: CommitteeMember) => p.name.includes("Parul") || p.name.includes("Komal")) || []) as CommitteeMember[],
+        (conference.committees as any).president as CommitteeMember,
+        ...((conference.committees as any).vicePresidents?.filter((p: CommitteeMember) => p.name.includes("Parul") || p.name.includes("Komal")) || []) as CommitteeMember[],
+        ...((conference.committees as any).patrons || []),
     ].filter(Boolean);
 
     return (
@@ -47,7 +48,7 @@ export default function PatronsPage() {
                         fontSize: '1.1rem',
                         lineHeight: 1.7,
                     }}>
-                        Meet the honorable Patrons of Parul University supporting IAPSMGC CON 2026.
+                        Meet the honorable Patrons of IAPSMGC CON 2026.
                     </p>
                 </ScrollReveal>
             </section>

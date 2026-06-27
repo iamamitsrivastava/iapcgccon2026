@@ -15,9 +15,10 @@ export function Venue() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const iapsmImages = [
-        "/images/iapsm-1.jpg",
-        "/images/iapsm-2.png",
-        "/images/iapsm-3.png",
+        "/images/iapsm-audience-1.jpg",
+        "/images/iapsm-audience-2.jpg",
+        "/images/iapsm-audience-3.jpg",
+        "/images/iapsm-audience-4.jpg"
     ];
     const [iapsmIndex, setIapsmIndex] = useState(0);
 

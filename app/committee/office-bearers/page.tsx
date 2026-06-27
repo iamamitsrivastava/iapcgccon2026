@@ -141,7 +141,7 @@ export default function OfficeBearersPage() {
                                 textTransform: 'uppercase',
                                 letterSpacing: '0.05em'
                             }}>
-                                National Speakers
+                                National
                             </h2>
                         </ScrollReveal>
                         <div style={{
@@ -172,7 +172,7 @@ export default function OfficeBearersPage() {
                                 textTransform: 'uppercase',
                                 letterSpacing: '0.05em'
                             }}>
-                                State Speakers
+                                State
                             </h2>
                         </ScrollReveal>
                         <div style={{

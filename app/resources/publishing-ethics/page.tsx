@@ -1,5 +1,6 @@
 import Header from "@/components/sections/Header";
 import Footer from "../../../components/sections/Footer";
+import { SubmissionGuidelines } from "@/components/sections/SubmissionGuidelines";
 import styles from './page.module.css';
 import {
     FileText,
@@ -28,16 +29,14 @@ export default function PublishingEthicsPage() {
                     IAPSMGC CON 2026 Guidelines
                 </div>
                 <h1 className={styles.title}>
-                    Publishing <span className={styles.titleAccent}>Ethics</span>
+                    SUBMISSION <span className={styles.titleAccent}>Guidlines</span>
                 </h1>
                 <p className={styles.subtitle}>
-                    Publication ethics and malpractice statement ensuring the highest standards of scholarly integrity at IAPSMGC CON 2026.
+                    SUBMISSION Guidlines and malpractice statement ensuring the highest standards of scholarly integrity at IAPSMGC CON 2026.
                 </p>
-                <a href="/Author_Guidelines_IAPSMGC_CON_2026.pdf" download className={styles.downloadBtn}>
-                    <Download size={18} />
-                    Download Author Guidelines
-                </a>
             </section>
+
+            <SubmissionGuidelines />
 
             {/* ── Main Content ── */}
             <div className={styles.container}>
@@ -177,6 +176,26 @@ export default function PublishingEthicsPage() {
                     </div>
                 </div>
 
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4rem' }}>
+                    <a href="/Author_Guidelines_IAPSMGC_CON_2026.pdf" download style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.6rem',
+                        background: '#dca433', // matching the button in the screenshot which is a solid goldish color
+                        color: '#0B1C35',
+                        padding: '1rem 2rem',
+                        borderRadius: '8px',
+                        fontWeight: '700',
+                        fontSize: '1.1rem',
+                        textDecoration: 'none',
+                        transition: 'all 0.3s ease',
+                        boxShadow: '0 4px 15px rgba(212, 175, 55, 0.4)'
+                    }}>
+                        <Download size={22} />
+                        DOWNLOAD AUTHOR GUIDELINES
+                    </a>
+                </div>
+
                 {/* ── Quick Navigation ── */}
                 <nav className={styles.tocSection}>
                     {[
@@ -185,7 +204,7 @@ export default function PublishingEthicsPage() {
                         { label: 'Manuscript Formatting', href: '#manuscript' },
                         { label: 'References', href: '#references' },
                         { label: 'Peer Review', href: '#peer-review' },
-                        { label: 'Publication Ethics', href: '#pub-ethics' },
+                        { label: 'SUBMISSION Guidlines', href: '#pub-ethics' },
                         { label: 'Retraction Policy', href: '#retraction' },
                         { label: 'Originality', href: '#originality' },
                         { label: 'Authorship', href: '#authorship' },
@@ -203,7 +222,7 @@ export default function PublishingEthicsPage() {
                     <div className={styles.introIcon}>
                         <CheckCircle />
                     </div>
-                    <h2 className={styles.introTitle}>Publication Ethics &amp; Malpractice Statement</h2>
+                    <h2 className={styles.introTitle}>SUBMISSION Guidlines &amp; Malpractice Statement</h2>
                     <p className={styles.introText}>
                         The International Conference on Bridging Disciplines 2026 (IAPSMGC CON 2026) is dedicated to maintaining
                         the highest standards of ethical integrity in scholarly publishing. The conference provides an international platform for
@@ -346,7 +365,7 @@ export default function PublishingEthicsPage() {
                         <div className={`${styles.iconBox} ${styles.iconBoxGold}`}>
                             <AlertCircle className={styles.iconGold} />
                         </div>
-                        <h2 className={styles.sectionTitle}>Publication Ethics</h2>
+                        <h2 className={styles.sectionTitle}>SUBMISSION Guidlines</h2>
                     </div>
                     <div className={styles.content}>
                         <p>

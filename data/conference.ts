@@ -71,11 +71,11 @@ export const conference = {
 
   // SECTION 5: KEY DATES
   timeline: [
-    { label: "Abstract / Research Paper Submission Deadline", date: "15th October, 2026" },
-    { label: "Notification of Acceptance for Abstracts", date: "15st October, 2026" },
-    { label: "Registration Deadline", date: "15th November, 2026" },
-    { label: "Pre-Conference Workshop", date: "26th November 2026" },
-    { label: "Main Conference", date: "27th – 28th November 2026" },
+    { label: "closing soon", date: "15th July" },
+    { label: "Abstract Submission Deadline", date: "15th september" },
+    { label: "Nortification for Acceptance( Abstract )", date: "15th October" },
+    { label: "Pre-Conference Date", date: "26th November" },
+    { label: "Conference Date", date: "27-28th November" },
   ],
 
   // SECTION 5.1: HIGHLIGHTS
@@ -207,67 +207,106 @@ export const conference = {
 
   // SECTION 10: COMMITTEES
   committees: {
-    president: {
-      name: "Dr. Devanshu Patel",
-      affiliation: "President, Parul University",
-      image: "/images/president.jpg" // Added image path
-    },
-    vicePresidents: [
+    patrons: [
       {
-        name: "Dr. Geetika Patel",
-        role: "Conference Director",
-        affiliation: "Vice President, Parul University",
-        image: "/images/geetika-patel.jpg"
+        name: "Dr. Jagdish T. Gohil",
+        role: "Dean",
+        affiliation: "Parul Institute of Medical Sciences & Research",
+        image: "/images/jagdish-gohil.png"
       },
       {
-        name: "Dr. Parul Patel",
-        affiliation: "Vice President, Parul University",
-        image: "/images/parul-patel.jpg"
-      },
-      {
-        name: "Dr. Komal Patel",
-        affiliation: "Vice President, Parul University",
-        image: "/images/komal-patel-v2.png"
+        name: "Dr. Atul Kumar Saxena",
+        role: "Medical Superintendent",
+        affiliation: "Parul Institute of Medical Sciences & Research",
+        image: "/images/atul-saxena.png"
       }
     ],
     officeBearers: [
       {
-        name: "Dr Nilesh Thakor",
-        role: "Secretory",
-        affiliation: "Professor & Head\nGMERS Medical college, Vadnagar",
-        image: "/images/nilesh-thakor.png"
+        name: "Dr. Chandresh Pandya",
+        role: "Immediate Past President",
+        affiliation: "",
+        image: "/images/chandresh-pandya.png"
       },
       {
         name: "Dr Sunil Nayak",
         role: "President",
         affiliation: "Professor and Head\nGMERS Medical college, Vadodara",
-        image: "/images/sunil-nayak.png"
+        image: "/images/sunil-nayak-new.png"
+      },
+      {
+        name: "Dr. Darshan Mahyavanshi",
+        role: "Vice President",
+        affiliation: "",
+        image: "/images/darshan-mahyavanshi.png"
       },
       {
         name: "Dr Raman Damor",
         role: "Vice President",
         affiliation: "Associate Professor\nGovernment Medical college, Vadodara",
         image: "/images/raman-damor.jpg"
+      },
+      {
+        name: "Dr Nilesh Thakor",
+        role: "Secretory",
+        affiliation: "Professor & Head\nGMERS Medical college, Vadnagar",
+        image: "/images/nilesh-thakor-new.png"
+      },
+      {
+        name: "Dr. Nitin Solanki",
+        role: "Joint Secretary",
+        affiliation: "",
+        image: "/images/nitin-solanki.png"
+      },
+      {
+        name: "Dr. Bhavik Rana",
+        role: "Treasurer",
+        affiliation: "",
+        image: "/images/bhavik-rana.png"
+      },
+      {
+        name: "Dr. Tapaswi Puwar",
+        role: "Chief Editor, Healthline",
+        affiliation: "",
+        image: "/images/tapaswi-puwar.jpg"
       }
     ],
     nationalSpeakers: [
       {
         name: "Dr Ashok Bhardwaj",
-        role: "President",
+        role: "past President",
         affiliation: "IAPSM",
         image: "/images/ashok-bhardwaj.png"
       },
       {
         name: "Dr Atul Kotwal",
-        role: "President elect",
+        role: "President",
         affiliation: "IAPSM",
         image: "/images/atul-kotwal.png"
+      },
+      {
+        name: "Dr. Pradeep Kumar",
+        role: "President Elect",
+        affiliation: "IAPSM",
+        image: "/images/pradeep-kumar.png"
+      },
+      {
+        name: "Dr. Darshan Mahyavanshi",
+        role: "Vice President",
+        affiliation: "IAPSM",
+        image: "/images/darshan-mahyavanshi.png"
       },
       {
         name: "Dr. Manish Kumar Singh",
         role: "Contestant for Secretary General",
         affiliation: "IAPSM",
         image: "/images/manish-kumar-singh.jpg"
+      },
+      {
+        name: "Dr. Pankaj Bhardwaj",
+        role: "Chief Editor, IJCM",
+        affiliation: "IAPSM",
+        image: "/images/pankaj-bhardwaj.png"
       }
     ],
     nationalAdvisory: [
@@ -423,10 +462,10 @@ export const conference = {
         name: "Dr. Utkarsh Shah",
         role: "Co-Chairperson",
         affiliation: "Professor, Dept. of Community medicine",
-        image: "/images/utkarsh-shah.jpg"
+        image: "/images/utkarsh-shah-new.jpg"
       }
     ],
-    patrons: [], // Removed as per request, merged into Chief Patrons or Conveners if needed, but keeping empty for structure
+
     secretaries: [
       {
         name: "Dr. Prashant Dave",

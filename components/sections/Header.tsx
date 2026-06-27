@@ -41,12 +41,13 @@ const navItems: NavItem[] = [
         label: 'Committee',
         href: '/committee',
         children: [
+            { label: 'Patron', href: '/committee/patron' },
             { label: 'Committee', href: '/committee' },
             { label: 'Office Bearers', href: '/committee/office-bearers' },
         ]
     },
     { label: 'THEMES', href: '/#themes' },
-    { label: 'PUBLICATION & ETHICS', href: '/resources/publishing-ethics' },
+    { label: 'SUBMISSION Guidlines', href: '/resources/publishing-ethics' },
     { label: 'Explore Vadodara', href: '/travel' },
     { label: 'Contact Us', href: '/contact' },
 ];

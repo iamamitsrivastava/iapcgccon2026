@@ -52,7 +52,7 @@ export default function Speakers() {
 
                 {/* National Speakers Section */}
                 <div className="text-center" style={{ marginTop: '5rem' }}>
-                    <h2 className={styles.heading}>National Speakers</h2>
+                    <h2 className={styles.heading}>National</h2>
                 </div>
 
                 <div className={styles.gridCols}>

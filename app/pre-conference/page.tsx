@@ -52,12 +52,12 @@ const workshops = [
     {
         id: 'C',
         icon: <FileText size={26} />,
-        title: 'Scientific Article Writing and Publication Ethics',
+        title: 'Scientific Article Writing and SUBMISSION Guidlines',
         color: '#D4AF37',
         duration: 'Half Day (9:00 AM – 1:00 PM)',
         capacity: '50 participants',
         description:
-            'Master the art of crafting high-quality scientific manuscripts, navigating peer review, and understanding publication ethics — including plagiarism, authorship criteria, and predatory journals.',
+            'Master the art of crafting high-quality scientific manuscripts, navigating peer review, and understanding SUBMISSION Guidlines — including plagiarism, authorship criteria, and predatory journals.',
         outcomes: [
             'Structuring IMRaD format manuscripts',
             'Writing effective abstracts & titles',

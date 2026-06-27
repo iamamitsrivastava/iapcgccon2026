@@ -63,7 +63,7 @@ export default function CommitteePage() {
                             marginBottom: '4rem'
                         }}>
                             {([
-                                conference.committees.vicePresidents?.find((p: CommitteeMember) => p.name.includes("Geetika"))
+                                (conference.committees as any).vicePresidents?.find((p: CommitteeMember) => p.name.includes("Geetika"))
                             ].filter(Boolean) as CommitteeMember[]).map((person: CommitteeMember, idx: number) => (
                                 <ScrollReveal key={`row2-${idx}`}>
                                     <div style={{ textAlign: 'center', width: '350px' }}>
@@ -116,8 +116,8 @@ export default function CommitteePage() {
                                 justifyContent: 'center'
                             }}>
                                 {[
-                                    ...(conference.committees.chiefPatrons || []),
-                                    ...(conference.committees.secretaries || [])
+                                    ...((conference.committees as any).chiefPatrons || []),
+                                    ...((conference.committees as any).secretaries || [])
                                 ].map((person, idx) => (
                                     <div key={idx} style={{ textAlign: 'center' }}>
                                         <div style={{
@@ -224,7 +224,7 @@ export default function CommitteePage() {
                     ) : null}
 
                     {/* Organizing Secretaries Section */}
-                    {conference.committees.organizingSecretaries && conference.committees.organizingSecretaries.length > 0 && (
+                    {(conference.committees as any).organizingSecretaries && (conference.committees as any).organizingSecretaries.length > 0 && (
                         <section style={{ marginBottom: '8rem' }}>
                             <ScrollReveal>
                                 <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
@@ -237,8 +237,8 @@ export default function CommitteePage() {
                                     margin: '0 auto',
                                     justifyContent: 'center'
                                 }}>
-                                    {conference.committees.organizingSecretaries.map((person: CommitteeMember, idx: number) => (
-                                        <div key={`orgsec-${idx}`} style={{ textAlign: 'center' }}>
+                                    {(conference.committees as any).organizingSecretaries.map((person: CommitteeMember, idx: number) => (
+                                        <div key={idx} style={{ textAlign: 'center' }}>
                                             <div style={{
                                                 position: 'relative',
                                                 aspectRatio: '1/1',
@@ -286,11 +286,11 @@ export default function CommitteePage() {
                         margin: '0 auto'
                     }}>
                         {[
-                            { name: "Advisory Committee", list: conference.committees.advisory },
-                            { name: "Scientific Committee", list: conference.committees.scientificCommittee },
-                            { name: "Registration Committee", list: conference.committees.registrationCommittee },
+                            { name: "Advisory Committee", list: (conference.committees as any).advisory },
+                            { name: "Scientific Committee", list: (conference.committees as any).scientificCommittee },
+                            { name: "Registration Committee", list: (conference.committees as any).registrationCommittee },
                             { name: "Souvenir Committee", list: (conference.committees as any).souvenirCommittee },
-                            { name: "Cultural Committee", list: conference.committees.culturalCommittee },
+                            { name: "Cultural Committee", list: (conference.committees as any).culturalCommittee },
                             { name: "Transport & Accommodation Committee", list: (conference.committees as any).transportAccommodation },
                             { name: "Venue & Stage Committee", list: (conference.committees as any).venueStage }
                         ].map((comm, idx) => comm.list && comm.list.length > 0 && (
