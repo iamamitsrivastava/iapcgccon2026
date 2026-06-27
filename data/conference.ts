@@ -71,7 +71,7 @@ export const conference = {
 
   // SECTION 5: KEY DATES
   timeline: [
-    { label: "closing soon", date: "15th July" },
+    { label: "Early Bird registration closing soon", date: "15th July" },
     { label: "Abstract Submission Deadline", date: "15th september" },
     { label: "Nortification for Acceptance( Abstract )", date: "15th October" },
     { label: "Pre-Conference Date", date: "26th November" },
@@ -217,7 +217,7 @@ export const conference = {
       {
         name: "Dr. Atul Kumar Saxena",
         role: "Medical Superintendent",
-        affiliation: "Parul Institute of Medical Sciences & Research",
+        affiliation: "Parul Sevashram Hospital, Parul Institute of Medical Sciences & Research",
         image: "/images/atul-saxena.png"
       }
     ],
@@ -298,7 +298,7 @@ export const conference = {
       },
       {
         name: "Dr. Manish Kumar Singh",
-        role: "Contestant for Secretary General",
+        role: "Secretary General",
         affiliation: "IAPSM",
         image: "/images/manish-kumar-singh.jpg"
       },

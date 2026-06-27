@@ -5,10 +5,26 @@ import Footer from "../../components/sections/Footer";
 import { Landmark, FileText, AlertCircle, Download, Lock } from 'lucide-react';
 import styles from './page.module.css';
 
+const VALID_GROUP_CODES = [
+    "GROUP10-A7K9M2", "GROUP10-P4R8T5", "GROUP10-W3N6Q1", "GROUP10-H8V2L7", "GROUP10-Z4M9K3",
+    "GROUP10-B7T5X8", "GROUP10-R2Q6N4", "GROUP10-K9W3P7", "GROUP10-C5L8T2", "GROUP10-Y1M7R6",
+    "GROUP10-F4X9K8", "GROUP10-N2P6W3", "GROUP10-T8R1M5", "GROUP10-Q7V4L9", "GROUP10-D3K8X2",
+    "GROUP10-M6Y5B1", "GROUP10-X9A2C7", "GROUP10-J4N8V3", "GROUP10-L7P5R9", "GROUP10-U2T6M4",
+    "GROUP10-E8W1K5", "GROUP10-G3Q7X9", "GROUP10-S5L2N8", "GROUP10-V6B4P1", "GROUP10-A9R3Y7",
+    "GROUP10-C2M5K4", "GROUP10-F8T1W6", "GROUP10-H4X7Q2", "GROUP10-J9L3B8", "GROUP10-N5V2R1",
+    "GROUP10-P7K4M9", "GROUP10-R8Y6T3", "GROUP10-T3Q9L5", "GROUP10-W1N4X8", "GROUP10-Y6P7A2",
+    "GROUP10-B5M1V9", "GROUP10-D8K2R4", "GROUP10-G7T5Q1", "GROUP10-L9X3N6", "GROUP10-M2W8B5",
+    "GROUP10-Q4A7P3", "GROUP10-S1R9K8", "GROUP10-U5L6Y2", "GROUP10-V3N1T7", "GROUP10-X8M4Q9",
+    "GROUP10-Z2P5W6", "GROUP10-E7B3R1", "GROUP10-H6K9A4", "GROUP10-J1T8X5", "GROUP10-N4Q2L7"
+];
+
 export default function RegistrationPage() {
     const earlyBirdEnd = new Date('2026-07-31T23:59:59').getTime();
     const lateBirdEnd = new Date('2026-11-26T23:59:59').getTime();
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
+    const [groupCode, setGroupCode] = useState('');
+    const [codeMessage, setCodeMessage] = useState({ text: '', type: '' });
+    const [isDiscountApplied, setIsDiscountApplied] = useState(false);
 
     const isEarlyBirdLocked = currentTime > earlyBirdEnd;
     const isLateBirdLocked = currentTime <= earlyBirdEnd || currentTime > lateBirdEnd;
@@ -20,6 +36,44 @@ export default function RegistrationPage() {
         }, 1000);
         return () => clearInterval(timer);
     }, []);
+
+    const handleApplyCode = () => {
+        const code = groupCode.trim().toUpperCase();
+        if (!code) return;
+        
+        if (!VALID_GROUP_CODES.includes(code)) {
+            setCodeMessage({ text: 'Invalid group discount code.', type: 'error' });
+            return;
+        }
+
+        const usedCodes = JSON.parse(localStorage.getItem('used_group_codes') || '[]');
+        if (usedCodes.includes(code)) {
+            setCodeMessage({ text: 'This code has already been used. One code is valid once.', type: 'error' });
+            return;
+        }
+
+        // Apply discount and mark as used
+        usedCodes.push(code);
+        localStorage.setItem('used_group_codes', JSON.stringify(usedCodes));
+        setIsDiscountApplied(true);
+        setCodeMessage({ text: 'Code applied! 10% discount added to Conference fees.', type: 'success' });
+        setGroupCode('');
+    };
+
+    const renderFee = (priceStr: string | undefined, isConf: boolean) => {
+        if (!priceStr) return priceStr;
+        if (!isDiscountApplied || !isConf) return priceStr;
+        const numMatch = priceStr.match(/\d+/);
+        if (!numMatch) return priceStr;
+        const num = parseInt(numMatch[0]);
+        const discounted = Math.round(num * 0.9);
+        return (
+            <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
+                <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
+                <span style={{ color: '#FACC15', fontWeight: 800 }}>₹{discounted}</span>
+            </span>
+        );
+    };
 
     const formatCountdown = () => {
         const diff = lateBirdEnd - currentTime;
@@ -34,7 +88,7 @@ export default function RegistrationPage() {
     };
 
     const keyDates = [
-        { label: 'closing soon', value: '15th July' },
+        { label: 'Early Bird registration closing soon', value: '15th July' },
         { label: 'Abstract Submission Deadline', value: '15th september' },
         { label: 'Nortification for Acceptance(Abstract)', value: '15th October' },
         { label: 'Pre-Conference Date', value: '26th November' },
@@ -188,7 +242,7 @@ export default function RegistrationPage() {
                                                 style={isEarlyBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                             >
                                                 <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
-                                                    {item.earlyBird.conf}
+                                                    {renderFee(item.earlyBird.conf, true)}
                                                     {isEarlyBirdLocked && <Lock size={14} />}
                                                 </span>
                                             </a>
@@ -218,7 +272,7 @@ export default function RegistrationPage() {
                                                 style={isLateBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                             >
                                                 <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
-                                                    {item.lateBird.conf}
+                                                    {renderFee(item.lateBird.conf, true)}
                                                     {isLateBirdLocked && <Lock size={14} />}
                                                 </span>
                                             </a>
@@ -276,9 +330,54 @@ export default function RegistrationPage() {
                             </ul>
                         </div>
                         <div className={styles.infoCard}>
-                            {/* Refund Policy Removed */}
+                            <h3 className={styles.infoSectionTitle} style={{ marginBottom: '1rem', color: 'var(--color-secondary)' }}>
+                                <AlertCircle className={styles.infoIcon} size={24} />
+                                Group Discount
+                            </h3>
+                            <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '1rem' }}>
+                                Enter a valid group code to get a flat 10% discount on Early Bird and Late Bird Conference fees.
+                                <br/>
+                                <strong style={{ color: '#ef4444' }}>Note: One code is valid once.</strong>
+                            </p>
+                            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                                <input 
+                                    type="text" 
+                                    placeholder="Enter Group Code"
+                                    value={groupCode}
+                                    onChange={(e) => setGroupCode(e.target.value.toUpperCase())}
+                                    style={{
+                                        flex: 1,
+                                        padding: '0.75rem',
+                                        borderRadius: '4px',
+                                        border: '1px solid rgba(255,255,255,0.2)',
+                                        background: 'rgba(0,0,0,0.2)',
+                                        color: 'white',
+                                        textTransform: 'uppercase'
+                                    }}
+                                />
+                                <button 
+                                    onClick={handleApplyCode}
+                                    style={{
+                                        padding: '0.75rem 1.5rem',
+                                        borderRadius: '4px',
+                                        border: 'none',
+                                        background: 'var(--color-secondary)',
+                                        color: 'black',
+                                        fontWeight: 'bold',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Apply
+                                </button>
+                            </div>
+                            {codeMessage.text && (
+                                <p style={{ fontSize: '0.85rem', color: codeMessage.type === 'error' ? '#ef4444' : '#22c55e', fontWeight: 600, marginBottom: '1rem' }}>
+                                    {codeMessage.text}
+                                </p>
+                            )}
+
                             <div className={styles.noteBox}>
-                                <strong>Note:</strong>  Note: The above amount covers only the registration fee. Additional charges will apply for papers accepted for the publication as per receptive guidelines.
+                                <strong>Note:</strong> The above amount covers only the registration fee. Additional charges will apply for papers accepted for the publication as per respective guidelines.
                             </div>
                         </div>
                     </div>

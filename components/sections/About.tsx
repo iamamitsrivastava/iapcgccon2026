@@ -269,6 +269,21 @@ export function Objectives() {
             icon: <GraduationCap size={24} />,
             title: "Capacity Building",
             text: "To strengthen the capacity of public health professionals and medical students through workshops, CME sessions, and expert mentorship"
+        },
+        {
+            icon: <Users size={24} />,
+            title: "Networking & Collaboration",
+            text: "To foster networking and collaboration among public health professionals, researchers, and policymakers at the state and national levels"
+        },
+        {
+            icon: <Target size={24} />,
+            title: "Policy Advocacy",
+            text: "To advocate for evidence-based public health policies and interventions, addressing key challenges in the healthcare system"
+        },
+        {
+            icon: <Zap size={24} />,
+            title: "Digital Health Integration",
+            text: "To explore and promote the integration of digital health solutions to improve healthcare access, delivery, and equity"
         }
     ];
 

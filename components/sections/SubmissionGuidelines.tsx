@@ -6,36 +6,9 @@ import heroStyles from './Hero.module.css';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import { X, CheckCircle2 } from 'lucide-react';
 
-const guidelinesData = [
-    {
-        number: "01",
-        title: "Prepare Abstract",
-        text: "Submit an abstract of 250-300 words with 5-6 keywords. Follow APA/MLA 9th Edition style."
-    },
-    {
-        number: "02",
-        title: "Submit for Review",
-        text: "Send your abstract by clicking the below button. All submissions will undergo double-blind peer review."
-    },
-    {
-        number: "03",
-        title: "Wait for Acceptance",
-        text: "Notifications of acceptance will be sent via email by the specified date."
-    },
-    {
-        number: "04",
-        title: "Full Paper Submission",
-        text: "Upon acceptance, submit the full paper (min 7000 words) adhering to formatting guidelines."
-    },
-    {
-        number: "05",
-        title: "Registration",
-        text: "Complete the registration process first to ensure your participation."
-    }
-];
-
 export function SubmissionGuidelines() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [submissionType, setSubmissionType] = useState<'ABSTRACT' | 'FULL_PAPER'>('ABSTRACT');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submissionSuccess, setSubmissionSuccess] = useState(false);
 
@@ -44,6 +17,51 @@ export function SubmissionGuidelines() {
         email: '',
         documentLink: '',
     });
+
+    const guidelinesData = [
+        {
+            number: "01",
+            title: "Registration",
+            text: "Complete the registration process first to ensure your participation."
+        },
+        {
+            number: "02",
+            title: "Prepare Abstract",
+            text: "Submit abstract as per abstract submission guidlines",
+            buttonText: "Abstract Submission Guidlines",
+            buttonAction: () => {
+                const link = document.createElement("a");
+                link.href = "/Author_Guidelines_IAPSMGC_CON_2026.pdf";
+                link.download = "Author_Guidelines_IAPSMGC_CON_2026.pdf";
+                link.click();
+            }
+        },
+        {
+            number: "03",
+            title: "Submit for Review",
+            text: "Send your abstract by clicking the below button. All submissions will undergo double-blind peer review.",
+            buttonText: "Submit Abstract",
+            buttonAction: () => {
+                setSubmissionType('ABSTRACT');
+                setIsModalOpen(true);
+            }
+        },
+        {
+            number: "04",
+            title: "Wait for Acceptance",
+            text: "Notifications of acceptance will be sent via email by the specified date."
+        },
+        {
+            number: "05",
+            title: "Full Paper Submission",
+            text: "Upon acceptance, submit the full paper (min 7000 words) adhering to formatting guidelines.",
+            buttonText: "Submit Full Paper",
+            buttonAction: () => {
+                setSubmissionType('FULL_PAPER');
+                setIsModalOpen(true);
+            }
+        }
+    ];
 
     const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -58,7 +76,7 @@ export function SubmissionGuidelines() {
                     "Content-Type": "text/plain;charset=utf-8",
                 },
                 body: JSON.stringify({
-                    type: "ABSTRACT",
+                    type: submissionType,
                     fullName,
                     email,
                     documentLink
@@ -119,6 +137,15 @@ export function SubmissionGuidelines() {
                                 <div className={styles.content}>
                                     <h3 className={styles.stepTitle}>{item.title}</h3>
                                     <p className={styles.stepText}>{item.text}</p>
+                                    {item.buttonText && item.buttonAction && (
+                                        <button 
+                                            className={heroStyles.btnPrimary} 
+                                            style={{ marginTop: '1rem', padding: '0.75rem 1.5rem', fontSize: '0.9rem' }}
+                                            onClick={item.buttonAction}
+                                        >
+                                            {item.buttonText}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </ScrollReveal>
@@ -155,7 +182,9 @@ export function SubmissionGuidelines() {
                             </div>
                         ) : (
                             <>
-                                <h2 className={heroStyles.modalTitle}>Submit Abstract</h2>
+                                <h2 className={heroStyles.modalTitle}>
+                                    {submissionType === 'ABSTRACT' ? 'Submit Abstract' : 'Submit Full Paper'}
+                                </h2>
                                 <p className={heroStyles.modalSubtitle}>
                                     Please fill the details below. Your submission will be recorded securely.
                                 </p>

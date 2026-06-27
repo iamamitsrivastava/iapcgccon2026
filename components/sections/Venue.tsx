@@ -14,14 +14,6 @@ export function Venue() {
     ];
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const iapsmImages = [
-        "/images/iapsm-audience-1.jpg",
-        "/images/iapsm-audience-2.jpg",
-        "/images/iapsm-audience-3.jpg",
-        "/images/iapsm-audience-4.jpg"
-    ];
-    const [iapsmIndex, setIapsmIndex] = useState(0);
-
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex: number) => (prevIndex + 1) % images.length);
@@ -29,14 +21,6 @@ export function Venue() {
 
         return () => clearInterval(interval);
     }, [images.length]);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setIapsmIndex((prevIndex: number) => (prevIndex + 1) % iapsmImages.length);
-        }, 4000);
-
-        return () => clearInterval(interval);
-    }, [iapsmImages.length]);
 
     return (
         <section className={styles.venue} id="about-parul">
@@ -169,13 +153,33 @@ export function Venue() {
                         </div>
                     </div>{/* end imageSection */}
                 </div>{/* end contentGrid */}
+            </div>
+        </section>
+    );
+}
 
+export function AboutIAPSM() {
+    const iapsmImages = [
+        "/images/iapsm-audience-1.jpg",
+        "/images/iapsm-audience-2.jpg",
+        "/images/iapsm-audience-3.jpg",
+        "/images/iapsm-audience-4.jpg"
+    ];
+    const [iapsmIndex, setIapsmIndex] = useState(0);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIapsmIndex((prevIndex: number) => (prevIndex + 1) % iapsmImages.length);
+        }, 4000);
 
+        return () => clearInterval(interval);
+    }, [iapsmImages.length]);
 
-
+    return (
+        <section className={styles.venue} id="about-iapsm" style={{ backgroundColor: '#fff' }}>
+            <div className="container">
                 {/* About IAPSM Gujarat Chapter */}
-                <div id="about-iapsm" className={styles.facultyRow} style={{ marginTop: '8rem', scrollMarginTop: '100px' }}>
+                <div className={styles.facultyRow}>
                     {/* Image side */}
                     <div className={styles.imageSection}>
                         <div className={styles.imageWrapper}>

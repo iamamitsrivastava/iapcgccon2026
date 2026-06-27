@@ -26,14 +26,11 @@ export default function PublishingEthicsPage() {
             <section className={styles.heroSection}>
                 <div className={styles.heroBadge}>
                     <Shield size={14} />
-                    IAPSMGC CON 2026 Guidelines
+                    Call for Abstract
                 </div>
                 <h1 className={styles.title}>
                     SUBMISSION <span className={styles.titleAccent}>Guidlines</span>
                 </h1>
-                <p className={styles.subtitle}>
-                    SUBMISSION Guidlines and malpractice statement ensuring the highest standards of scholarly integrity at IAPSMGC CON 2026.
-                </p>
             </section>
 
             <SubmissionGuidelines />

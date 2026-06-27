@@ -290,7 +290,7 @@ export default function CommitteePage() {
                             { name: "Scientific Committee", list: (conference.committees as any).scientificCommittee },
                             { name: "Registration Committee", list: (conference.committees as any).registrationCommittee },
                             { name: "Souvenir Committee", list: (conference.committees as any).souvenirCommittee },
-                            { name: "Cultural Committee", list: (conference.committees as any).culturalCommittee },
+                            { name: "Hospitality Committee", list: (conference.committees as any).culturalCommittee },
                             { name: "Transport & Accommodation Committee", list: (conference.committees as any).transportAccommodation },
                             { name: "Venue & Stage Committee", list: (conference.committees as any).venueStage }
                         ].map((comm, idx) => comm.list && comm.list.length > 0 && (
