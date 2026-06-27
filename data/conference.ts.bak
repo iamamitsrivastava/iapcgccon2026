@@ -69,7 +69,7 @@ export const conference = {
 
   // SECTION 5: KEY DATES
   timeline: [
-    { label: "Abstract Submission Deadline", date: "20th May, 2026" },
+    { label: "Abstract Submission Begins", date: "20th May, 2026" },
     { label: "Full Paper Submission Deadline", date: "30th May, 2026" },
     { label: "Registration Deadline", date: "6th June, 2026" },
     { label: "Conference Date", date: "12th - 13th June 2026" },

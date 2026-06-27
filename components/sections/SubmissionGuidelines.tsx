@@ -8,6 +8,7 @@ import { X, CheckCircle2 } from 'lucide-react';
 
 export function SubmissionGuidelines() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
     const [submissionType, setSubmissionType] = useState<'ABSTRACT' | 'FULL_PAPER'>('ABSTRACT');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submissionSuccess, setSubmissionSuccess] = useState(false);
@@ -28,23 +29,38 @@ export function SubmissionGuidelines() {
             number: "02",
             title: "Prepare Abstract",
             text: "Submit abstract as per abstract submission guidlines",
-            buttonText: "Abstract Submission Guidlines",
-            buttonAction: () => {
-                const link = document.createElement("a");
-                link.href = "/Author_Guidelines_IAPSMGC_CON_2026.pdf";
-                link.download = "Author_Guidelines_IAPSMGC_CON_2026.pdf";
-                link.click();
-            }
+            buttons: [
+                {
+                    text: "Abstract Submission Guidlines",
+                    variant: "primary",
+                    action: () => {
+                        const link = document.createElement("a");
+                        link.href = "/Author_Guidelines_IAPSMGC_CON_2026.pdf";
+                        link.download = "Author_Guidelines_IAPSMGC_CON_2026.pdf";
+                        link.click();
+                    }
+                }
+            ]
         },
         {
             number: "03",
             title: "Submit for Review",
             text: "Send your abstract by clicking the below button. All submissions will undergo double-blind peer review.",
-            buttonText: "Submit Abstract",
-            buttonAction: () => {
-                setSubmissionType('ABSTRACT');
-                setIsModalOpen(true);
-            }
+            buttons: [
+                {
+                    text: "Template for Abstract Submission",
+                    variant: "secondary",
+                    action: () => setIsTemplateModalOpen(true)
+                },
+                {
+                    text: "Submit Abstract",
+                    variant: "primary",
+                    action: () => {
+                        setSubmissionType('ABSTRACT');
+                        setIsModalOpen(true);
+                    }
+                }
+            ]
         },
         {
             number: "04",
@@ -55,11 +71,16 @@ export function SubmissionGuidelines() {
             number: "05",
             title: "Full Paper Submission",
             text: "Upon acceptance, submit the full paper (min 7000 words) adhering to formatting guidelines.",
-            buttonText: "Submit Full Paper",
-            buttonAction: () => {
-                setSubmissionType('FULL_PAPER');
-                setIsModalOpen(true);
-            }
+            buttons: [
+                {
+                    text: "Submit Full Paper",
+                    variant: "primary",
+                    action: () => {
+                        setSubmissionType('FULL_PAPER');
+                        setIsModalOpen(true);
+                    }
+                }
+            ]
         }
     ];
 
@@ -137,14 +158,19 @@ export function SubmissionGuidelines() {
                                 <div className={styles.content}>
                                     <h3 className={styles.stepTitle}>{item.title}</h3>
                                     <p className={styles.stepText}>{item.text}</p>
-                                    {item.buttonText && item.buttonAction && (
-                                        <button 
-                                            className={heroStyles.btnPrimary} 
-                                            style={{ marginTop: '1rem', padding: '0.75rem 1.5rem', fontSize: '0.9rem' }}
-                                            onClick={item.buttonAction}
-                                        >
-                                            {item.buttonText}
-                                        </button>
+                                    {item.buttons && item.buttons.length > 0 && (
+                                        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+                                            {item.buttons.map((btn, btnIdx) => (
+                                                <button 
+                                                    key={btnIdx}
+                                                    className={btn.variant === 'secondary' ? heroStyles.btnSecondary : heroStyles.btnPrimary} 
+                                                    style={{ padding: '0.75rem 1.5rem', fontSize: '0.9rem' }}
+                                                    onClick={btn.action}
+                                                >
+                                                    {btn.text}
+                                                </button>
+                                            ))}
+                                        </div>
                                     )}
                                 </div>
                             </div>
@@ -263,6 +289,121 @@ export function SubmissionGuidelines() {
                                 </form>
                             </>
                         )}
+                    </div>
+                </div>
+            )}
+
+            {/* Template Modal */}
+            {isTemplateModalOpen && (
+                <div
+                    className={heroStyles.modalOverlay}
+                    onClick={() => setIsTemplateModalOpen(false)}
+                >
+                    <div
+                        className={heroStyles.modalContent}
+                        style={{ maxWidth: '800px', width: '90%', maxHeight: '90vh', overflowY: 'auto', backgroundColor: '#fff', color: '#000' }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            className={heroStyles.closeButton}
+                            onClick={() => setIsTemplateModalOpen(false)}
+                            style={{ color: '#000' }}
+                        >
+                            <X size={24} />
+                        </button>
+
+                        <div style={{ padding: '2rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+                                <img src="/images/iapsmgc-logo.png" alt="IAPSMGC Logo" style={{ height: '70px', objectFit: 'contain' }} />
+                                <img src="/parul-university-logo.svg" alt="Parul University Logo" style={{ height: '70px', objectFit: 'contain' }} />
+                                <img src="/images/iapsm-2.png" alt="IAPSM Logo" style={{ height: '70px', objectFit: 'contain' }} />
+                            </div>
+                            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                                <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '1rem' }}>
+                                    33rd Annual State Conference of the Indian Association of Preventive and Social Medicine, Gujarat Chapter
+                                </h2>
+                                <h3 style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '1rem' }}>
+                                    "Digital Health for All: Bridging Equity, Access, and Innovation,"
+                                </h3>
+                                <p style={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>
+                                    26-28 November,2026
+                                </p>
+                                <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                                    Template for Abstract Submission
+                                </h4>
+                            </div>
+
+                            <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #000', marginBottom: '2rem' }}>
+                                <tbody>
+                                    <tr>
+                                        <td style={{ border: '1px solid #000', padding: '0.5rem' }} colSpan={2}>
+                                            <span style={{ float: 'left' }}>Delegate Name:</span>
+                                            <span style={{ float: 'right' }}>Registration No.</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ border: '1px solid #000', padding: '0.5rem' }} colSpan={2}>
+                                            Title:
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ border: '1px solid #000', padding: '0.5rem' }} colSpan={2}>
+                                            Authors (each author's name is separated with a space and comma, and the presenting author's name must be in <i>italics</i> and <u>underlined</u>)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ border: '1px solid #000', padding: '0.5rem' }} colSpan={2}>
+                                            Institute (including address & city)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ border: '1px solid #000', padding: '0.5rem' }} colSpan={2}>
+                                            Contact details of the presenting author<br />
+                                            Mobile No: <span style={{ marginLeft: '4rem' }}>e-mail:</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ border: '1px solid #000', padding: '0.5rem' }} colSpan={2}>
+                                            Keywords (not more than 5, each separated with a space and comma)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ border: '1px solid #000', padding: '0.5rem' }} colSpan={2}>
+                                            The paper is submitted for<br />
+                                            1. Poster &nbsp;&nbsp;&nbsp; 2. Oral &nbsp;&nbsp;&nbsp; 3. HM Patel Award Session<br />
+                                            (The scientific committee will take the final decision in this regard)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ border: '1px solid #000', padding: '0.5rem' }} colSpan={2}>
+                                            AV aids required (Specify if anything other than LCD Projector is needed)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ border: '1px solid #000', padding: '0.5rem', verticalAlign: 'top' }} colSpan={2}>
+                                            Abstract (Main body not exceeding 300 words) It must be structured as<br />
+                                            1. Introduction/ background, including objectives<br />
+                                            2. Methodology<br />
+                                            3. Observations<br />
+                                            4. Conclusions & Recommendations (if any)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div style={{ paddingLeft: '1rem', marginBottom: '2rem' }}>
+                                <p style={{ marginBottom: '0.5rem' }}>1. Abstracts can be submitted only after the presenting author has registered and the conference secretariat has issued a registration number.</p>
+                                <p style={{ marginBottom: '0.5rem' }}>2. All abstracts must be prepared as per the guidelines & submitted on the website.</p>
+                                <p style={{ marginBottom: '0.5rem' }}>3. Not more than two presentations will be permitted with one registered delegate (as presenting author).</p>
+                                <p style={{ marginBottom: '0.5rem' }}>4. A committee will scrutinize all abstracts regarding the acceptance of research work for presentation as a poster, oral presentation, or H M Patel Award session. All delegates will be informed via email about the status of their presentations.</p>
+                            </div>
+
+                            <div style={{ textAlign: 'center' }}>
+                                <p style={{ marginBottom: '0.2rem' }}>Organized By:</p>
+                                <p style={{ marginBottom: '0.2rem' }}>Parul Institute of Medical Sciences & Research</p>
+                                <p>Parul University, Limda, Ta.Waghodia – 391760 Dist. Vadodara, Gujarat</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

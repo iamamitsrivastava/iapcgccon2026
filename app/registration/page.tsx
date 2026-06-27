@@ -88,9 +88,9 @@ export default function RegistrationPage() {
     };
 
     const keyDates = [
-        { label: 'Early Bird registration closing soon', value: '15th July' },
-        { label: 'Abstract Submission Deadline', value: '15th september' },
-        { label: 'Nortification for Acceptance(Abstract)', value: '15th October' },
+        { label: 'Early Bird registration closing soon', value: '31th July' },
+        { label: 'Abstract Submission Begins', value: '15th September' },
+        { label: 'Notification for Acceptance (Abstract)', value: '15th October' },
         { label: 'Pre-Conference Date', value: '26th November' },
         { label: 'Conference Date', value: '27-28th November' },
     ];

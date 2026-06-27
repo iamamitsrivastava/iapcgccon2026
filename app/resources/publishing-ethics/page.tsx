@@ -24,9 +24,21 @@ export default function PublishingEthicsPage() {
 
             {/* ── Hero Section ── */}
             <section className={styles.heroSection}>
-                <div className={styles.heroBadge}>
-                    <Shield size={14} />
-                    Call for Abstract
+                <h1 className={styles.callForAbstractTitle}>Call for Abstract</h1>
+                <div style={{
+                    maxWidth: '900px',
+                    margin: '2rem auto',
+                    padding: '2rem 2.5rem',
+                    background: 'linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                    borderLeft: '4px solid #FACC15',
+                    borderRadius: '12px',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)'
+                }}>
+                    <p style={{ color: '#cbd5e1', textAlign: 'center', lineHeight: '1.6', fontSize: '0.95rem', margin: 0 }}>
+                        The Scientific Committee warmly invites researchers, academicians, public health professionals, postgraduate students, and practitioners to submit original research abstracts for Oral and Poster Presentations at the conference.<br/><br/>
+                        Abstracts addressing a wide range of topics related to community medicine and public health, aligned with the conference themes and sub-themes, are encouraged. Selected abstracts will be showcased during the scientific sessions, and outstanding oral and poster presentations will be recognized with awards.
+                    </p>
                 </div>
                 <h1 className={styles.title}>
                     SUBMISSION <span className={styles.titleAccent}>Guidlines</span>
@@ -153,23 +165,43 @@ export default function PublishingEthicsPage() {
                         }}>
                             Follow the guidelines to prepare your poster for an effective presentation. The size of poster is 3 &times; 4 feet.
                         </p>
-                        <a href="https://drive.google.com/file/d/1zODvlUzggUUGZPiHsLYX4m3vG8pDYqAm/view?usp=sharing" target="_blank" rel="noopener noreferrer" style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.6rem',
-                            background: 'linear-gradient(135deg, #FACC15, #d4af37)',
-                            color: '#0B1C35',
-                            padding: '0.85rem 1.5rem',
-                            borderRadius: '0.5rem',
-                            fontWeight: '700',
-                            fontSize: '0.9rem',
-                            textDecoration: 'none',
-                            transition: 'all 0.3s ease',
-                            width: 'fit-content'
-                        }}>
-                            <Download size={18} />
-                            Download Template
-                        </a>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+                            <a href="https://drive.google.com/file/d/1zODvlUzggUUGZPiHsLYX4m3vG8pDYqAm/view?usp=sharing" target="_blank" rel="noopener noreferrer" style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.6rem',
+                                background: 'linear-gradient(135deg, #FACC15, #d4af37)',
+                                color: '#0B1C35',
+                                padding: '0.85rem 1.5rem',
+                                borderRadius: '0.5rem',
+                                fontWeight: '700',
+                                fontSize: '0.9rem',
+                                textDecoration: 'none',
+                                transition: 'all 0.3s ease',
+                                width: 'fit-content'
+                            }}>
+                                <Download size={18} />
+                                Download Template
+                            </a>
+                            <a href="/images/poster-guidelines.png" target="_blank" rel="noopener noreferrer" style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.6rem',
+                                background: 'transparent',
+                                border: '1px solid #FACC15',
+                                color: '#FACC15',
+                                padding: '0.85rem 1.5rem',
+                                borderRadius: '0.5rem',
+                                fontWeight: '700',
+                                fontSize: '0.9rem',
+                                textDecoration: 'none',
+                                transition: 'all 0.3s ease',
+                                width: 'fit-content'
+                            }}>
+                                <FileText size={18} />
+                                View Guidelines
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -196,16 +228,15 @@ export default function PublishingEthicsPage() {
                 {/* ── Quick Navigation ── */}
                 <nav className={styles.tocSection}>
                     {[
-                        { label: 'Ethics Statement', href: '#ethics-statement' },
-                        { label: 'Author Responsibilities', href: '#author-resp' },
-                        { label: 'Manuscript Formatting', href: '#manuscript' },
+                        { label: 'Authors & Their Responsibilities', href: '#author-resp' },
                         { label: 'References', href: '#references' },
-                        { label: 'Peer Review', href: '#peer-review' },
-                        { label: 'SUBMISSION Guidlines', href: '#pub-ethics' },
-                        { label: 'Retraction Policy', href: '#retraction' },
-                        { label: 'Originality', href: '#originality' },
-                        { label: 'Authorship', href: '#authorship' },
-                        { label: 'Copyright', href: '#copyright' },
+                        { label: 'Peer-Review Process', href: '#peer-review' },
+                        { label: 'Paper Submission Guidelines', href: '#pub-ethics' },
+                        { label: 'Manuscript Formatting Requirements', href: '#manuscript' },
+                        { label: 'Policy on Retraction & Correction', href: '#retraction' },
+                        { label: 'Originality & Plagiarism', href: '#originality' },
+                        { label: 'Authorship of the Paper', href: '#authorship' },
+                        { label: 'Copyright & Accessibility', href: '#copyright' },
                     ].map((item, i) => (
                         <a key={i} href={item.href} className={styles.tocItem}>
                             <span className={styles.tocNumber}>{i + 1}</span>
@@ -214,23 +245,10 @@ export default function PublishingEthicsPage() {
                     ))}
                 </nav>
 
-                {/* ── 1. Intro Statement ── */}
-                <div className={styles.introCard} id="ethics-statement">
-                    <div className={styles.introIcon}>
-                        <CheckCircle />
-                    </div>
-                    <h2 className={styles.introTitle}>SUBMISSION Guidlines &amp; Malpractice Statement</h2>
-                    <p className={styles.introText}>
-                        The International Conference on Bridging Disciplines 2026 (IAPSMGC CON 2026) is dedicated to maintaining
-                        the highest standards of ethical integrity in scholarly publishing. The conference provides an international platform for
-                        academicians, researchers, industry professionals, and policymakers to deliberate on contemporary issues related to
-                        liberal arts, humanities, and social sciences, in alignment with global academic standards.
-                    </p>
-                </div>
 
-                {/* ── 2 & 3. Authors & Manuscript (Side-by-side Grid) ── */}
-                <div className={styles.grid}>
-                    <div className={styles.section} id="author-resp">
+
+                {/* ── 2. Authors & Their Responsibilities ── */}
+                <div className={styles.section} id="author-resp">
                         <div className={styles.sectionHeader}>
                             <div className={`${styles.iconBox} ${styles.iconBoxBlue}`}>
                                 <Users className={styles.iconBlue} />
@@ -255,36 +273,6 @@ export default function PublishingEthicsPage() {
                         </div>
                     </div>
 
-                    <div className={styles.section} id="manuscript">
-                        <div className={styles.sectionHeader}>
-                            <div className={`${styles.iconBox} ${styles.iconBoxPurple}`}>
-                                <FileText className={styles.iconPurple} />
-                            </div>
-                            <h2 className={styles.sectionTitle}>Manuscript Formatting Requirements</h2>
-                        </div>
-                        <div className={styles.content}>
-                            <p>
-                                The length of full paper should be minimum 7000 words (single line spacing) and should follow the structure of Introduction,
-                                Methodology, Results, Discussion and Conclusion. Each participant may submit a maximum of two papers, one as the
-                                main author and one as a co-author.
-                            </p>
-                            <p>The paper should include the following:</p>
-                            <ul className={styles.list}>
-                                <li className={styles.listItem}>Title of the paper.</li>
-                                <li className={styles.listItem}>Author&apos;s full name and academic title(s).</li>
-                                <li className={styles.listItem}>Author&apos;s complete affiliation, including the name of the department, faculty, and university, address, and email address. Please indicate the corresponding author if necessary.</li>
-                                <li className={styles.listItem}>An abstract of 250-300 words to outline the paper&apos;s purpose, research methods, and crucial findings.</li>
-                                <li className={styles.listItem}>Keywords, with a maximum of 5 words/phrases.</li>
-                            </ul>
-                            <p style={{ marginTop: '1rem' }}><strong style={{ color: 'white' }}>Technical Requirements:</strong></p>
-                            <p>
-                                Tables, figures, and equations should have separate numbering and be placed in the text at the appropriate paragraph,
-                                immediately after the reference. Equations must be typed using the Microsoft Equation 3.0 or MathType.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
                 {/* ── 4. References ── */}
                 <div className={styles.section} id="references">
                     <div className={styles.sectionHeader}>
@@ -296,12 +284,10 @@ export default function PublishingEthicsPage() {
                     <div className={styles.content}>
                         <p>
                             The list of references must be alphabetically arranged according to the first element in the line. All references cited in the text must be part
-                            of the reference list and vice versa. Use APA style with DOI.
+                            of the reference list and vice versa. Use VANCOUVER SUPERSCRIPT style with DOI. 
                         </p>
                         <div className={styles.referenceBox}>
-                            Anil, K., Jain, A. K., Mehta, R. K., Bidwai, A., Singh, A., &amp; Rajani, H. (2024). Value addition to
-                            durum wheat semolina spaghetti through use of fruit peel solids. <em>Scientific Reports, 14</em>(1), 12345.
-                            https://doi.org/10.1038/s41598-024-12345-6.
+                            Doe J, Smith A. The impact of modern treatments on patient survival. Lancet. 2024;403(1042):1124-30. doi: 10.1016/s0140-6736(24)00123-x
                         </div>
                     </div>
                 </div>
@@ -362,7 +348,7 @@ export default function PublishingEthicsPage() {
                         <div className={`${styles.iconBox} ${styles.iconBoxGold}`}>
                             <AlertCircle className={styles.iconGold} />
                         </div>
-                        <h2 className={styles.sectionTitle}>SUBMISSION Guidlines</h2>
+                        <h2 className={styles.sectionTitle}>Paper Submission Guidelines</h2>
                     </div>
                     <div className={styles.content}>
                         <p>
@@ -393,6 +379,36 @@ export default function PublishingEthicsPage() {
                             <a href="mailto:iapsmgccon2026@paruluniversity.ac.in" className={styles.link}>iapsmgccon2026@paruluniversity.ac.in</a>.
                             We will acknowledge your email and provide an estimated timeframe for investigating your concerns.
                         </span>
+                    </div>
+                </div>
+
+                {/* ── Manuscript Formatting Requirements ── */}
+                <div className={styles.section} id="manuscript">
+                    <div className={styles.sectionHeader}>
+                        <div className={`${styles.iconBox} ${styles.iconBoxPurple}`}>
+                            <FileText className={styles.iconPurple} />
+                        </div>
+                        <h2 className={styles.sectionTitle}>Manuscript Formatting Requirements</h2>
+                    </div>
+                    <div className={styles.content}>
+                        <p>
+                            The length of full paper should be minimum 7000 words (single line spacing) and should follow the structure of Introduction,
+                            Methodology, Results, Discussion and Conclusion. Each participant may submit a maximum of two papers, one as the
+                            main author and one as a co-author.
+                        </p>
+                        <p>The paper should include the following:</p>
+                        <ul className={styles.list}>
+                            <li className={styles.listItem}>Title of the paper.</li>
+                            <li className={styles.listItem}>Author&apos;s full name and academic title(s).</li>
+                            <li className={styles.listItem}>Author&apos;s complete affiliation, including the name of the department, faculty, and university, address, and email address. Please indicate the corresponding author if necessary.</li>
+                            <li className={styles.listItem}>An abstract of 300 words to outline the paper&apos;s purpose, research methods, and crucial findings.</li>
+                            <li className={styles.listItem}>Keywords, with a maximum of 5 words/phrases.</li>
+                        </ul>
+                        <p style={{ marginTop: '1rem' }}><strong style={{ color: '#fdfdfdff' }}>Technical Requirements:</strong></p>
+                        <p>
+                            Tables, figures, and equations should have separate numbering and be placed in the text at the appropriate paragraph,
+                            immediately after the reference. Equations must be typed using the Microsoft Equation 3.0 or MathType.
+                        </p>
                     </div>
                 </div>
 
@@ -493,62 +509,7 @@ export default function PublishingEthicsPage() {
                         </a>
                     </div>
                 </div>
-
-                {/* ── Bottom Mini Cards ── */}
-                <div className={styles.bottomGrid}>
-                    <div className={styles.miniCard} style={{ '--card-accent': 'rgba(59, 130, 246, 0.4)' } as React.CSSProperties} id="data-availability">
-                        <div className={`${styles.miniCardIcon} ${styles.iconBoxBlue}`}>
-                            <BookOpen className={styles.iconBlue} />
-                        </div>
-                        <h3 className={styles.miniCardTitle}>Data Availability &amp; Reproducibility</h3>
-                        <p className={styles.miniCardText}>
-                            All data supporting the findings of the conference papers should be deposited in recognized public repositories and linked in the manuscript. Authors are encouraged to provide code, datasets, and supplementary material to enable reproducibility of results.
-                        </p>
-                    </div>
-
-                    <div className={styles.miniCard} style={{ '--card-accent': 'rgba(168, 85, 247, 0.4)' } as React.CSSProperties} id="conflict-of-interest">
-                        <div className={`${styles.miniCardIcon} ${styles.iconBoxPurple}`}>
-                            <Shield className={styles.iconPurple} />
-                        </div>
-                        <h3 className={styles.miniCardTitle}>Conflict of Interest</h3>
-                        <p className={styles.miniCardText}>
-                            Authors must disclose any financial, personal, or professional relationships that could be perceived to influence the work. Failure to disclose conflicts may result in rejection or retraction.
-                        </p>
-                    </div>
-
-                    <div className={styles.miniCard} style={{ '--card-accent': 'rgba(34, 197, 94, 0.4)' } as React.CSSProperties} id="open-access">
-                        <div className={`${styles.miniCardIcon} ${styles.iconBoxGreen}`}>
-                            <Globe className={styles.iconGreen} />
-                        </div>
-                        <h3 className={styles.miniCardTitle}>Open Access &amp; Licensing</h3>
-                        <p className={styles.miniCardText}>
-                            Proceedings will be published under a Creative Commons Attribution-NonCommercial (CC BY-NC) license, allowing free access for non-commercial use while protecting authors&apos; rights.
-                        </p>
-                    </div>
-
-                    <div className={styles.miniCard} style={{ '--card-accent': 'rgba(212, 175, 55, 0.4)' } as React.CSSProperties} id="ethical-review">
-                        <div className={`${styles.miniCardIcon} ${styles.iconBoxGold}`}>
-                            <CheckCircle className={styles.iconGold} />
-                        </div>
-                        <h3 className={styles.miniCardTitle}>Ethical Review Process</h3>
-                        <p className={styles.miniCardText}>
-                            All submissions undergo an ethical review to ensure compliance with standards on human subjects, animal welfare, and data protection. Authors must provide necessary ethical approval statements where applicable.
-                        </p>
-                    </div>
-
-                    <div className={styles.miniCard} style={{ '--card-accent': 'rgba(239, 68, 68, 0.4)' } as React.CSSProperties} id="author-responsibilities">
-                        <div className={`${styles.miniCardIcon} ${styles.iconBoxRed}`}>
-                            <PenTool className={styles.iconRed} />
-                        </div>
-                        <h3 className={styles.miniCardTitle}>Author Responsibilities &amp; Contributions</h3>
-                        <p className={styles.miniCardText}>
-                            Each listed author must have made a substantial contribution to the conception, design, execution, or interpretation of the study. Contributions should be clearly described in the manuscript.
-                        </p>
-                    </div>
-                </div>
-
             </div>
-
             <Footer />
         </main>
     );

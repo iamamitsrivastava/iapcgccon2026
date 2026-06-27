@@ -71,9 +71,9 @@ export const conference = {
 
   // SECTION 5: KEY DATES
   timeline: [
-    { label: "Early Bird registration closing soon", date: "15th July" },
-    { label: "Abstract Submission Deadline", date: "15th september" },
-    { label: "Nortification for Acceptance( Abstract )", date: "15th October" },
+    { label: "Early Bird registration closing soon", date: "31th July" },
+    { label: "Abstract Submission Begins", date: "15th September" },
+    { label: "Notification for Acceptance (Abstract)", date: "15th October" },
     { label: "Pre-Conference Date", date: "26th November" },
     { label: "Conference Date", date: "27-28th November" },
   ],
@@ -527,13 +527,13 @@ export const conference = {
       "Dr Charvi Mistry",
       "Dr. Kalpita Shringarpure",
       "Ms. Komal Parmar",
+      "Dr. Bhavna Dhakate",
       "Dr. Dhvani Mevada"
     ],
     transportAccommodation: [
       "Dr. Aditya Babaria",
       "Dr. Golak Patra",
       "Dr. Ashish savani",
-      "Dr. Bhavna Dhakate",
       "Dr. Khantil Gohil",
       "Dr. Jimmy Kagathara"
     ],

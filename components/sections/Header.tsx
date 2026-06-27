@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.css';
+import SubmitAbstractModal from '../modals/SubmitAbstractModal';
 
 /* ─────────── SVG icons (no external dependency) ─────────── */
 const ChevronDown = () => (
@@ -47,7 +48,14 @@ const navItems: NavItem[] = [
         ]
     },
     { label: 'THEMES', href: '/#themes' },
-    { label: 'SUBMISSION Guidlines', href: '/resources/publishing-ethics' },
+    { 
+        label: 'Scientific', 
+        href: '/resources/publishing-ethics',
+        children: [
+            { label: 'Scientific schedule', href: '/program' },
+            { label: 'Submit Abstract', href: '#submit-abstract' },
+        ]
+    },
     { label: 'Explore Vadodara', href: '/travel' },
     { label: 'Contact Us', href: '/contact' },
 ];
@@ -59,6 +67,7 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+    const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
 
     const isSolid = variant === 'solid';
 
@@ -152,9 +161,15 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                                             {item.children.map(child => (
                                                 <Link
                                                     key={child.label}
-                                                    href={child.href}
+                                                    href={child.href !== '#submit-abstract' ? child.href : '#'}
                                                     className={`${styles.dropdownLink} ${isActive(child.href) ? styles.active : ''}`}
-                                                    onClick={() => setOpenDropdown(null)}
+                                                    onClick={(e) => {
+                                                        setOpenDropdown(null);
+                                                        if (child.href === '#submit-abstract') {
+                                                            e.preventDefault();
+                                                            setIsSubmitModalOpen(true);
+                                                        }
+                                                    }}
                                                 >
                                                     <span className={styles.dropdownDot} />
                                                     {child.label}
@@ -238,9 +253,15 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                                         {item.children.map(child => (
                                             <Link
                                                 key={child.label}
-                                                href={child.href}
+                                                href={child.href !== '#submit-abstract' ? child.href : '#'}
                                                 className={`${styles.drawerChildLink} ${isActive(child.href) ? styles.active : ''}`}
-                                                onClick={() => setMobileOpen(false)}
+                                                onClick={(e) => {
+                                                    setMobileOpen(false);
+                                                    if (child.href === '#submit-abstract') {
+                                                        e.preventDefault();
+                                                        setIsSubmitModalOpen(true);
+                                                    }
+                                                }}
                                             >
                                                 {child.label}
                                             </Link>
@@ -267,6 +288,10 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                     </div>
                 </nav>
             </aside>
+            <SubmitAbstractModal 
+                isOpen={isSubmitModalOpen} 
+                onClose={() => setIsSubmitModalOpen(false)} 
+            />
         </>
     );
 }
