@@ -1,8 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/sections/Header';
 import Footer from "../../components/sections/Footer";
-import { Landmark, FileText, AlertCircle, Download, Lock } from 'lucide-react';
+import { Landmark, AlertCircle, Lock } from 'lucide-react';
 import styles from './page.module.css';
 
 const VALID_GROUP_CODES = [
@@ -19,6 +20,7 @@ const VALID_GROUP_CODES = [
 ];
 
 export default function RegistrationPage() {
+    const router = useRouter();
     const earlyBirdEnd = new Date('2026-07-31T23:59:59').getTime();
     const lateBirdEnd = new Date('2026-11-26T23:59:59').getTime();
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
@@ -30,6 +32,24 @@ export default function RegistrationPage() {
     const isLateBirdLocked = currentTime <= earlyBirdEnd || currentTime > lateBirdEnd;
     const isSpotLocked = currentTime <= lateBirdEnd;
 
+    // Navigate to registration form with amount + label
+    const openPayment = (
+        e: React.MouseEvent,
+        priceStr: string | undefined,
+        isConf: boolean,
+        locked: boolean,
+        label: string,
+        category: string
+    ) => {
+        e.preventDefault();
+        if (locked || !priceStr) return;
+        const numMatch = priceStr.replace(/,/g, '').match(/\d+/);
+        if (!numMatch) return;
+        let amount = parseInt(numMatch[0]);
+        if (isDiscountApplied && isConf) amount = Math.round(amount * 0.9);
+        router.push(`/registration/form?amount=${amount}&label=${encodeURIComponent(label)}&category=${encodeURIComponent(category)}`);
+    };
+
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentTime(new Date().getTime());
@@ -40,7 +60,7 @@ export default function RegistrationPage() {
     const handleApplyCode = () => {
         const code = groupCode.trim().toUpperCase();
         if (!code) return;
-        
+
         if (!VALID_GROUP_CODES.includes(code)) {
             setCodeMessage({ text: 'Invalid group discount code.', type: 'error' });
             return;
@@ -52,7 +72,6 @@ export default function RegistrationPage() {
             return;
         }
 
-        // Apply discount and mark as used
         usedCodes.push(code);
         localStorage.setItem('used_group_codes', JSON.stringify(usedCodes));
         setIsDiscountApplied(true);
@@ -60,12 +79,16 @@ export default function RegistrationPage() {
         setGroupCode('');
     };
 
+    // Parse rupee string like "₹4000" → number 4000
+    const parseAmount = (priceStr: string): number => {
+        const match = priceStr.replace(/,/g, '').match(/\d+/);
+        return match ? parseInt(match[0]) : 0;
+    };
+
     const renderFee = (priceStr: string | undefined, isConf: boolean) => {
         if (!priceStr) return priceStr;
         if (!isDiscountApplied || !isConf) return priceStr;
-        const numMatch = priceStr.match(/\d+/);
-        if (!numMatch) return priceStr;
-        const num = parseInt(numMatch[0]);
+        const num = parseAmount(priceStr);
         const discounted = Math.round(num * 0.9);
         return (
             <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
@@ -234,11 +257,12 @@ export default function RegistrationPage() {
                                                 {renderCategory(item.category)}
                                             </div>
                                         </td>
+
                                         <td data-label="Early Bird Conf" className={styles.attendingCol}>
                                             <a
                                                 href="#"
                                                 className={`${styles.feeGridButton} ${isEarlyBirdLocked ? styles.lockedButton : ''}`}
-                                                onClick={(e) => isEarlyBirdLocked && e.preventDefault()}
+                                                onClick={(e) => openPayment(e, item.earlyBird.conf, true, isEarlyBirdLocked, `${item.category} — Early Bird Conference`, item.category)}
                                                 style={isEarlyBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                             >
                                                 <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
@@ -247,12 +271,13 @@ export default function RegistrationPage() {
                                                 </span>
                                             </a>
                                         </td>
+
                                         <td data-label="Early Bird Pre-Conf" className={styles.attendingCol} style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
                                             {item.earlyBird.preConf ? (
                                                 <a
                                                     href="#"
                                                     className={`${styles.feeGridButton} ${isEarlyBirdLocked ? styles.lockedButton : ''}`}
-                                                    onClick={(e) => isEarlyBirdLocked && e.preventDefault()}
+                                                    onClick={(e) => openPayment(e, item.earlyBird.preConf, false, isEarlyBirdLocked, `${item.category} — Early Bird Pre-Conference`, item.category)}
                                                     style={isEarlyBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                                 >
                                                     <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
@@ -264,11 +289,12 @@ export default function RegistrationPage() {
                                                 <span style={{ display: 'flex', justifyContent: 'center', opacity: 0.3, fontWeight: 'bold' }}>-</span>
                                             )}
                                         </td>
+
                                         <td data-label="Late Bird Conf" className={styles.attendingCol}>
                                             <a
                                                 href="#"
                                                 className={`${styles.feeGridButton} ${isLateBirdLocked ? styles.lockedButton : ''}`}
-                                                onClick={(e) => isLateBirdLocked && e.preventDefault()}
+                                                onClick={(e) => openPayment(e, item.lateBird.conf, true, isLateBirdLocked, `${item.category} — Late Bird Conference`, item.category)}
                                                 style={isLateBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                             >
                                                 <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
@@ -277,12 +303,13 @@ export default function RegistrationPage() {
                                                 </span>
                                             </a>
                                         </td>
+
                                         <td data-label="Late Bird Pre-Conf" className={styles.attendingCol}>
                                             {item.lateBird.preConf ? (
                                                 <a
                                                     href="#"
                                                     className={`${styles.feeGridButton} ${isLateBirdLocked ? styles.lockedButton : ''}`}
-                                                    onClick={(e) => isLateBirdLocked && e.preventDefault()}
+                                                    onClick={(e) => openPayment(e, item.lateBird.preConf, false, isLateBirdLocked, `${item.category} — Late Bird Pre-Conference`, item.category)}
                                                     style={isLateBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                                 >
                                                     <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
@@ -294,11 +321,12 @@ export default function RegistrationPage() {
                                                 <span style={{ display: 'flex', justifyContent: 'center', opacity: 0.3, fontWeight: 'bold' }}>-</span>
                                             )}
                                         </td>
+
                                         <td data-label="Spot" className={styles.contributorCol}>
                                             <a
                                                 href="#"
                                                 className={`${styles.feeGridButton} ${isSpotLocked ? styles.lockedButton : ''}`}
-                                                onClick={(e) => isSpotLocked && e.preventDefault()}
+                                                onClick={(e) => openPayment(e, item.spot, false, isSpotLocked, `${item.category} — Spot`, item.category)}
                                                 style={isSpotLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                             >
                                                 <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -340,8 +368,8 @@ export default function RegistrationPage() {
                                 <strong style={{ color: '#ef4444' }}>Note: One code is valid once.</strong>
                             </p>
                             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     placeholder="Enter Group Code"
                                     value={groupCode}
                                     onChange={(e) => setGroupCode(e.target.value.toUpperCase())}
@@ -355,7 +383,7 @@ export default function RegistrationPage() {
                                         textTransform: 'uppercase'
                                     }}
                                 />
-                                <button 
+                                <button
                                     onClick={handleApplyCode}
                                     style={{
                                         padding: '0.75rem 1.5rem',

@@ -456,7 +456,7 @@ export const conference = {
         name: "Dr Niraj Bharadva",
         role: "Organizing Chairperson",
         affiliation: "Professor &Head, Dept. of Community medicine",
-        image: "/images/niraj-bharadva.png"
+        image: "/images/niraj-bharadva-v2.jpg"
       },
       {
         name: "Dr. Utkarsh Shah",
@@ -472,6 +472,14 @@ export const conference = {
         role: "Organizing Secretary",
         affiliation: "Associate Professor, Dept. of Community medicine", // Assuming Parul University
         image: "/images/prashant-dave.jpg"
+      }
+    ],
+    vicePresidents: [
+      {
+        name: "Dr. Geetika Patel",
+        role: "Conference Director",
+        affiliation: "Vice President , Parul University",
+        image: "/images/geetika-patel.jpg"
       }
     ],
     advisory: [

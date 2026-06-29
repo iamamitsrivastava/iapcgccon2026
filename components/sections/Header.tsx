@@ -48,11 +48,12 @@ const navItems: NavItem[] = [
         ]
     },
     { label: 'THEMES', href: '/#themes' },
-    { 
-        label: 'Scientific', 
+    {
+        label: 'Scientific',
         href: '/resources/publishing-ethics',
         children: [
-            { label: 'Scientific schedule', href: '/program' },
+            { label: 'Scientific Schedule', href: '/program' },
+            { label: 'Submission Guidlines', href: '/resources/publishing-ethics' },
             { label: 'Submit Abstract', href: '#submit-abstract' },
         ]
     },
@@ -288,9 +289,9 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                     </div>
                 </nav>
             </aside>
-            <SubmitAbstractModal 
-                isOpen={isSubmitModalOpen} 
-                onClose={() => setIsSubmitModalOpen(false)} 
+            <SubmitAbstractModal
+                isOpen={isSubmitModalOpen}
+                onClose={() => setIsSubmitModalOpen(false)}
             />
         </>
     );

@@ -52,12 +52,12 @@ const workshops = [
     {
         id: 'C',
         icon: <FileText size={26} />,
-        title: 'Scientific Article Writing and SUBMISSION Guidlines',
+        title: 'Scientific Article Writing and Submission  Guidlines',
         color: '#D4AF37',
         duration: 'Half Day (9:00 AM – 1:00 PM)',
         capacity: '50 participants',
         description:
-            'Master the art of crafting high-quality scientific manuscripts, navigating peer review, and understanding SUBMISSION Guidlines — including plagiarism, authorship criteria, and predatory journals.',
+            'Master the art of crafting high-quality scientific manuscripts, navigating peer review, and understanding Submission  Guidlines — including plagiarism, authorship criteria, and predatory journals.',
         outcomes: [
             'Structuring IMRaD format manuscripts',
             'Writing effective abstracts & titles',
@@ -167,79 +167,57 @@ export default function PreConferencePage() {
                             <span>Day 0</span>
                         </div>
                         <div>
-                            <h2 className="program-section-title">Workshop Details</h2>
-                            <p className="program-section-date">26 November 2026 · PIMSR Skills Lab & Conference Halls</p>
+                            <h2 className="program-section-title">Pre-Conference Workshops</h2>
+                            <p className="program-section-date">26 November 2026 · PIMSR Skills Lab &amp; Conference Halls</p>
                         </div>
                     </div>
 
-                    <p className="program-section-intro">
-                        Six intensive workshops are designed for limited participants to ensure maximum interaction and hands-on learning. Separate registration is required.
-                    </p>
-
-                    {/* Workshop Cards */}
-                    <div className="workshops-grid">
-                        {workshops.map((ws, i) => (
-                            <div key={ws.id} className="workshop-card" style={{ animationDelay: `${i * 0.08}s` }}>
-
-                                {/* Header row */}
-                                <div className="workshop-header">
-                                    <div className="workshop-icon">
-                                        {ws.icon}
-                                    </div>
-                                    <span className="workshop-num">
-                                        Workshop {ws.id}
-                                    </span>
-                                </div>
-
-                                <h3 className="workshop-title">{ws.title}</h3>
-                                <p className="workshop-desc">{ws.description}</p>
-
-                                {/* Meta pills */}
-                                <div className="workshop-pills">
-                                    <span className="pill">
-                                        <Clock size={12} />{ws.duration}
-                                    </span>
-                                    <span className="pill">
-                                        <Users size={12} />{ws.capacity}
-                                    </span>
-                                </div>
-
-                                {/* Learning outcomes */}
-                                <div className="workshop-outcomes">
-                                    <p className="outcomes-label">Learning Outcomes</p>
-                                    <ul>
-                                        {ws.outcomes.map((o, oi) => (
-                                            <li key={oi}>
-                                                <ChevronRight size={13} style={{ color: ws.color, flexShrink: 0 }} />
-                                                <span>{o}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                {/* Footer */}
-                                <div className="workshop-footer">
-                                    <span className="workshop-facilitator">
-                                        <Brain size={13} style={{ color: ws.color }} />{ws.facilitator}
-                                    </span>
-                                    <span className="workshop-mode">{ws.mode}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Workshop  Note */}
-                    <div className="workshop-note">
-                        <div className="workshop-note-icon">📋</div>
-                        <div>
-                            <p className="workshop-note-title">Workshop Registration</p>
-                            <p className="workshop-note-body">
-                                Pre-conference workshops require separate registration. Seats are limited. Early registration is encouraged. Workshop fee is included in delegate registration packages.
-                            </p>
+                    {/* Coming Soon */}
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '5rem 2rem',
+                        textAlign: 'center',
+                        background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
+                        borderRadius: '16px',
+                        border: '1px dashed #D4AF37',
+                        marginTop: '2rem',
+                    }}>
+                        <div style={{
+                            width: '80px',
+                            height: '80px',
+                            borderRadius: '50%',
+                            background: 'rgba(212,175,55,0.15)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginBottom: '1.5rem',
+                            fontSize: '2.5rem',
+                        }}>
+                            🕐
                         </div>
+                        <h3 style={{
+                            fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
+                            fontWeight: 800,
+                            color: '#0F172A',
+                            marginBottom: '0.75rem',
+                        }}>
+                            Will Be Announced Soon
+                        </h3>
+                        <p style={{
+                            color: '#64748b',
+                            fontSize: '1rem',
+                            maxWidth: '480px',
+                            lineHeight: 1.7,
+                        }}>
+                            Workshop details are currently being finalized. Please check back later for the complete schedule and registration information.
+                        </p>
                     </div>
                 </div>
             </section>
+
 
             {/* ── Register CTA ── */}
             <section style={{ background: '#0a1124', padding: '4rem 0', borderTop: '1px solid rgba(212,175,55,0.2)' }}>

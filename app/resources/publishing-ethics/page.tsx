@@ -41,7 +41,7 @@ export default function PublishingEthicsPage() {
                     </p>
                 </div>
                 <h1 className={styles.title}>
-                    SUBMISSION <span className={styles.titleAccent}>Guidlines</span>
+                    Submission <span className={styles.titleAccent}>Guidlines</span>
                 </h1>
             </section>
 
@@ -102,23 +102,43 @@ export default function PublishingEthicsPage() {
                         }}>
                             Prepare your 10-12 slides using official conference PPT format (Times new roman). Ensure your presentation fits within the allocated time slot.
                         </p>
-                        <a href="https://drive.google.com/file/d/1SMEuw0oHrfG33vPIAWx2GFEK5eJJQl-R/view?usp=drive_link" target="_blank" rel="noopener noreferrer" style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.6rem',
-                            background: 'linear-gradient(135deg, #FACC15, #d4af37)',
-                            color: '#0B1C35',
-                            padding: '0.85rem 1.5rem',
-                            borderRadius: '0.5rem',
-                            fontWeight: '700',
-                            fontSize: '0.9rem',
-                            textDecoration: 'none',
-                            transition: 'all 0.3s ease',
-                            width: 'fit-content'
-                        }}>
-                            <Download size={18} />
-                            Download PPT Template
-                        </a>
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+                            <a href="https://drive.google.com/file/d/1SMEuw0oHrfG33vPIAWx2GFEK5eJJQl-R/view?usp=drive_link" target="_blank" rel="noopener noreferrer" style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.6rem',
+                                background: 'linear-gradient(135deg, #FACC15, #d4af37)',
+                                color: '#0B1C35',
+                                padding: '0.85rem 1.5rem',
+                                borderRadius: '0.5rem',
+                                fontWeight: '700',
+                                fontSize: '0.9rem',
+                                textDecoration: 'none',
+                                transition: 'all 0.3s ease',
+                                width: 'fit-content'
+                            }}>
+                                <Download size={18} />
+                                Download Template
+                            </a>
+                            <a href="/resources/publishing-ethics" target="_blank" rel="noopener noreferrer" style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.6rem',
+                                background: 'transparent',
+                                color: '#FACC15',
+                                padding: '0.85rem 1.5rem',
+                                borderRadius: '0.5rem',
+                                fontWeight: '700',
+                                fontSize: '0.9rem',
+                                textDecoration: 'none',
+                                border: '2px solid #FACC15',
+                                transition: 'all 0.3s ease',
+                                width: 'fit-content'
+                            }}>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                View Guidelines
+                            </a>
+                        </div>
                     </div>
 
                     {/* Poster Presentation Card */}
