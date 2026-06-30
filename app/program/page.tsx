@@ -164,6 +164,46 @@ export default function ProgramPage() {
                 </div>
             </div>
 
+            {/* ── Venue Details from About Parul University ── */}
+            <div className="container" style={{ marginBottom: '4rem', marginTop: '2rem' }}>
+                <div style={{
+                    background: '#fff',
+                    borderRadius: '20px',
+                    padding: '2.5rem',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                    border: '1px solid rgba(0,0,0,0.05)'
+                }}>
+                    <h3 style={{ fontSize: '1.4rem', color: 'var(--color-primary)', marginBottom: '1.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <MapPin size={22} style={{ color: '#D4AF37' }} />
+                        Venue Overview
+                    </h3>
+                    
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '2rem' }}>
+                        <span style={{ padding: '0.6rem 1.2rem', background: '#f8fafc', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '100px', fontSize: '0.95rem', color: 'var(--text-color)', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}><strong>Main Inauguration:</strong>&nbsp;University Auditorium</span>
+                        <span style={{ padding: '0.6rem 1.2rem', background: '#f8fafc', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '100px', fontSize: '0.95rem', color: 'var(--text-color)', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}><strong>Scientific Sessions:</strong>&nbsp;Seminar Hall 1, Seminar Hall 2</span>
+                        <span style={{ padding: '0.6rem 1.2rem', background: '#f8fafc', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '100px', fontSize: '0.95rem', color: 'var(--text-color)', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}><strong>Workshops:</strong>&nbsp;Skill Labs</span>
+                        <span style={{ padding: '0.6rem 1.2rem', background: '#f8fafc', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '100px', fontSize: '0.95rem', color: 'var(--text-color)', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}><strong>Prayas Hall:</strong>&nbsp;Poster &amp; Dining</span>
+                        <span style={{ padding: '0.6rem 1.2rem', background: '#f8fafc', border: '1px solid rgba(0,0,0,0.05)', borderRadius: '100px', fontSize: '0.95rem', color: 'var(--text-color)', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}><strong>Central Foyer:</strong>&nbsp;PIMSR Parking</span>
+                    </div>
+
+                    <a
+                        href="https://www.google.com/maps/place/Parul+University,+Limda,+Ta.+Waghodiya,+Vadodara,+Gujarat+391760/@22.2930981,73.2242498,17z"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '1rem', padding: '1rem 1.5rem', background: '#fdfaf0', border: '1px solid rgba(212, 175, 55, 0.2)', borderRadius: '12px', textDecoration: 'none', transition: 'all 0.3s ease', boxShadow: '0 4px 12px rgba(212, 175, 55, 0.08)' }}
+                    >
+                        <div style={{ width: '40px', height: '40px', background: '#fff', color: '#D4AF37', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+                            <MapPin size={18} />
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#D4AF37', letterSpacing: '0.05em' }}>CONFERENCE VENUE</span>
+                            <span style={{ fontSize: '1rem', fontWeight: 600, color: '#1e293b' }}>Parul University, Vadodara, Gujarat, India</span>
+                        </div>
+                        <ChevronRight size={16} style={{ color: '#D4AF37' }} />
+                    </a>
+                </div>
+            </div>
+
             {/* ── Pre-Conference Workshops Section ── */}
             <section className="program-section" id="workshops">
                 <div className="container">
@@ -179,71 +219,17 @@ export default function ProgramPage() {
                         </div>
                     </div>
 
-                    <p className="program-section-intro">
-                        Six intensive, skill-building workshops led by domain experts. Each workshop is designed for limited participants to ensure maximum interaction and hands-on learning. Separate registration required.
-                    </p>
-
-                    {/* Workshop Cards */}
-                    <div className="workshops-grid">
-                        {workshops.map((ws, i) => (
-                            <div key={ws.id} className="workshop-card" style={{ '--accent': ws.color, animationDelay: `${i * 0.08}s` } as React.CSSProperties}>
-
-                                {/* Header row */}
-                                <div className="workshop-header">
-                                    <div className="workshop-icon">
-                                        {ws.icon}
-                                    </div>
-                                    <span className="workshop-num">
-                                        Workshop {String(ws.id).padStart(2, '0')}
-                                    </span>
-                                </div>
-
-                                <h3 className="workshop-title">{ws.title}</h3>
-                                <p className="workshop-desc">{ws.description}</p>
-
-                                {/* Meta pills */}
-                                <div className="workshop-pills">
-                                    <span className="pill">
-                                        <Clock size={12} />{ws.duration}
-                                    </span>
-                                    <span className="pill">
-                                        <Users size={12} />{ws.capacity}
-                                    </span>
-                                </div>
-
-                                {/* Learning outcomes */}
-                                <div className="workshop-outcomes">
-                                    <p className="outcomes-label">Learning Outcomes</p>
-                                    <ul>
-                                        {ws.outcomes.map((o, oi) => (
-                                            <li key={oi}>
-                                                <ChevronRight size={13} style={{ color: ws.color, flexShrink: 0 }} />
-                                                <span>{o}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                {/* Footer */}
-                                <div className="workshop-footer">
-                                    <span className="workshop-facilitator">
-                                        <Brain size={13} style={{ color: ws.color }} />{ws.facilitator}
-                                    </span>
-                                    <span className="workshop-mode">{ws.mode}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Workshop  Note */}
-                    <div className="workshop-note">
-                        <div className="workshop-note-icon">📋</div>
-                        <div>
-                            <p className="workshop-note-title">Workshop Registration</p>
-                            <p className="workshop-note-body">
-                                Pre-conference workshops require separate registration. Seats are limited. Early registration is encouraged. Workshop fee is included in delegate registration packages.
-                            </p>
-                        </div>
+                    <div style={{ padding: '6rem 2rem', textAlign: 'center', background: 'rgba(212, 175, 55, 0.05)', borderRadius: '16px', border: '1px solid rgba(212, 175, 55, 0.2)', marginTop: '2rem' }}>
+                        <h3 style={{ 
+                            fontSize: '2.5rem', 
+                            color: '#D4AF37', 
+                            fontWeight: 700, 
+                            textTransform: 'uppercase',
+                            letterSpacing: '3px',
+                            textShadow: '0 0 15px rgba(212, 175, 55, 0.6), 0 0 30px rgba(212, 175, 55, 0.4)'
+                        }}>
+                            Will be announced Soon
+                        </h3>
                     </div>
                 </div>
             </section>

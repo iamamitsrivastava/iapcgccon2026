@@ -52,7 +52,7 @@ const navItems: NavItem[] = [
         label: 'Scientific',
         href: '/resources/publishing-ethics',
         children: [
-            { label: 'Scientific Schedule', href: '/program' },
+            { label: 'Scientific Program', href: '/program' },
             { label: 'Submission Guidlines', href: '/resources/publishing-ethics' },
             { label: 'Submit Abstract', href: '#submit-abstract' },
         ]

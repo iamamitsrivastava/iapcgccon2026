@@ -72,7 +72,7 @@ export const conference = {
   // SECTION 5: KEY DATES
   timeline: [
     { label: "Early Bird registration closing soon", date: "31th July" },
-    { label: "Abstract Submission Begins", date: "15th September" },
+    { label: "Abstract Submission Deadline", date: "15th September" },
     { label: "Notification for Acceptance (Abstract)", date: "15th October" },
     { label: "Pre-Conference Date", date: "26th November" },
     { label: "Conference Date", date: "27-28th November" },
@@ -197,11 +197,10 @@ export const conference = {
       { category: "International Delegates", fee: "$ 25" },
     ],
     accountDetails: {
-      bank: "Bank of Baroda",
-      accountName: "Parul University Conference Account",
-      accountNumber: "34560100001234",
-      ifsc: "BARB0PARULX",
-      swift: "BARBINBBXXX",
+      bank: "CENTRAL BANK OF INDIA",
+      accountName: "Parul University / IAPSMGC CON2026 Parul University",
+      accountNumber: "5968757282",
+      ifsc: "CBIN0284063",
     }
   },
 
@@ -225,29 +224,29 @@ export const conference = {
       {
         name: "Dr. Chandresh Pandya",
         role: "Immediate Past President",
-        affiliation: "",
+        affiliation: "Associate Professor\n Baroda Medical College, Vadodara, Gujarat",
         image: "/images/chandresh-pandya.png"
       },
       {
-        name: "Dr Sunil Nayak",
+        name: "Dr. Sunil Nayak",
         role: "President",
-        affiliation: "Professor and Head\nGMERS Medical college, Vadodara",
+        affiliation: "Professor & Head\nGMERS Medical college, Vadodara",
         image: "/images/sunil-nayak-new.png"
       },
       {
         name: "Dr. Darshan Mahyavanshi",
         role: "Vice President",
-        affiliation: "",
+        affiliation: "Medical Superintendent\n Shree Vinoba Bhave Civil Hospital, Silvassa, Dadar & Nagar Haveli",
         image: "/images/darshan-mahyavanshi.png"
       },
       {
-        name: "Dr Raman Damor",
+        name: "Dr. Raman Damor",
         role: "Vice President",
         affiliation: "Associate Professor\nGovernment Medical college, Vadodara",
         image: "/images/raman-damor.jpg"
       },
       {
-        name: "Dr Nilesh Thakor",
+        name: "Dr. Nilesh Thakor",
         role: "Secretory",
         affiliation: "Professor & Head\nGMERS Medical college, Vadnagar",
         image: "/images/nilesh-thakor-new.png"
@@ -255,213 +254,71 @@ export const conference = {
       {
         name: "Dr. Nitin Solanki",
         role: "Joint Secretary",
-        affiliation: "",
+        affiliation: "Professor & Head\nGMERS Medical college, Navsari, Gujarat",
         image: "/images/nitin-solanki.png"
       },
       {
         name: "Dr. Bhavik Rana",
         role: "Treasurer",
-        affiliation: "",
+        affiliation: "Professor & Head\n ESIC Medical College and Hospital, Ahmedabad, Gujarat",
         image: "/images/bhavik-rana.png"
       },
       {
         name: "Dr. Tapaswi Puwar",
         role: "Chief Editor, Healthline",
-        affiliation: "",
+        affiliation: "Professor\n IIPH Ghandinagar, Gujarat",
         image: "/images/tapaswi-puwar.jpg"
       }
     ],
     nationalSpeakers: [
       {
-        name: "Dr Ashok Bhardwaj",
+        name: "Dr. Ashok Bhardwaj",
         role: "past President",
-        affiliation: "IAPSM",
+        affiliation: "Professor Emaeritus\n MM Medical College, Solan, Himachal Pradesh",
         image: "/images/ashok-bhardwaj.png"
       },
       {
-        name: "Dr Atul Kotwal",
+        name: "Dr. Atul Kotwal",
         role: "President",
-        affiliation: "IAPSM",
+        affiliation: "ICMR, New Delhi",
         image: "/images/atul-kotwal.png"
       },
       {
         name: "Dr. Pradeep Kumar",
         role: "President Elect",
-        affiliation: "IAPSM",
+        affiliation: "Professor\n IIPH Ghandinagar, Gujarat",
         image: "/images/pradeep-kumar.png"
       },
       {
         name: "Dr. Darshan Mahyavanshi",
         role: "Vice President",
-        affiliation: "IAPSM",
+        affiliation: "Medical Superintendent\n Shree Vinoba Bhave Civil Hospital, Silvassa, Dadar & Nagar Haveli",
         image: "/images/darshan-mahyavanshi.png"
       },
       {
         name: "Dr. Manish Kumar Singh",
         role: "Secretary General",
-        affiliation: "IAPSM",
-        image: "/images/manish-kumar-singh.jpg"
+        affiliation: "Associate Professor\n Ram Manohar Lohia Hospital, New Delhi",
+        image: "/images/manish-kumar-singh-v2.png"
       },
       {
         name: "Dr. Pankaj Bhardwaj",
         role: "Chief Editor, IJCM",
-        affiliation: "IAPSM",
+        affiliation: "Director\n ICMR-NIHR, Jodhpur, Rajasthan",
         image: "/images/pankaj-bhardwaj.png"
-      }
-    ],
-    nationalAdvisory: [
-      {
-        name: "Shri Ram Madhav",
-        role: "President, India Foundation",
-        details: "Ram Madhav is a prominent Indian political thinker, strategist, and leader associated with the Bharatiya Janata Party (BJP) and previously with the Rashtriya Swayamsevak Sangh (RSS). He is known for his deep understanding of national security, foreign policy, and political strategy.\n\nBefore entering active politics, he served as a senior functionary in the RSS, where he played a key role in shaping ideological and organizational strategies.",
-        image: "/images/ram-madhav-new.jpg"
-      },
-      {
-        name: "Dr. Hemang Joshi",
-        role: "MP",
-        affiliation: "Lok Sabha, Vadodara",
-        image: "/images/hemang-joshi.jpg"
-      },
-      {
-        name: "Prof. Yogesh Singh",
-        role: "AICTE Chairman",
-        affiliation: "Delhi University",
-        image: "/images/yogesh-singh.jpg"
-      },
-      {
-        name: "Prof. Bhagwati Prakash Sharma",
-        role: "Vice Chancellor",
-        affiliation: "Pacific Academy of Higher Education and Research, Udaipur",
-        image: "/images/bhagwati-prakash-sharma.jpg"
-      },
-      {
-        name: "Dr. Jigar Inamdar",
-        role: "Chairman",
-        affiliation: "Ramanujan College, DU, University, Delhi",
-        image: "/images/jigar-inamdar.png"
-      },
-      {
-        name: "Dr. Rajan Welukar",
-        role: "Vice Chancellor",
-        affiliation: "ATLAS SkillTech University",
-        image: "/images/rajan-welukar.jpg"
-      },
-      {
-        name: "Prof. Bhalchandra Mahadeo Bhanage",
-        role: "Vice Chancellor",
-        affiliation: "MS University, Baroda",
-        image: "/images/bhalchandra.png"
-      },
-      {
-        name: "Dr. Krishna Kant Dave",
-        role: "Vice Chancellor",
-        affiliation: "Bahra University",
-        image: "/images/krishna-kant-dave.jpg"
-      },
-      {
-        name: "Prof. Suresh Kumar Agarwal",
-        role: "Vice Chancellor",
-        affiliation: "Maharshi Dayanand Saraswati University",
-        image: "/images/suresh-kumar-agarwal.png"
-      },
-      {
-        name: "Prof. Lajwanti Chatani",
-        role: "Former Head of Political Science",
-        affiliation: "Convenor Contemporary Centre On Political Theory, M.S. University, Vadodara",
-        image: "/images/lajwanti-chatani-new.png"
-      },
-      {
-        name: "Prof. Vijay Chechi",
-        role: "Dean",
-        affiliation: "School of Education, Lovely Professional University, Punjab",
-        image: "/images/vijay-chechi.png"
-      },
-      {
-        name: "Dr. Krishan Kumar Soni",
-        role: "Associate Professor",
-        affiliation: "Professor. Department: PSYCHIATRY",
-        image: "/images/krishan-kumar-soni-v2.png"
-      },
-      {
-        name: "Dr. Krishna Mishra",
-        role: "Associate Professor",
-        affiliation: "Associate Professor (Clinical Psychology) at National Forensic Sciences University.",
-        image: "/images/krishna-mishra.jpg"
-      },
-      {
-        name: "Dr. Akash Deep Muni",
-        role: "Dean",
-        affiliation: "Amity University, Kolkata",
-        image: "/images/akash-deep-muni-v3.png"
-      },
-      {
-        name: "Dr. Hitesh Raviya",
-        role: "Hod, Department of English",
-        affiliation: "Department of English, M.S. University, Vadodara",
-        image: "/images/hitesh-raviya.png"
-      },
-      {
-        name: "Dr. Manu Sharma",
-        role: "HOD, Department of History",
-        affiliation: "GNDU, Amritsar",
-        image: "/images/manu-sharma-v4.jpg"
-      },
-      {
-        name: "Prof. Ajoy Batta",
-        role: "CoS and HoD",
-        affiliation: "Department of English, Lovely Professional University",
-        image: "/images/prof-ajoy-batta.jpg"
-      },
-      {
-        name: "Prof. Maheswar Satpathy",
-        role: "Associate Professor",
-        affiliation: "Global Consortium of Global Health Actors [Global-ALT]",
-        image: "/images/maheswar-satpathy-v5.jpg"
-      },
-      {
-        name: "Prof. Parimal H. Vyas",
-        role: "Vice Chancellor",
-        affiliation: "AURO University",
-        image: "/images/professor-parimal.png"
-      },
-    ],
-    internationalAdvisory: [
-      {
-        name: "Dr. J Anitha Menon",
-        role: "Head of School - Psychological Sciences",
-        affiliation: "Curtin University, Dubai",
-        image: "/images/anitha-menon.jpg"
-      },
-      {
-        name: "Dr. Lobsang Sangay",
-        role: "Sikyong (Former President) & Senior Visiting Fellow",
-        affiliation: "Central Tibetan Administration & Harvard Law School",
-        image: "/images/lobsang-sangay.jpg"
-      },
-      {
-        name: "Dr. Komal Chawla Verma",
-        role: "Higher Education Leader & Mental Health Expert",
-        affiliation: "Bahrain",
-        image: "/images/komal-verma.jpg"
-      },
-      {
-        name: "Dr. Al-ryanne Gatcho, PhD",
-        role: "Associate Professor",
-        affiliation: "Hunan Institute of Science and Technology, China",
-        image: "/images/al-ryanne-gatcho-v3.png"
       }
     ],
     chiefPatrons: [
       {
-        name: "Dr Niraj Bharadva",
+        name: "Dr. Niraj Bharadva",
         role: "Organizing Chairperson",
-        affiliation: "Professor &Head, Dept. of Community medicine",
+        affiliation: "Professor &Head\n Dept. of Community medicine",
         image: "/images/niraj-bharadva-v2.jpg"
       },
       {
         name: "Dr. Utkarsh Shah",
         role: "Co-Chairperson",
-        affiliation: "Professor, Dept. of Community medicine",
+        affiliation: "Professor\n Dept. of Community medicine",
         image: "/images/utkarsh-shah-new.jpg"
       }
     ],
@@ -470,7 +327,7 @@ export const conference = {
       {
         name: "Dr. Prashant Dave",
         role: "Organizing Secretary",
-        affiliation: "Associate Professor, Dept. of Community medicine", // Assuming Parul University
+        affiliation: "Associate Professor\n Dept. of Community medicine", // Assuming Parul University
         image: "/images/prashant-dave.jpg"
       }
     ],
@@ -478,15 +335,15 @@ export const conference = {
       {
         name: "Dr. Geetika Patel",
         role: "Conference Director",
-        affiliation: "Vice President , Parul University",
+        affiliation: "Vice President \n Parul University",
         image: "/images/geetika-patel.jpg"
       }
     ],
     advisory: [
-      "Dr A.M Kadri",
-      "Dr Bhavesh Modi",
-      "Dr Deepak Sakxena",
-      "Dr Narayan Gaonkar",
+      "Dr. A.M Kadri",
+      "Dr. Bhavesh Modi",
+      "Dr. Deepak Sakxena",
+      "Dr. Narayan Gaonkar",
       "Dr. Bharat Patel",
       "Dr. Jivraj Damor",
       "Dr. Sunil Nayak",

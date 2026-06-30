@@ -14,7 +14,8 @@ import {
     Globe,
     Download,
     Mail,
-    ChevronRight
+    ChevronRight,
+    Trophy
 } from 'lucide-react';
 
 export default function PublishingEthicsPage() {
@@ -120,7 +121,7 @@ export default function PublishingEthicsPage() {
                                 <Download size={18} />
                                 Download Template
                             </a>
-                            <a href="/resources/publishing-ethics" target="_blank" rel="noopener noreferrer" style={{
+                            <a href="/Oral_Presentation_Guidelines.pdf" target="_blank" rel="noopener noreferrer" style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '0.6rem',
@@ -186,7 +187,7 @@ export default function PublishingEthicsPage() {
                             Follow the guidelines to prepare your poster for an effective presentation. The size of poster is 3 &times; 4 feet.
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                            <a href="https://drive.google.com/file/d/1zODvlUzggUUGZPiHsLYX4m3vG8pDYqAm/view?usp=sharing" target="_blank" rel="noopener noreferrer" style={{
+                            <a href="/Poster_Presentation_Template.pdf" target="_blank" rel="noopener noreferrer" style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '0.6rem',
@@ -203,12 +204,12 @@ export default function PublishingEthicsPage() {
                                 <Download size={18} />
                                 Download Template
                             </a>
-                            <a href="/images/poster-guidelines.png" target="_blank" rel="noopener noreferrer" style={{
+                            <a href="/Poster_Presentation_Guidelines.pdf" target="_blank" rel="noopener noreferrer" style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '0.6rem',
                                 background: 'transparent',
-                                border: '1px solid #FACC15',
+                                border: '2px solid #FACC15',
                                 color: '#FACC15',
                                 padding: '0.85rem 1.5rem',
                                 borderRadius: '0.5rem',
@@ -218,7 +219,7 @@ export default function PublishingEthicsPage() {
                                 transition: 'all 0.3s ease',
                                 width: 'fit-content'
                             }}>
-                                <FileText size={18} />
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                 View Guidelines
                             </a>
                         </div>
@@ -243,6 +244,57 @@ export default function PublishingEthicsPage() {
                         <Download size={22} />
                         DOWNLOAD AUTHOR GUIDELINES
                     </a>
+                </div>
+
+                {/* HM Patel Award Session */}
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4rem' }}>
+                    <div style={{
+                        background: 'linear-gradient(145deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%)',
+                        borderRadius: '1rem',
+                        padding: '2.5rem 2.5rem',
+                        position: 'relative',
+                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        borderTop: '4px solid #FACC15',
+                        color: 'white',
+                        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
+                        maxWidth: '800px',
+                        width: '100%'
+                    }}>
+                        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+                            <div style={{
+                                width: '4rem',
+                                height: '4rem',
+                                borderRadius: '50%',
+                                backgroundColor: 'rgba(250, 204, 21, 0.1)',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginBottom: '1rem',
+                                border: '1px solid rgba(250, 204, 21, 0.2)'
+                            }}>
+                                <Trophy color="#FACC15" size={28} />
+                            </div>
+                            <h3 style={{
+                                fontSize: '1.6rem',
+                                fontWeight: '800',
+                                color: 'white',
+                                fontFamily: 'var(--font-heading)',
+                                marginBottom: '0.5rem'
+                            }}>HM Patel Award Session</h3>
+                        </div>
+                        <ul style={{
+                            color: '#e2e8f0',
+                            fontSize: '1rem',
+                            lineHeight: '1.7',
+                            paddingLeft: '1.5rem',
+                            marginBottom: '0'
+                        }}>
+                            <li style={{ marginBottom: '0.75rem', listStyleType: 'disc' }}>This prestigious session will include the oral presentations selected by the scientific committee as per the criteria of the H M Patel session; a panel of judges will decide the winners.</li>
+                            <li style={{ marginBottom: '0.75rem', listStyleType: 'disc' }}>The authors of all presentations selected for this award session will be informed in advance through e-mail.</li>
+                            <li style={{ marginBottom: '0.75rem', listStyleType: 'disc' }}>Format follows the Oral Presentation guidelines above unless the committee specifies otherwise.</li>
+                            <li style={{ marginBottom: '0', listStyleType: 'disc' }}>The presenting authors of all selected papers for this session must submit an undertaking regarding their age, designation, originality of the research work (not being presented or published in part or toto elsewhere), and the contribution of the presenting author.</li>
+                        </ul>
+                    </div>
                 </div>
 
                 {/* ── Quick Navigation ── */}

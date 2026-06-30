@@ -14,13 +14,31 @@ export function Venue() {
     ];
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    const deptImages = [
+        "/images/dept-1.png",
+        "/images/dept-2.png",
+        "/images/dept-3.jpg",
+        "/images/dept-4.jpg",
+        "/images/dept-5.jpg",
+        "/images/dept-6.jpg",
+        "/images/dept-7.jpg",
+    ];
+    const [deptIndex, setDeptIndex] = useState(0);
+
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex: number) => (prevIndex + 1) % images.length);
         }, 5000);
 
-        return () => clearInterval(interval);
-    }, [images.length]);
+        const deptInterval = setInterval(() => {
+            setDeptIndex((prevIndex: number) => (prevIndex + 1) % deptImages.length);
+        }, 4000);
+
+        return () => {
+            clearInterval(interval);
+            clearInterval(deptInterval);
+        };
+    }, [images.length, deptImages.length]);
 
     return (
         <section className={styles.venue} id="about-parul">
@@ -53,32 +71,6 @@ export function Venue() {
                         <p className={styles.bodyText}>
                             Recognized for its world-class infrastructure, industry-aligned curriculum, and outstanding placement records, Parul University houses state-of-the-art research facilities, dedicated innovation and incubation centers, and a diverse range of disciplines across multiple faculties. These include the Faculty of Engineering and Technology, Faculty of Management Studies, Faculty of Applied Sciences, Faculty of Computer Science and Applications, Faculty of Pharmacy, Faculty of Medicine, Faculty of Nursing, Faculty of Architecture and Planning, Faculty of Law, Faculty of Liberal Arts, Faculty of Design, Faculty of Commerce, Faculty of Agriculture, and Faculty of Hospitality and Tourism Management, creating a multidisciplinary academic ecosystem that encourages innovation, research, and holistic learning.
                         </p>
-
-                        {/* Venue details */}
-                        <div className={styles.featureChips}>
-                            <span className={styles.chip}><strong>Main Inauguration:</strong>&nbsp;University Auditorium</span>
-                            <span className={styles.chip}><strong>Scientific Sessions:</strong>&nbsp;Seminar Hall 1, Seminar Hall 2</span>
-                            <span className={styles.chip}><strong>Workshops:</strong>&nbsp;Skill Labs</span>
-                            <span className={styles.chip}><strong>Prayas Hall:</strong>&nbsp;Poster &amp; Dining</span>
-                            <span className={styles.chip}><strong>Central Foyer:</strong>&nbsp;PIMSR Parking</span>
-                        </div>
-
-                        {/* Location */}
-                        <a
-                            href="https://www.google.com/maps/place/Parul+University,+Limda,+Ta.+Waghodiya,+Vadodara,+Gujarat+391760/@22.2930981,73.2242498,17z"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.locationLink}
-                        >
-                            <div className={styles.locationIcon}>
-                                <MapPin size={18} />
-                            </div>
-                            <div className={styles.locationInfo}>
-                                <span className={styles.locationLabel}>CONFERENCE VENUE</span>
-                                <span className={styles.locationText}>Parul University, Vadodara, Gujarat, India</span>
-                            </div>
-                            <ChevronRight size={16} className={styles.locationArrow} />
-                        </a>
                     </div>
 
                     {/* Image & Badge Side */}
@@ -153,6 +145,51 @@ export function Venue() {
                         </div>
                     </div>{/* end imageSection */}
                 </div>{/* end contentGrid */}
+
+                {/* ── About the Department ── */}
+                <div className={styles.sectionHeader} style={{ marginTop: '5rem' }}>
+                    <span className={styles.sectionTag}>
+                        <Building2 size={14} />
+                        Department of Community Medicine
+                    </span>
+                    <h2 className={styles.sectionTitle}>About the Department</h2>
+                    <div className={styles.titleDivider}>
+                        <span className={styles.dividerLine}></span>
+                        <span className={styles.dividerDot}></span>
+                        <span className={styles.dividerLine}></span>
+                    </div>
+                </div>
+
+                <div className={styles.contentGrid}>
+                    <div className={styles.textContent}>
+                        <p className={styles.bodyText}>
+                            The Department of Community Medicine, Parul Institute of Medical Sciences &amp; Research, Parul University, is dedicated to advancing public health through excellence in medical education, research, and community service. The department provides competency-based undergraduate and postgraduate training while promoting evidence-based public health practice and preventive healthcare.
+                        </p>
+                        <p className={styles.bodyText}>
+                            With a strong emphasis on academic excellence and community engagement, the department regularly organizes continuing medical education programmes, workshops, seminars, field visits, and health awareness initiatives. The department actively promotes research, community-based learning, and public health practice through field visits, outreach programmes, health awareness campaigns, collaborations with public health institutions, and participation in national health programmes. Through these efforts, it continues to contribute towards strengthening public health systems and developing competent public health professionals.
+                        </p>
+                    </div>
+
+                    <div className={styles.imageSection} style={{ padding: 0 }}>
+                        <div style={{ position: 'relative', width: '100%', height: '450px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                            {deptImages.map((src, index) => (
+                                <Image
+                                    key={index}
+                                    src={src}
+                                    alt={`Department Image ${index + 1}`}
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    style={{
+                                        objectFit: 'cover',
+                                        opacity: deptIndex === index ? 1 : 0,
+                                        transition: 'opacity 1s ease-in-out',
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
     );

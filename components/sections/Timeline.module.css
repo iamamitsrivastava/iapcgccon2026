@@ -1,16 +1,9 @@
 .timelineSection {
     background: #000;
     /* Deep Black */
-    background-image:
-        linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)),
-        url('/images/vadodara-night-hq.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     color: white;
     position: relative;
     overflow: hidden;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
 }
 
 /* Optional animated overlay */

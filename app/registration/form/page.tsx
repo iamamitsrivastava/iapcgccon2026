@@ -5,7 +5,7 @@ import Header from '@/components/sections/Header';
 import Footer from '@/components/sections/Footer';
 import { Upload, CheckCircle, Copy, ChevronRight, AlertCircle, Loader2 } from 'lucide-react';
 
-const UPI_ID = '8077213785@superyes';
+const UPI_ID = '4063202604130001@cbin';
 const UPI_NAME = 'IAPSMGC CON 2026';
 
 function RegistrationFormContent() {

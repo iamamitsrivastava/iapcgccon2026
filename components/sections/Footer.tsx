@@ -97,7 +97,8 @@ export default function Footer() {
                         <p className={styles.footerConferenceSubtitle}>Digital Health for All: Bridging Equity, Access and Innovation</p>
 
                         <div className={styles.footerMeta}>
-                            <p>PIMSR, Parul University, Vadodara, Gujarat</p>
+                            <p style={{ marginBottom: '0.25rem' }}>PIMSR, Parul University</p>
+                            <p style={{ marginBottom: '0.75rem' }}>Vadodara, Gujarat</p>
                             <p>26–28 November 2026</p>
                         </div>
 
