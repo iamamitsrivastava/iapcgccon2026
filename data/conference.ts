@@ -412,6 +412,8 @@ export const conference = {
     ],
     organizingSecretaries: [],
     iahpExecutiveCommittee: [],
+    internationalAdvisory: [] as any[],
+    nationalAdvisory: [] as any[],
   },
 
   contact: {
