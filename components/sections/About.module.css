@@ -145,6 +145,39 @@
     transform: scale(1.05);
 }
 
+/* Slider Dots */
+.sliderDots {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 3;
+    padding: 6px 12px;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 50px;
+    backdrop-filter: blur(4px);
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.dotActive {
+    background: var(--color-secondary);
+    width: 22px;
+    border-radius: 4px;
+    box-shadow: 0 0 6px rgba(212, 175, 55, 0.5);
+}
+
 .sdgGrid {
     display: none;
     /* Hiding SDG grid as per request to replace with video */

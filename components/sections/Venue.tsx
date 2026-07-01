@@ -44,8 +44,52 @@ export function Venue() {
         <section className={styles.venue} id="about-parul">
             <div className="container">
 
-                {/* Section Header */}
+                {/* ── About the Department ── */}
                 <div className={styles.sectionHeader}>
+                    <span className={styles.sectionTag}>
+                        <Building2 size={14} />
+                        Department of Community Medicine
+                    </span>
+                    <h2 className={styles.sectionTitle}>About the Department</h2>
+                    <div className={styles.titleDivider}>
+                        <span className={styles.dividerLine}></span>
+                        <span className={styles.dividerDot}></span>
+                        <span className={styles.dividerLine}></span>
+                    </div>
+                </div>
+
+                <div className={styles.contentGrid}>
+                    <div className={styles.textContent}>
+                        <p className={styles.bodyText}>
+                            The Department of Community Medicine, Parul Institute of Medical Sciences &amp; Research, Parul University, is dedicated to advancing public health through excellence in medical education, research, and community service. The department provides competency-based undergraduate and postgraduate training while promoting evidence-based public health practice and preventive healthcare.
+                        </p>
+                        <p className={styles.bodyText}>
+                            With a strong emphasis on academic excellence and community engagement, the department regularly organizes continuing medical education programmes, workshops, seminars, field visits, and health awareness initiatives. The department actively promotes research, community-based learning, and public health practice through field visits, outreach programmes, health awareness campaigns, collaborations with public health institutions, and participation in national health programmes. Through these efforts, it continues to contribute towards strengthening public health systems and developing competent public health professionals.
+                        </p>
+                    </div>
+
+                    <div className={styles.imageSection} style={{ padding: 0 }}>
+                        <div style={{ position: 'relative', width: '100%', height: '450px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                            {deptImages.map((src, index) => (
+                                <Image
+                                    key={index}
+                                    src={src}
+                                    alt={`Department Image ${index + 1}`}
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    style={{
+                                        objectFit: 'cover',
+                                        opacity: deptIndex === index ? 1 : 0,
+                                        transition: 'opacity 1s ease-in-out',
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Section Header */}
+                <div className={styles.sectionHeader} style={{ marginTop: '5rem' }}>
                     <span className={styles.sectionTag}>
                         <Building2 size={14} />
                         The Host Institution
@@ -146,50 +190,6 @@ export function Venue() {
                     </div>{/* end imageSection */}
                 </div>{/* end contentGrid */}
 
-                {/* ── About the Department ── */}
-                <div className={styles.sectionHeader} style={{ marginTop: '5rem' }}>
-                    <span className={styles.sectionTag}>
-                        <Building2 size={14} />
-                        Department of Community Medicine
-                    </span>
-                    <h2 className={styles.sectionTitle}>About the Department</h2>
-                    <div className={styles.titleDivider}>
-                        <span className={styles.dividerLine}></span>
-                        <span className={styles.dividerDot}></span>
-                        <span className={styles.dividerLine}></span>
-                    </div>
-                </div>
-
-                <div className={styles.contentGrid}>
-                    <div className={styles.textContent}>
-                        <p className={styles.bodyText}>
-                            The Department of Community Medicine, Parul Institute of Medical Sciences &amp; Research, Parul University, is dedicated to advancing public health through excellence in medical education, research, and community service. The department provides competency-based undergraduate and postgraduate training while promoting evidence-based public health practice and preventive healthcare.
-                        </p>
-                        <p className={styles.bodyText}>
-                            With a strong emphasis on academic excellence and community engagement, the department regularly organizes continuing medical education programmes, workshops, seminars, field visits, and health awareness initiatives. The department actively promotes research, community-based learning, and public health practice through field visits, outreach programmes, health awareness campaigns, collaborations with public health institutions, and participation in national health programmes. Through these efforts, it continues to contribute towards strengthening public health systems and developing competent public health professionals.
-                        </p>
-                    </div>
-
-                    <div className={styles.imageSection} style={{ padding: 0 }}>
-                        <div style={{ position: 'relative', width: '100%', height: '450px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                            {deptImages.map((src, index) => (
-                                <Image
-                                    key={index}
-                                    src={src}
-                                    alt={`Department Image ${index + 1}`}
-                                    fill
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                    style={{
-                                        objectFit: 'cover',
-                                        opacity: deptIndex === index ? 1 : 0,
-                                        transition: 'opacity 1s ease-in-out',
-                                    }}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
     );
@@ -197,10 +197,10 @@ export function Venue() {
 
 export function AboutIAPSM() {
     const iapsmImages = [
-        "/images/iapsm-audience-1.jpg",
-        "/images/iapsm-audience-2.jpg",
-        "/images/iapsm-audience-3.jpg",
-        "/images/iapsm-audience-4.jpg"
+        "/images/iapsm-1.jpg",
+        "/images/iapsm-2.png",
+        "/images/iapsm-3.png",
+        "/images/iapsm-4.png"
     ];
     const [iapsmIndex, setIapsmIndex] = useState(0);
 

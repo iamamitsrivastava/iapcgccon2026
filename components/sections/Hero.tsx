@@ -284,28 +284,7 @@ export default function Hero() {
 
           </div>
 
-          <div className={`${styles.visuals} ${styles.animate} ${styles['delay-500']}`}>
-            <div className={styles.sliderContainer}>
-              {sliderImages.map((src, index) => (
-                <img
-                  key={index}
-                  src={src}
-                  alt={`Event ${index + 1}`}
-                  className={`${styles.slideImage} ${index === currentSlide ? styles.active : ''}`}
-                />
-              ))}
-              <div className={styles.sliderIndicators}>
-                {sliderImages.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`${styles.indicator} ${index === currentSlide ? styles.activeIndicator : ''}`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+
         </div>
 
         {/* Timer Row */}

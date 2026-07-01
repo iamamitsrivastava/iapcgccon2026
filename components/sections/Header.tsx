@@ -37,7 +37,7 @@ interface HeaderProps {
 }
 
 const navItems: NavItem[] = [
-    { label: 'About', href: '/#about' },
+    { label: 'About', href: '/about' },
     {
         label: 'Committee',
         href: '/committee',
@@ -47,7 +47,7 @@ const navItems: NavItem[] = [
             { label: 'Office Bearers', href: '/committee/office-bearers' },
         ]
     },
-    { label: 'THEMES', href: '/#themes' },
+    { label: 'THEMES', href: '/themes' },
     {
         label: 'Scientific',
         href: '/resources/publishing-ethics',

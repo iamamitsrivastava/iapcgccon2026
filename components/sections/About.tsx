@@ -1,3 +1,5 @@
+'use client';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { BookOpen, Users, Lightbulb, Link as LinkIcon, Zap, MapPin, Target, Heart, GraduationCap, Shield } from 'lucide-react';
 import styles from './About.module.css';
@@ -7,6 +9,21 @@ import ScrollReveal from '@/components/ui/ScrollReveal';
    ABOUT CONFERENCE  (IAPSM Gujarat Chapter + Conference intro)
 ──────────────────────────────────────────────────────────── */
 export function AboutConference() {
+    const images = [
+        "/images/iapsm-audience-1.jpg",
+        "/images/iapsm-audience-2.jpg",
+        "/images/iapsm-audience-3.jpg",
+        "/images/iapsm-audience-4.jpg"
+    ];
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+        }, 4000);
+        return () => clearInterval(interval);
+    }, [images.length]);
+
     return (
         <section className={`section ${styles.about}`} id="about">
             <div className="container">
@@ -40,14 +57,31 @@ export function AboutConference() {
                     </ScrollReveal>
                     <ScrollReveal delay={200}>
                         <div className={styles.imageWrapper} style={{ marginTop: '0' }}>
-                            <Image
-                                src="/images/about-conference.jpg"
-                                alt="Conference Boardroom"
-                                fill
-                                className={styles.image}
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                                style={{ objectFit: 'cover' }}
-                            />
+                            {images.map((src, index) => (
+                                <Image
+                                    key={index}
+                                    src={src}
+                                    alt={`About Conference ${index + 1}`}
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    style={{
+                                        objectFit: 'cover',
+                                        opacity: currentIndex === index ? 1 : 0,
+                                        transition: 'opacity 1s ease-in-out',
+                                    }}
+                                />
+                            ))}
+                            {/* Slider dots */}
+                            <div className={styles.sliderDots}>
+                                {images.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        className={`${styles.dot} ${currentIndex === index ? styles.dotActive : ''}`}
+                                        onClick={() => setCurrentIndex(index)}
+                                        aria-label={`View image ${index + 1}`}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </ScrollReveal>
                 </div>
