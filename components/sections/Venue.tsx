@@ -6,15 +6,17 @@ import styles from './Venue.module.css';
 
 export function Venue() {
     const images = [
-        "/images/venue-slider-3.jpg",
-        "/images/slider-new-2.png",
-        "/images/venue-slider-4.jpg",
-        "/images/slider-new-4.png",
-        "/images/slider-new-5.png",
+        "/images/pu-dhoni.png",
+        "/images/pu-new-1.jpg",
+        "/images/pu-new-2.png",
+        "/images/pu-new-3.jpg",
+        "/images/pu-new-4.png",
+        "/images/pu-new-5.png",
     ];
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const deptImages = [
+        "/images/award-stage.jpg",
         "/images/dept-1.png",
         "/images/dept-2.png",
         "/images/dept-3.jpg",
@@ -113,7 +115,7 @@ export function Venue() {
                             Nestled in the vibrant city of <strong>Vadodara, Gujarat</strong>, Parul University has emerged as a beacon of academic excellence and innovation. With a sprawling <strong>150+ acre eco-friendly campus</strong>, the university is home to students from every Indian state and <strong>75+ countries</strong>, making it one of the most culturally diverse educational destinations in the country
                         </p>
                         <p className={styles.bodyText}>
-                            Recognized for its world-class infrastructure, industry-aligned curriculum, and outstanding placement records, Parul University houses state-of-the-art research facilities, dedicated innovation and incubation centers, and a diverse range of disciplines across multiple faculties. These include the Faculty of Engineering and Technology, Faculty of Management Studies, Faculty of Applied Sciences, Faculty of Computer Science and Applications, Faculty of Pharmacy, Faculty of Medicine, Faculty of Nursing, Faculty of Architecture and Planning, Faculty of Law, Faculty of Liberal Arts, Faculty of Design, Faculty of Commerce, Faculty of Agriculture, and Faculty of Hospitality and Tourism Management, creating a multidisciplinary academic ecosystem that encourages innovation, research, and holistic learning.
+                            Recognized for its world-class infrastructure, industry-aligned curriculum, and outstanding placement records, Parul University houses state-of-the-art research facilities, dedicated innovation and incubation centers, and a diverse range of disciplines across multiple faculties. These include the Faculty of Engineering and Technology, Faculty of Management Studies, Faculty of Applied Sciences, Faculty of Computer Science and Applications, Faculty of Pharmacy, Faculty of Medicine, Faculty of Nursing, Faculty of Architecture and Planning, Faculty of Law, Faculty of Community Medicine, Faculty of Design, Faculty of Commerce, Faculty of Agriculture, and Faculty of Hospitality and Tourism Management, creating a multidisciplinary academic ecosystem that encourages innovation, research, and holistic learning.
                         </p>
                     </div>
 
@@ -160,35 +162,36 @@ export function Venue() {
                         </div>
                         </div>
 
-                        {/* Stats inside image column — fills white space */}
-                        <div className={styles.imageStatsGrid}>
-                            <div className={styles.statCardSmall}>
-                                <div className={styles.statIconWrapSmall}><Award size={18} /></div>
-                                <div className={styles.statNumberSmall}>NAAC A++</div>
-                                <div className={styles.statTitleSmall}>Youngest Pvt University</div>
-                                <div className={styles.statDescriptionSmall}>First Cycle Accreditation</div>
-                            </div>
-                            <div className={styles.statCardSmall}>
-                                <div className={styles.statIconWrapSmall}><Users size={18} /></div>
-                                <div className={styles.statNumberSmall}>65,000+</div>
-                                <div className={styles.statTitleSmall}>Total Students</div>
-                                <div className={styles.statDescriptionSmall}>From every state in India</div>
-                            </div>
-                            <div className={styles.statCardSmall}>
-                                <div className={styles.statIconWrapSmall}><Globe size={18} /></div>
-                                <div className={styles.statNumberSmall}>75+</div>
-                                <div className={styles.statTitleSmall}>Global Countries</div>
-                                <div className={styles.statDescriptionSmall}>4,500+ International Students</div>
-                            </div>
-                            <div className={styles.statCardSmall}>
-                                <div className={styles.statIconWrapSmall}><TreePine size={18} /></div>
-                                <div className={styles.statNumberSmall}>150+</div>
-                                <div className={styles.statTitleSmall}>Acres Campus</div>
-                                <div className={styles.statDescriptionSmall}>Eco-friendly Environment</div>
-                            </div>
-                        </div>
                     </div>{/* end imageSection */}
                 </div>{/* end contentGrid */}
+
+                {/* Stats in a full-width row at the bottom of the section */}
+                <div className={styles.statsGrid}>
+                    <div className={styles.statCardPremium}>
+                        <div className={styles.statIconWrapPremium}><Award size={28} /></div>
+                        <div className={styles.statNumberPremium}>NAAC A++</div>
+                        <div className={styles.statTitlePremium}>Youngest Pvt University</div>
+                        <div className={styles.statDescriptionPremium}>First Cycle Accreditation</div>
+                    </div>
+                    <div className={styles.statCardPremium}>
+                        <div className={styles.statIconWrapPremium}><Users size={28} /></div>
+                        <div className={styles.statNumberPremium}>65,000+</div>
+                        <div className={styles.statTitlePremium}>Total Students</div>
+                        <div className={styles.statDescriptionPremium}>From every state in India</div>
+                    </div>
+                    <div className={styles.statCardPremium}>
+                        <div className={styles.statIconWrapPremium}><Globe size={28} /></div>
+                        <div className={styles.statNumberPremium}>75+</div>
+                        <div className={styles.statTitlePremium}>Global Countries</div>
+                        <div className={styles.statDescriptionPremium}>4,500+ International Students</div>
+                    </div>
+                    <div className={styles.statCardPremium}>
+                        <div className={styles.statIconWrapPremium}><TreePine size={28} /></div>
+                        <div className={styles.statNumberPremium}>150+</div>
+                        <div className={styles.statTitlePremium}>Acres Campus</div>
+                        <div className={styles.statDescriptionPremium}>Eco-friendly Environment</div>
+                    </div>
+                </div>
 
             </div>
         </section>
@@ -197,6 +200,7 @@ export function Venue() {
 
 export function AboutIAPSM() {
     const iapsmImages = [
+        "/images/award-stage.jpg",
         "/images/iapsm-1.jpg",
         "/images/iapsm-2.png",
         "/images/iapsm-3.png",

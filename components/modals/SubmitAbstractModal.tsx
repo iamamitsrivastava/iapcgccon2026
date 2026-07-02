@@ -76,6 +76,16 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                             </div>
 
                             <div className={styles.formGroup}>
+                                <label className={styles.label}>Registration No. *</label>
+                                <input
+                                    type="text"
+                                    className={styles.input}
+                                    placeholder="Enter your registration no."
+                                    required
+                                />
+                            </div>
+
+                            <div className={styles.formGroup}>
                                 <label className={styles.label}>Email Address *</label>
                                 <input
                                     type="email"

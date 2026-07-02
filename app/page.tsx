@@ -1,8 +1,9 @@
 import Header from "@/components/sections/Header";
 import Hero from "@/components/sections/Hero";
-import { Objectives, ConferenceTheme } from "@/components/sections/About";
+import { AboutConference, Objectives, ConferenceTheme } from "@/components/sections/About";
+import Themes from "@/components/sections/Themes";
 import Timeline from "@/components/sections/Timeline";
-import { AboutIAPSM } from "@/components/sections/Venue";
+import { Venue, AboutIAPSM } from "@/components/sections/Venue";
 import Footer from "@/components/sections/Footer";
 import { Highlights } from "@/components/sections/Highlights";
 import { SubmissionGuidelines } from "@/components/sections/SubmissionGuidelines";
@@ -12,8 +13,11 @@ export default function Home() {
         <main>
             <Header />
             <Hero />
+            <AboutConference />
             <AboutIAPSM />
+            <Venue />
             <ConferenceTheme />
+            <Themes />
             <Objectives />
             <Timeline />
             <Highlights />

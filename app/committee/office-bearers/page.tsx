@@ -11,7 +11,7 @@ export default function OfficeBearersPage() {
     const stateSpeakers: CommitteeMember[] = (conference.committees as any).officeBearers || [];
 
     const renderMemberCard = (person: CommitteeMember, idx: number) => (
-        <ScrollReveal key={idx}>
+        <ScrollReveal key={idx} style={{ height: '100%' }}>
             <div style={{
                 textAlign: 'center',
                 padding: '2.5rem 2rem',
@@ -21,6 +21,9 @@ export default function OfficeBearersPage() {
                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
                 transition: 'transform 0.3s ease, border-color 0.3s ease',
                 height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
             }}
                 className="office-bearer-card"
             >
@@ -35,6 +38,7 @@ export default function OfficeBearersPage() {
                     overflow: 'hidden',
                     margin: '0 auto 1.5rem auto',
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
+                    flexShrink: 0,
                 }}>
                     {person.image ? (
                         <Image
@@ -51,37 +55,39 @@ export default function OfficeBearersPage() {
                 </div>
 
                 {/* Text Block */}
-                <p style={{
-                    color: '#FACC15',
-                    fontSize: '0.95rem',
-                    fontWeight: 800,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    marginBottom: '0.5rem'
-                }}>
-                    {person.role}
-                </p>
-                <h3 style={{
-                    fontSize: '1.5rem',
-                    fontWeight: 800,
-                    color: 'white',
-                    marginBottom: '0.5rem',
-                    fontFamily: 'var(--font-heading)',
-                    letterSpacing: '0.02em',
-                }}>
-                    {person.name}
-                </h3>
-                {person.affiliation && (
+                <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'flex-start', width: '100%' }}>
                     <p style={{
-                        color: '#94a3b8',
+                        color: '#FACC15',
                         fontSize: '0.95rem',
-                        fontWeight: 500,
-                        lineHeight: 1.5,
-                        whiteSpace: 'pre-line'
+                        fontWeight: 800,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        marginBottom: '0.5rem'
                     }}>
-                        {person.affiliation}
+                        {person.role}
                     </p>
-                )}
+                    <h3 style={{
+                        fontSize: '1.5rem',
+                        fontWeight: 800,
+                        color: 'white',
+                        marginBottom: '0.5rem',
+                        fontFamily: 'var(--font-heading)',
+                        letterSpacing: '0.02em',
+                    }}>
+                        {person.name}
+                    </h3>
+                    {person.affiliation && (
+                        <p style={{
+                            color: '#94a3b8',
+                            fontSize: '0.95rem',
+                            fontWeight: 500,
+                            lineHeight: 1.5,
+                            whiteSpace: 'pre-line'
+                        }}>
+                            {person.affiliation}
+                        </p>
+                    )}
+                </div>
             </div>
         </ScrollReveal>
     );

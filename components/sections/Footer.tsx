@@ -42,8 +42,8 @@ export default function Footer() {
                     <div className={styles.footerCol}>
                         <h4 className={styles.footerHeading}>Information</h4>
                         <ul className={styles.footerList}>
-                            <li><Link href="/about">About the Conference</Link></li>
-                            <li><Link href="/themes">Themes</Link></li>
+                            <li><Link href="/#about">About the Conference</Link></li>
+                            <li><Link href="/#themes">Themes</Link></li>
                             <li><Link href="/committee">Organizing Committee</Link></li>
                             <li><Link href="/privacy">Privacy Policy</Link></li>
                             <li><Link href="/terms">Terms & Conditions</Link></li>
@@ -58,7 +58,7 @@ export default function Footer() {
                             <li><Link href="/schedule">Schedule</Link></li>
                             <li><Link href="/sponsorship">Sponsorships</Link></li>
                             <li><Link href="/abstract-submission">Abstract Submission</Link></li>
-                            <li><Link href="/venue">Venue</Link></li>
+                            <li><Link href="/#about-parul">Venue</Link></li>
                         </ul>
                     </div>
 

@@ -14,6 +14,7 @@ export function SubmissionGuidelines() {
 
     const [formData, setFormData] = useState({
         name: '',
+        registrationNo: '',
         email: '',
         documentLink: '',
     });
@@ -87,7 +88,7 @@ export function SubmissionGuidelines() {
         setIsSubmitting(true);
 
         try {
-            const { name: fullName, email, documentLink } = formData;
+            const { name: fullName, registrationNo, email, documentLink } = formData;
 
             const res = await fetch("https://script.google.com/macros/s/AKfycbymq8pRHk--R9ItUFGBkmwFrCnfuqzUr4BojT4wOG8l5edYgFrp1D_1fDHTAVe8eyh1kg/exec", {
                 method: "POST",
@@ -97,6 +98,7 @@ export function SubmissionGuidelines() {
                 body: JSON.stringify({
                     type: submissionType,
                     fullName,
+                    registrationNo,
                     email,
                     documentLink
                 }),
@@ -127,7 +129,7 @@ export function SubmissionGuidelines() {
                 setTimeout(() => {
                     setIsModalOpen(false);
                     setSubmissionSuccess(false);
-                    setFormData({ name: "", email: "", documentLink: "" });
+                    setFormData({ name: "", registrationNo: "", email: "", documentLink: "" });
                 }, 2000);
             }
         } catch (error: any) {
@@ -247,6 +249,18 @@ export function SubmissionGuidelines() {
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                             placeholder="Enter your full name"
+                                        />
+                                    </div>
+
+                                    <div className={heroStyles.formGroup}>
+                                        <label htmlFor="guidelines_regNo">Registration No. *</label>
+                                        <input
+                                            type="text"
+                                            id="guidelines_regNo"
+                                            required
+                                            value={formData.registrationNo}
+                                            onChange={(e) => setFormData({ ...formData, registrationNo: e.target.value })}
+                                            placeholder="Enter your registration no."
                                         />
                                     </div>
 

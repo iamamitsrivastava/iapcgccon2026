@@ -29,6 +29,8 @@
     font-weight: 800;
     margin-bottom: 1rem;
     line-height: 1.15;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
 
 .titleAccent {
@@ -144,10 +146,12 @@
 .sectionHeader {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 1rem;
     margin-bottom: 1.75rem;
     padding-bottom: 1.25rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    text-align: center;
 }
 
 .iconBox {
@@ -213,6 +217,11 @@
     font-weight: 700;
     margin: 0;
     font-family: var(--font-heading);
+    text-align: center;
+}
+
+.content {
+    text-align: justify;
 }
 
 .grid {

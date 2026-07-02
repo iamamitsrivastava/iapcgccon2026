@@ -11,7 +11,7 @@ export default function TermsPage() {
                     
                     <section style={{ marginBottom: '2rem' }}>
                         <p style={{ lineHeight: '1.6', color: '#cbd5e1', marginBottom: '1rem' }}>
-                            Welcome to the International Conference on Bridging Disciplines (IAPSMGC CON 2026). By registering for or participating in the conference, you agree to comply with the following Terms and Conditions established by Parul Institute of Liberal Arts, Parul University.
+                            Welcome to the Conference on Digital Health for All: Bridging Equity, Access and Innovation (IAPSMGC CON 2026). By registering for or participating in the conference, you agree to comply with the following Terms and Conditions established by Parul Institute of Community Medicine, Parul University.
                         </p>
                     </section>
                     
@@ -46,7 +46,7 @@ export default function TermsPage() {
                         </p>
                     </section>
                     
-                    <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginTop: '3rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem' }}>Last updated: March 2026</p>
+                    <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginTop: '3rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem' }}>Last updated: July 2026</p>
                 </div>
             </div>
             <Footer />

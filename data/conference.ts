@@ -52,17 +52,17 @@ export const conference = {
       subthemes: [
         "Blurring Boundaries: The Arts in STEM Education (STEAM)",
         "Sustainable Development Goals (SDGs): A Multidisciplinary Approach",
-        "Liberal Arts in Shaping Entrepreneurial Mindsets",
+        "Community Medicine in Shaping Entrepreneurial Mindsets",
         "Conflict Resolution Through Multidisciplinary Lenses",
         "Creativity, Collaboration, and Innovation in a Globalized World",
       ]
     },
     {
-      title: "Education and Pedagogy in the Liberal Arts",
+      title: "Education and Pedagogy in the Community Medicine",
       subthemes: [
         "Rethinking Curriculum Design for Interdisciplinary Learning",
-        "Liberal Arts in Critical Thinking and Citizenship",
-        "Online Liberal Arts Education Challenges and Opportunities",
+        "Community Medicine in Critical Thinking and Citizenship",
+        "Online Community Medicine Education Challenges and Opportunities",
         "Bridges Academic Disciplines",
         "Assessment Strategies for Interdisciplinary Courses",
       ]
@@ -154,7 +154,7 @@ export const conference = {
       role: "CoS and HoD",
       institution: "Department of English, Lovely Professional University",
       image: "/images/prof-ajoy-batta.jpg",
-      details: "Prof. Ajoy Batta is a senior academician at Lovely Professional University, serving as the Head of the Department of English. He has lead numerous initiatives in liberal arts education and linguistic studies."
+      details: "Prof. Ajoy Batta is a senior academician at Lovely Professional University, serving as the Head of the Department of English. He has lead numerous initiatives in Community Medicine education and linguistic studies."
     },
     {
       name: "Dr. Krishna Mishra",

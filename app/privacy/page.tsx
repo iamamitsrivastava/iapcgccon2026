@@ -11,7 +11,7 @@ export default function PrivacyPage() {
                     
                     <section style={{ marginBottom: '2rem' }}>
                         <p style={{ lineHeight: '1.6', color: '#cbd5e1', marginBottom: '1rem' }}>
-                            At IAPSMGC CON 2026 (International Conference on Bridging Disciplines), organized by Parul Institute of Liberal Arts, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you visit our website, register for the conference, or submit papers.
+                            At IAPSMGC CON 2026 (Digital Health for All: Bridging Equity, Access and Innovation), organized by Parul Institute of Community Medicine, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you visit our website, register for the conference, or submit papers.
                         </p>
                     </section>
                     
@@ -44,11 +44,11 @@ export default function PrivacyPage() {
                     <section style={{ marginBottom: '2rem' }}>
                         <h2 style={{ fontSize: '1.5rem', color: '#FACC15', marginBottom: '1rem' }}>4. Contact Us</h2>
                         <p style={{ lineHeight: '1.6', color: '#cbd5e1', marginBottom: '1rem' }}>
-                            If you have questions about this Privacy Policy, please contact us at <strong>contact@icbd2026.com</strong> or call us at <strong>+91 7905765113</strong>.
+                            If you have questions about this Privacy Policy, please contact us at <strong>iapsmgccon2026@paruluniversity.ac.in</strong>.
                         </p>
                     </section>
                     
-                    <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginTop: '3rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem' }}>Last updated: March 2026</p>
+                    <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginTop: '3rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem' }}>Last updated: July 2026</p>
                 </div>
             </div>
             <Footer />

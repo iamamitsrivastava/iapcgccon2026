@@ -36,7 +36,7 @@ export default function PublishingEthicsPage() {
                     borderRadius: '12px',
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)'
                 }}>
-                    <p style={{ color: '#cbd5e1', textAlign: 'center', lineHeight: '1.6', fontSize: '0.95rem', margin: 0 }}>
+                    <p style={{ color: '#cbd5e1', textAlign: 'justify', lineHeight: '1.6', fontSize: '0.95rem', margin: 0 }}>
                         The Scientific Committee warmly invites researchers, academicians, public health professionals, postgraduate students, and practitioners to submit original research abstracts for Oral and Poster Presentations at the conference.<br/><br/>
                         Abstracts addressing a wide range of topics related to community medicine and public health, aligned with the conference themes and sub-themes, are encouraged. Selected abstracts will be showcased during the scientific sessions, and outstanding oral and poster presentations will be recognized with awards.
                     </p>
@@ -286,8 +286,10 @@ export default function PublishingEthicsPage() {
                             color: '#e2e8f0',
                             fontSize: '1rem',
                             lineHeight: '1.7',
-                            paddingLeft: '1.5rem',
-                            marginBottom: '0'
+                            padding: '0',
+                            marginBottom: '0',
+                            textAlign: 'justify',
+                            listStylePosition: 'inside'
                         }}>
                             <li style={{ marginBottom: '0.75rem', listStyleType: 'disc' }}>This prestigious session will include the oral presentations selected by the scientific committee as per the criteria of the H M Patel session; a panel of judges will decide the winners.</li>
                             <li style={{ marginBottom: '0.75rem', listStyleType: 'disc' }}>The authors of all presentations selected for this award session will be informed in advance through e-mail.</li>

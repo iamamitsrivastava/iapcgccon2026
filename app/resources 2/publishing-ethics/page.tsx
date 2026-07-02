@@ -40,7 +40,7 @@ export default function PublishingEthicsPage() {
                             The International Conference on Bridging Disciplines 2026 (IAPSMGC CON 2026) is dedicated to maintaining
                             the highest standards of ethical integrity in scholarly publishing. The conference provides an international platform for
                             academicians, researchers, industry professionals, and policymakers to deliberate on contemporary issues related to
-                            liberal arts, humanities, and social sciences, in alignment with global academic standards.
+                            Community Medicine, humanities, and social sciences, in alignment with global academic standards.
                         </p>
                     </div>
                 </div>
