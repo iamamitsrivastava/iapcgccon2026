@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Header from '@/components/sections/Header';
 import Footer from '@/components/sections/Footer';
 import { Upload, CheckCircle, Copy, ChevronRight, AlertCircle, Loader2 } from 'lucide-react';
+import { submitRegistration } from '@/lib/googleSheet';
 
 const UPI_ID = '4063202604130001@cbin';
 const UPI_NAME = 'IAPSMGC CON 2026';
@@ -24,6 +25,12 @@ function RegistrationFormContent() {
     const [submitting, setSubmitting] = useState(false);
     const [photoPreview, setPhotoPreview] = useState<string | null>(null);
     const [proofPreview, setProofPreview] = useState<string | null>(null);
+    const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+    const [proofUrl, setProofUrl] = useState<string | null>(null);
+    const [uploadingPhoto, setUploadingPhoto] = useState(false);
+    const [uploadingProof, setUploadingProof] = useState(false);
+    const [photoCopied, setPhotoCopied] = useState(false);
+    const [proofCopied, setProofCopied] = useState(false);
     const photoRef = useRef<HTMLInputElement>(null);
     const proofRef = useRef<HTMLInputElement>(null);
 
@@ -58,7 +65,7 @@ function RegistrationFormContent() {
         });
     };
 
-    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         if (file.size > 10 * 1024 * 1024) { setErrors(e => ({ ...e, photo: 'File too large. Max 10 MB.' })); return; }
@@ -66,9 +73,23 @@ function RegistrationFormContent() {
         const reader = new FileReader();
         reader.onload = ev => setPhotoPreview(ev.target?.result as string);
         reader.readAsDataURL(file);
+
+        setUploadingPhoto(true);
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const res = await fetch('/api/upload', { method: 'POST', body: formData });
+            const data = await res.json();
+            if (data.success) setPhotoUrl(data.url);
+            else setErrors(e => ({ ...e, photo: data.error || 'Upload failed' }));
+        } catch (err) {
+            setErrors(e => ({ ...e, photo: 'Upload failed' }));
+        } finally {
+            setUploadingPhoto(false);
+        }
     };
 
-    const handleProofChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleProofChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         if (file.size > 10 * 1024 * 1024) { setErrors(e => ({ ...e, proof: 'File too large. Max 10 MB.' })); return; }
@@ -76,13 +97,51 @@ function RegistrationFormContent() {
         const reader = new FileReader();
         reader.onload = ev => setProofPreview(ev.target?.result as string);
         reader.readAsDataURL(file);
+
+        setUploadingProof(true);
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const res = await fetch('/api/upload', { method: 'POST', body: formData });
+            const data = await res.json();
+            if (data.success) setProofUrl(data.url);
+            else setErrors(e => ({ ...e, proof: data.error || 'Upload failed' }));
+        } catch (err) {
+            setErrors(e => ({ ...e, proof: 'Upload failed' }));
+        } finally {
+            setUploadingProof(false);
+        }
     };
 
-    const copyUpiId = () => {
-        navigator.clipboard.writeText(UPI_ID);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+    const copyToClipboard = (text: string, setCopiedState: (v: boolean) => void) => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                setCopiedState(true);
+                setTimeout(() => setCopiedState(false), 2000);
+            }).catch(() => fallbackCopyTextToClipboard(text, setCopiedState));
+        } else {
+            fallbackCopyTextToClipboard(text, setCopiedState);
+        }
     };
+
+    const fallbackCopyTextToClipboard = (text: string, setCopiedState: (v: boolean) => void) => {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            setCopiedState(true);
+            setTimeout(() => setCopiedState(false), 2000);
+        } catch (err) {
+            console.error('Fallback: Oops, unable to copy', err);
+        }
+        document.body.removeChild(textArea);
+    };
+
+    const copyUpiId = () => copyToClipboard(UPI_ID, setCopied);
 
     const validate = () => {
         const e: Record<string, string> = {};
@@ -112,10 +171,27 @@ function RegistrationFormContent() {
             return;
         }
         setSubmitting(true);
-        await new Promise(r => setTimeout(r, 1500));
-        setSubmitting(false);
-        setSubmitted(true);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        try {
+            // Include generated image URLs in the form data
+            const submissionData = {
+                ...form,
+                amount,
+                category,
+                photoUrl: typeof window !== 'undefined' ? window.location.origin + photoUrl : photoUrl,
+                proofUrl: typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl
+            };
+            
+            await submitRegistration(submissionData);
+            
+            setSubmitted(true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (error) {
+            console.error("Submission failed:", error);
+            alert("Failed to submit registration. Please try again or check your internet connection.");
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     /* ── Styles ─────────────────────────────────────── */
@@ -363,7 +439,26 @@ function RegistrationFormContent() {
                                     <span style={{ color: '#475569', fontSize: '0.78rem' }}>JPG, PNG or PDF · Max 10 MB</span>
                                 </div>
                             )}
+                            {uploadingPhoto && (
+                                <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#FACC15', fontSize: '0.85rem' }}>
+                                    <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Uploading...
+                                </div>
+                            )}
                         </div>
+                        {photoUrl && (
+                            <div style={{ marginTop: '0.75rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                <span style={{ flex: 1, fontSize: '0.85rem', color: '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                    {typeof window !== 'undefined' ? window.location.origin + photoUrl : photoUrl}
+                                </span>
+                                <button type="button" onClick={() => {
+                                    const urlToCopy = typeof window !== 'undefined' ? window.location.origin + photoUrl : photoUrl;
+                                    copyToClipboard(urlToCopy || '', setPhotoCopied);
+                                }} style={{ background: photoCopied ? 'rgba(34,197,94,0.15)' : 'rgba(250,204,21,0.12)', border: `1px solid ${photoCopied ? 'rgba(34,197,94,0.4)' : 'rgba(250,204,21,0.3)'}`, borderRadius: '6px', padding: '0.35rem 0.65rem', cursor: 'pointer', color: photoCopied ? '#22c55e' : '#FACC15', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.3rem', whiteSpace: 'nowrap' }}>
+                                    {photoCopied ? <CheckCircle size={12} /> : <Copy size={12} />}
+                                    {photoCopied ? 'Copied!' : 'Copy Link'}
+                                </button>
+                            </div>
+                        )}
                         {errors.photo && <p style={s.errMsg}><AlertCircle size={13} />{errors.photo}</p>}
                     </div>
 
@@ -570,7 +665,26 @@ function RegistrationFormContent() {
                                     <span style={{ color: '#475569', fontSize: '0.78rem' }}>JPG, PNG or PDF · Max 10 MB</span>
                                 </div>
                             )}
+                            {uploadingProof && (
+                                <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#FACC15', fontSize: '0.85rem' }}>
+                                    <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Uploading...
+                                </div>
+                            )}
                         </div>
+                        {proofUrl && (
+                            <div style={{ marginTop: '0.75rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                <span style={{ flex: 1, fontSize: '0.85rem', color: '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                    {typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl}
+                                </span>
+                                <button type="button" onClick={() => {
+                                    const urlToCopy = typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl;
+                                    copyToClipboard(urlToCopy || '', setProofCopied);
+                                }} style={{ background: proofCopied ? 'rgba(34,197,94,0.15)' : 'rgba(250,204,21,0.12)', border: `1px solid ${proofCopied ? 'rgba(34,197,94,0.4)' : 'rgba(250,204,21,0.3)'}`, borderRadius: '6px', padding: '0.35rem 0.65rem', cursor: 'pointer', color: proofCopied ? '#22c55e' : '#FACC15', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.3rem', whiteSpace: 'nowrap' }}>
+                                    {proofCopied ? <CheckCircle size={12} /> : <Copy size={12} />}
+                                    {proofCopied ? 'Copied!' : 'Copy Link'}
+                                </button>
+                            </div>
+                        )}
                         {errors.proof && <p style={s.errMsg}><AlertCircle size={13} />{errors.proof}</p>}
                     </div>
 

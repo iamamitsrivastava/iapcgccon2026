@@ -10,6 +10,8 @@ import ScrollReveal from '@/components/ui/ScrollReveal';
 ──────────────────────────────────────────────────────────── */
 export function AboutConference() {
     const images = [
+        "/images/about-conf-1.jpg",
+        "/images/about-conf-2.png",
         "/images/iapsm-audience-1.jpg",
         "/images/iapsm-audience-2.jpg",
         "/images/iapsm-audience-3.jpg",

@@ -16,14 +16,10 @@ export function Venue() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const deptImages = [
+        "/images/dept-new-1.jpg",
         "/images/award-stage.jpg",
         "/images/dept-1.png",
-        "/images/dept-2.png",
-        "/images/dept-3.jpg",
-        "/images/dept-4.jpg",
-        "/images/dept-5.jpg",
         "/images/dept-6.jpg",
-        "/images/dept-7.jpg",
     ];
     const [deptIndex, setDeptIndex] = useState(0);
 
@@ -200,10 +196,10 @@ export function Venue() {
 
 export function AboutIAPSM() {
     const iapsmImages = [
-        "/images/iapsm-1.jpg",
-        "/images/iapsm-2.png",
-        "/images/iapsm-3.png",
-        "/images/iapsm-4.png"
+        "/images/iapsmgc-chapter-1.jpg",
+        "/images/iapsmgc-chapter-2.jpg",
+        "/images/iapsmgc-chapter-3.jpg",
+        "/images/iapsmgc-chapter-4.jpg"
     ];
     const [iapsmIndex, setIapsmIndex] = useState(0);
 
