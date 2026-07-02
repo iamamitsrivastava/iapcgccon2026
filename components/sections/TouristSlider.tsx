@@ -7,8 +7,8 @@ export const landmarkImages = [
     '/images/landmark-palace.jpg',
     '/images/landmark-castle-new.jpg',
     '/images/landmark-dome.jpg',
-    '/images/landmark-shiva-night.png',
-    '/images/landmark-temple-3.png'
+    '/images/landmark-shiva-statue.png',
+    '/images/landmark-statue.png'
 ];
 
 interface TouristSliderProps {

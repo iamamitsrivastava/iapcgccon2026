@@ -327,7 +327,7 @@ export const conference = {
       {
         name: "Dr. Prashant Dave",
         role: "Organizing Secretary",
-        affiliation: "Associate Professor\n Dept. of Community medicine", // Assuming Parul University
+        affiliation: "Assitant Medical Superintendent-PSH \n Professor Dept. of Community medicine", // Assuming Parul University
         image: "/images/prashant-dave.jpg"
       }
     ],

@@ -94,7 +94,7 @@ export default function CommitteePage() {
                                         </div>
                                         <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
                                         <h4 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
-                                        <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
+                                        <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem', whiteSpace: 'pre-line' }}>{person.affiliation}</p>
                                     </div>
                                 </ScrollReveal>
                             ))}
@@ -140,7 +140,7 @@ export default function CommitteePage() {
                                         </div>
                                         <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
                                         <h4 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
-                                        <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
+                                        <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginTop: '0.5rem', whiteSpace: 'pre-line' }}>{person.affiliation}</p>
                                     </div>
                                 ))}
                             </div>
@@ -187,7 +187,7 @@ export default function CommitteePage() {
                                             </div>
                                             <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
                                             <h4 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
-                                            <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
+                                            <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem', whiteSpace: 'pre-line' }}>{person.affiliation}</p>
                                         </div>
                                     ))}
 
@@ -215,7 +215,7 @@ export default function CommitteePage() {
                                             </div>
                                             <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
                                             <h4 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
-                                            <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
+                                            <p style={{ color: '#94a3b8', fontSize: '1rem', marginTop: '0.5rem', whiteSpace: 'pre-line' }}>{person.affiliation}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -260,7 +260,7 @@ export default function CommitteePage() {
                                             </div>
                                             <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1.25rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{person.role}</p>
                                             <h4 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'white' }}>{person.name}</h4>
-                                            <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginTop: '0.5rem' }}>{person.affiliation}</p>
+                                            <p style={{ color: '#94a3b8', fontSize: '0.95rem', marginTop: '0.5rem', whiteSpace: 'pre-line' }}>{person.affiliation}</p>
                                         </div>
                                     ))}
                                 </div>

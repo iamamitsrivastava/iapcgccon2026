@@ -1,78 +1,32 @@
 'use client';
-import { Check, MapPin, Mail, Landmark, Award, Zap, Briefcase } from 'lucide-react';
+import { Check, MapPin, Mail, Award, Zap, Briefcase, Star, Users, Target } from 'lucide-react';
 import styles from './Sponsorship.module.css';
 
 export default function Sponsorship() {
     const packages = [
         {
-            feature: "Amount",
-            platinum: "₹25,000",
-            gold: "₹20,000",
-            silver: "₹15,000",
-            inkind: "₹10,000 (or equivalent)"
+            category: "Principal Sponsor",
+            amount: "₹5,00,000",
         },
         {
-            feature: "Logo on the conference website",
-            platinum: true,
-            gold: true,
-            silver: true,
-            inkind: true
+            category: "Plenary Sponsorship",
+            amount: "₹4,00,000",
         },
         {
-            feature: "Logo on event signage",
-            platinum: true,
-            gold: true,
-            silver: true,
-            inkind: true
+            category: "Plenary Co-Sponsorship",
+            amount: "₹2,50,000",
         },
         {
-            feature: "Logo on conference publications (souvenir/proceedings)",
-            platinum: true,
-            gold: true,
-            silver: true,
-            inkind: false
+            category: "Institutional Partnership",
+            amount: "₹1,50,000",
         },
         {
-            feature: "Display Table / Booth",
-            platinum: true,
-            gold: true,
-            silver: false,
-            inkind: false
+            category: "Souvenir Advertisement (Full Page)",
+            amount: "₹1,00,000",
         },
         {
-            feature: "Display of company pull-up banners at selected areas",
-            platinum: true,
-            gold: false,
-            silver: false,
-            inkind: false
-        },
-        {
-            feature: "No. of Delegate Registration Passes",
-            platinum: "3 Persons",
-            gold: "2 Persons",
-            silver: "1 Person",
-            inkind: false
-        },
-        {
-            feature: "Session / Interaction with conference audience",
-            platinum: true,
-            gold: false,
-            silver: false,
-            inkind: false
-        },
-        {
-            feature: "Networking lunch with conference executive team & Invited stakeholders",
-            platinum: true,
-            gold: true,
-            silver: true,
-            inkind: true
-        },
-        {
-            feature: "Accommodation at/near conference venue",
-            platinum: "3 Persons",
-            gold: "1 Person",
-            silver: false,
-            inkind: false
+            category: "Souvenir Advertisement (Half Page)",
+            amount: "₹50,000",
         }
     ];
 
@@ -82,65 +36,76 @@ export default function Sponsorship() {
                 <div className={styles.header}>
                     <h1 className={styles.title}>Sponsorship Opportunities</h1>
                     <p className={styles.subtitle}>
-                        Partner with IAPSMGC CON 2026 and connect with a highly engaged community of researchers, academicians, industry associates, and policymakers from around the globe.
+                        Partner with IAPSMGC CON 2026
+                    </p>
+                    <p className={styles.description} style={{ marginTop: '1rem', color: '#94a3b8', lineHeight: '1.6' }}>
+                        Support one of Gujarat's largest academic public health conferences and connect with leading public health professionals, academicians, researchers, clinicians, policymakers, and postgraduate students from across the state.<br /><br />
+                        The 33rd Annual State Conference of the Indian Association of Preventive and Social Medicine (IAPSM), Gujarat Chapter will be hosted by the Department of Community Medicine, Parul Institute of Medical Sciences & Research, Parul University, Vadodara, from 26 to 28 November 2026.<br /><br />
+                        With the theme <strong>"Digital Health for All: Bridging Equity, Access, and Innovation,"</strong> the conference will provide a platform for meaningful scientific discussions, collaboration, and innovation in public health.
                     </p>
                 </div>
 
                 <div className={styles.grid}>
                     <div className={styles.card}>
                         <h2 className={styles.sectionTitle}>
-                            <Award className={styles.goldIcon} /> Why Sponsor IAPSMGC CON 2026?
+                            <Target className={styles.goldIcon} /> Why Sponsor IAPSMGC CON 2026?
                         </h2>
+                        <p style={{ marginBottom: '1.5rem', color: '#e2e8f0' }}>Your sponsorship provides an opportunity to engage with an audience of over 500 delegates representing:</p>
                         <div className={styles.benefitList}>
-                            <div className={styles.benefitItem}>
-                                <Check className={styles.checkIcon} size={20} />
-                                <p>High-visibility brand exposure among national and international experts in business and data-driven disciplines.</p>
-                            </div>
-                            <div className={styles.benefitItem}>
-                                <Check className={styles.checkIcon} size={20} />
-                                <p>Direct engagement with academicians, researchers, industry leaders, policymakers, and students.</p>
-                            </div>
-                            <div className={styles.benefitItem}>
-                                <Check className={styles.checkIcon} size={20} />
-                                <p>Opportunities to showcase products, technologies, or services to a focused and relevant audience.</p>
-                            </div>
-                            <div className={styles.benefitItem}>
-                                <Check className={styles.checkIcon} size={20} />
-                                <p>Networking with key stakeholders to foster collaborations, partnerships, and future projects.</p>
-                            </div>
-                            <div className={styles.benefitItem}>
-                                <Check className={styles.checkIcon} size={20} />
-                                <p>Association with a prestigious international conference hosted by Parul University, enhancing brand credibility.</p>
-                            </div>
+                            {[
+                                "Medical colleges and teaching institutions",
+                                "Government health departments",
+                                "Public health agencies",
+                                "Research organizations",
+                                "Healthcare professionals",
+                                "Policymakers",
+                                "Postgraduate students and young researchers"
+                            ].map((item, index) => (
+                                <div key={index} className={styles.benefitItem}>
+                                    <Check className={styles.checkIcon} size={20} />
+                                    <p>{item}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
                     <div className={styles.card}>
                         <h2 className={styles.sectionTitle}>
-                            <Zap className={styles.goldIcon} /> Sponsorship Packages
+                            <Award className={styles.goldIcon} /> Benefits of Sponsorship
                         </h2>
-                        <p className={styles.subtitle} style={{ textAlign: 'left', margin: '0 0 2rem 0', fontSize: '1rem' }}>
-                            IAPSMGC CON 2026 offers flexible sponsorship options to align with the objectives including day, session and event sponsorship packages.
-                        </p>
+                        <div className={styles.benefitList}>
+                            {[
+                                "Showcase your organization to a focused public health audience.",
+                                "Enhance brand visibility through conference branding and promotional materials.",
+                                "Network with leading public health experts and decision-makers.",
+                                "Support academic excellence and innovation in healthcare.",
+                                "Build partnerships with institutions across Gujarat."
+                            ].map((item, index) => (
+                                <div key={index} className={styles.benefitItem}>
+                                    <Check className={styles.checkIcon} size={20} />
+                                    <p>{item}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className={styles.card} style={{ gridColumn: '1 / -1' }}>
+                        <h2 className={styles.sectionTitle}>
+                            <Zap className={styles.goldIcon} /> Sponsorship Categories
+                        </h2>
                         <div className={styles.tableWrapper}>
                             <table className={styles.table}>
                                 <thead>
                                     <tr>
-                                        <th>Category</th>
-                                        <th>Platinum Sponsorship</th>
-                                        <th>Gold Sponsorship</th>
-                                        <th>Silver Sponsorship</th>
-                                        <th>In-Kind Sponsorship</th>
+                                        <th style={{ textAlign: 'left' }}>Category</th>
+                                        <th style={{ textAlign: 'right' }}>Sponsorship Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {packages.map((item, idx) => (
                                         <tr key={idx}>
-                                            <td className={styles.featureName}>{item.feature}</td>
-                                            <td>{typeof item.platinum === 'boolean' ? (item.platinum ? <Check className={styles.check} size={18} /> : <span className={styles.dash}>-</span>) : <span className={styles.amount}>{item.platinum}</span>}</td>
-                                            <td>{typeof item.gold === 'boolean' ? (item.gold ? <Check className={styles.check} size={18} /> : <span className={styles.dash}>-</span>) : <span className={styles.amount}>{item.gold}</span>}</td>
-                                            <td>{typeof item.silver === 'boolean' ? (item.silver ? <Check className={styles.check} size={18} /> : <span className={styles.dash}>-</span>) : <span className={styles.amount}>{item.silver}</span>}</td>
-                                            <td>{typeof item.inkind === 'boolean' ? (item.inkind ? <Check className={styles.check} size={18} /> : <span className={styles.dash}>-</span>) : <span className={styles.amount}>{item.inkind}</span>}</td>
+                                            <td className={styles.featureName} style={{ textAlign: 'left', fontWeight: '500' }}>{item.category}</td>
+                                            <td style={{ textAlign: 'right', fontWeight: 'bold', color: '#FFD700' }}>{item.amount}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -150,41 +115,61 @@ export default function Sponsorship() {
 
                     <div className={styles.card}>
                         <h2 className={styles.sectionTitle}>
-                            <Landmark className={styles.goldIcon} /> Bank Details for Sponsorship
+                            <Star className={styles.goldIcon} /> Sponsor Recognition
                         </h2>
-                        <div className={styles.bankGrid}>
-                            <div className={styles.bankItem}>
-                                <span className={styles.bankLabel}>Bank Name</span>
-                                <span className={styles.bankValue}>HDFC Bank</span>
-                            </div>
-                            <div className={styles.bankItem}>
-                                <span className={styles.bankLabel}>Account Name</span>
-                                <span className={styles.bankValue}>R & D Centre Unit of PU</span>
-                            </div>
-                            <div className={styles.bankItem}>
-                                <span className={styles.bankLabel}>Account No.</span>
-                                <span className={styles.bankValue}>............</span>
-                            </div>
-                            <div className={styles.bankItem}>
-                                <span className={styles.bankLabel}>Branch</span>
-                                <span className={styles.bankValue}>Sangam Char Rasta</span>
-                            </div>
-                            <div className={styles.bankItem}>
-                                <span className={styles.bankLabel}>IFSC Code</span>
-                                <span className={styles.bankValue}>HDFC......</span>
-                            </div>
-                            <div className={styles.bankItem}>
-                                <span className={styles.bankLabel}>MICR Code</span>
-                                <span className={styles.bankValue}>.......</span>
-                            </div>
+                        <p style={{ marginBottom: '1.5rem', color: '#e2e8f0' }}>Sponsors will receive appropriate recognition based on the selected sponsorship category through:</p>
+                        <div className={styles.benefitList}>
+                            {[
+                                "Conference branding and display opportunities",
+                                "Delegate registrations",
+                                "Conference souvenir",
+                                "Event publicity and promotional materials",
+                                "On-site acknowledgement during the conference",
+                                "Visibility among delegates from across Gujarat"
+                            ].map((item, index) => (
+                                <div key={index} className={styles.benefitItem}>
+                                    <Check className={styles.checkIcon} size={20} />
+                                    <p>{item}</p>
+                                </div>
+                            ))}
                         </div>
+                        <p style={{ marginTop: '1.5rem', color: '#94a3b8', fontStyle: 'italic' }}>Detailed sponsorship benefits will be shared with interested organizations upon request.</p>
                     </div>
 
                     <div className={styles.card}>
                         <h2 className={styles.sectionTitle}>
-                            <Briefcase className={styles.goldIcon} /> Contact Details
+                            <Users className={styles.goldIcon} /> Conference Highlights
                         </h2>
-                        <div className={styles.contactGrid}>
+                        <div className={styles.benefitList}>
+                            {[
+                                "500+ Delegates",
+                                "3-Day Scientific Conference",
+                                "Keynote Lectures",
+                                "Expert Panel Discussions",
+                                "Workshops",
+                                "Oral & Poster Presentations",
+                                "Networking Opportunities"
+                            ].map((item, index) => (
+                                <div key={index} className={styles.benefitItem}>
+                                    <Check className={styles.checkIcon} size={20} />
+                                    <p>{item}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className={styles.card} style={{ gridColumn: '1 / -1' }}>
+                        <h2 className={styles.sectionTitle}>
+                            <Briefcase className={styles.goldIcon} /> Become a Sponsor
+                        </h2>
+                        <p style={{ marginBottom: '1rem', color: '#e2e8f0', lineHeight: '1.6' }}>
+                            We invite organizations, institutions, healthcare companies, and industry partners to join us in making IAPSMGC CON 2026 a successful academic event.
+                        </p>
+                        <p style={{ marginBottom: '2rem', color: '#e2e8f0', lineHeight: '1.6' }}>
+                            Your support will contribute towards promoting evidence-based public health practices and advancing digital health initiatives for equitable healthcare delivery.
+                        </p>
+
+                        <div className={styles.contactGrid} style={{ marginTop: '2rem' }}>
                             <div className={styles.contactBox}>
                                 <div className={styles.contactAvatar}>
                                     <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(255,215,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #FFD700' }}>
@@ -194,9 +179,8 @@ export default function Sponsorship() {
                                 <div className={styles.contactInfo}>
                                     <h3 style={{ fontSize: '1.25rem', whiteSpace: 'nowrap' }}>Address</h3>
                                     <p>Department of Community Medicine</p>
-                                    <p>2nd Floor, PIMSR</p>
-                                    <p>Parul University</p>
-                                    <p>Vadodara – 391760</p>
+                                    <p>Parul Institute of Medical Sciences & Research</p>
+                                    <p>Parul University, Vadodara</p>
                                 </div>
                             </div>
 

@@ -54,10 +54,10 @@ export default function Footer() {
                     <div className={styles.footerCol}>
                         <h4 className={styles.footerHeading}>Quick Links</h4>
                         <ul className={styles.footerList}>
-                            <li><Link href="/speakers">Speakers</Link></li>
-                            <li><Link href="/schedule">Schedule</Link></li>
+                            <li><Link href="#">Speakers</Link></li>
+                            <li><Link href="#">Schedule</Link></li>
                             <li><Link href="/sponsorship">Sponsorships</Link></li>
-                            <li><Link href="/abstract-submission">Abstract Submission</Link></li>
+                            <li><Link href="#">Abstract Submission</Link></li>
                             <li><Link href="/#about-parul">Venue</Link></li>
                         </ul>
                     </div>

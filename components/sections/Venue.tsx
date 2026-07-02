@@ -200,7 +200,6 @@ export function Venue() {
 
 export function AboutIAPSM() {
     const iapsmImages = [
-        "/images/award-stage.jpg",
         "/images/iapsm-1.jpg",
         "/images/iapsm-2.png",
         "/images/iapsm-3.png",
