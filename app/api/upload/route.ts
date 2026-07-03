@@ -85,22 +85,51 @@ export async function POST(request: Request) {
     }
 
     // 4. Default zero-config fallback for Vercel production: Catbox.moe
-    console.log("Using zero-config fallback (Catbox.moe)...");
-    const catboxForm = new FormData();
-    catboxForm.append('reqtype', 'fileupload');
-    catboxForm.append('fileToUpload', new Blob([buffer]), filename);
+    try {
+      console.log("Using zero-config fallback (Catbox.moe)...");
+      const catboxForm = new FormData();
+      catboxForm.append('reqtype', 'fileupload');
+      catboxForm.append('fileToUpload', file, filename);
 
-    const catboxRes = await fetch('https://catbox.moe/user/api.php', {
-      method: 'POST',
-      body: catboxForm
-    });
+      const catboxRes = await fetch('https://catbox.moe/user/api.php', {
+        method: 'POST',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' // Some hosts block fetch/node User-Agents
+        },
+        body: catboxForm
+      });
 
-    if (catboxRes.ok) {
-      const url = await catboxRes.text();
-      if (url.startsWith('http')) {
-        console.log("Uploaded successfully to Catbox:", url);
-        return NextResponse.json({ success: true, url });
+      if (catboxRes.ok) {
+        const url = await catboxRes.text();
+        if (url.startsWith('http')) {
+          console.log("Uploaded successfully to Catbox:", url);
+          return NextResponse.json({ success: true, url });
+        }
       }
+    } catch (e) {
+      console.log("Catbox upload failed:", e);
+    }
+
+    // 5. Pomf clone fallback
+    try {
+      console.log("Catbox failed, trying pomf.lain.la...");
+      const pomfForm = new FormData();
+      pomfForm.append('files[]', file, filename);
+      const pomfRes = await fetch('https://pomf.lain.la/upload.php', {
+        method: 'POST',
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+        body: pomfForm
+      });
+
+      if (pomfRes.ok) {
+        const pomfData = await pomfRes.json();
+        if (pomfData.success && pomfData.files && pomfData.files[0]) {
+          console.log("Uploaded successfully to Pomf:", pomfData.files[0].url);
+          return NextResponse.json({ success: true, url: pomfData.files[0].url });
+        }
+      }
+    } catch (e) {
+      console.log("Pomf upload failed:", e);
     }
 
     throw new Error("All upload methods and fallbacks failed.");
