@@ -84,12 +84,42 @@ export async function POST(request: Request) {
       }
     }
 
-    // 4. Default zero-config fallback for Vercel production: Catbox.moe
+    const mimeType = file.type || 'application/octet-stream';
+    const isImage = mimeType.startsWith('image/');
+
+    // 4. FreeImage.host fallback (Images only) - highly reliable base64 upload
+    if (isImage) {
+      try {
+        console.log("Trying FreeImage.host...");
+        const base64Str = buffer.toString('base64');
+        const fiRes = await fetch('https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            action: 'upload',
+            source: base64Str,
+            format: 'json'
+          })
+        });
+        
+        if (fiRes.ok) {
+          const fiData = await fiRes.json();
+          if (fiData.status_code === 200 && fiData.image && fiData.image.url) {
+            console.log("Uploaded successfully to FreeImage.host:", fiData.image.url);
+            return NextResponse.json({ success: true, url: fiData.image.url });
+          }
+        }
+      } catch (e) {
+        console.log("FreeImage.host upload failed:", e);
+      }
+    }
+
+    // 5. Default zero-config fallback for Vercel production: Catbox.moe
     try {
       console.log("Using zero-config fallback (Catbox.moe)...");
       const catboxForm = new FormData();
       catboxForm.append('reqtype', 'fileupload');
-      catboxForm.append('fileToUpload', file, filename);
+      catboxForm.append('fileToUpload', new Blob([buffer], { type: mimeType }), filename);
 
       const catboxRes = await fetch('https://catbox.moe/user/api.php', {
         method: 'POST',
@@ -110,11 +140,11 @@ export async function POST(request: Request) {
       console.log("Catbox upload failed:", e);
     }
 
-    // 5. Pomf clone fallback
+    // 6. Pomf clone fallback
     try {
       console.log("Catbox failed, trying pomf.lain.la...");
       const pomfForm = new FormData();
-      pomfForm.append('files[]', file, filename);
+      pomfForm.append('files[]', new Blob([buffer], { type: mimeType }), filename);
       const pomfRes = await fetch('https://pomf.lain.la/upload.php', {
         method: 'POST',
         headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
