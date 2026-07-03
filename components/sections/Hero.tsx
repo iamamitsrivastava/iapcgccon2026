@@ -106,6 +106,7 @@ export default function Hero() {
 
   const [formData, setFormData] = useState({
     name: '',
+    registrationNumber: '',
     email: '',
     documentLink: '',
   });
@@ -158,10 +159,10 @@ export default function Hero() {
     setIsSubmitting(true);
 
     try {
-      const { name: fullName, email, documentLink } = formData;
+      const { name: fullName, registrationNumber, email, documentLink } = formData;
 
       const res = await fetch(
-        "https://script.google.com/macros/s/AKfycbymq8pRHk--R9ItUFGBkmwFrCnfuqzUr4BojT4wOG8l5edYgFrp1D_1fDHTAVe8eyh1kg/exec",
+        "https://script.google.com/macros/s/AKfycbzoIwZzQ10_hAxt1efM8iYh5qyfbXGDjmmUPf_VVodjyRvDz12OlfK_ZcfxdePfwTCBUw/exec",
         {
           method: "POST",
           headers: {
@@ -170,6 +171,7 @@ export default function Hero() {
           body: JSON.stringify({
             type: submissionType,
             fullName,
+            registrationNumber,
             email,
             documentLink
           }),
@@ -182,7 +184,7 @@ export default function Hero() {
         setTimeout(() => {
           setIsModalOpen(false);
           setSubmissionSuccess(false);
-          setFormData({ name: "", email: "", documentLink: "" });
+          setFormData({ name: "", registrationNumber: "", email: "", documentLink: "" });
         }, 2000);
       } else {
         throw new Error("Server error");
@@ -265,16 +267,8 @@ export default function Hero() {
             {/* Trust Indicators */}
             <div className={`${styles.trustBar} ${styles.animate} ${styles['delay-600']}`}>
               <div className={styles.trustItem}>
-                <Award className={styles.trustIcon} size={20} />
-                <span>NAAC A++ Accredited University</span>
-              </div>
-              <div className={styles.trustItem}>
                 <Globe className={styles.trustIcon} size={20} />
                 <span>International Conference</span>
-              </div>
-              <div className={styles.trustItem}>
-                <Layers className={styles.trustIcon} size={20} />
-                <span>Peer-Reviewed Publications</span>
               </div>
               <div className={styles.trustItem}>
                 <Search className={styles.trustIcon} size={20} />
@@ -437,6 +431,20 @@ export default function Hero() {
                         setFormData({ ...formData, name: e.target.value })
                       }
                       placeholder="Enter your full name"
+                    />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label htmlFor="registrationNumber">Registration No. *</label>
+                    <input
+                      type="text"
+                      id="registrationNumber"
+                      required
+                      value={formData.registrationNumber}
+                      onChange={(e) =>
+                        setFormData({ ...formData, registrationNumber: e.target.value })
+                      }
+                      placeholder="Enter your registration no."
                     />
                   </div>
 

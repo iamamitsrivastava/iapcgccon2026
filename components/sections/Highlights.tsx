@@ -16,7 +16,7 @@ const awardsData = [
     {
         icon: <Award size={24} strokeWidth={1.5} />,
         title: "Shri H.M. Patel Trophy for Young Scientist",
-        text: "it was initiated to increase the interest in research in junior members of IAPSM and encourage who is doing good work in research by awarding the trophy and certificate."
+        text: "Encouraging outstanding research contributions by junior members of IAPSM."
     }
 ];
 

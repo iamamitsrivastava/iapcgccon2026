@@ -90,7 +90,7 @@ export function SubmissionGuidelines() {
         try {
             const { name: fullName, registrationNo, email, documentLink } = formData;
 
-            const res = await fetch("https://script.google.com/macros/s/AKfycbymq8pRHk--R9ItUFGBkmwFrCnfuqzUr4BojT4wOG8l5edYgFrp1D_1fDHTAVe8eyh1kg/exec", {
+            const res = await fetch("https://script.google.com/macros/s/AKfycbzoIwZzQ10_hAxt1efM8iYh5qyfbXGDjmmUPf_VVodjyRvDz12OlfK_ZcfxdePfwTCBUw/exec", {
                 method: "POST",
                 headers: {
                     "Content-Type": "text/plain;charset=utf-8",
@@ -98,7 +98,7 @@ export function SubmissionGuidelines() {
                 body: JSON.stringify({
                     type: submissionType,
                     fullName,
-                    registrationNo,
+                    registrationNumber: registrationNo,
                     email,
                     documentLink
                 }),

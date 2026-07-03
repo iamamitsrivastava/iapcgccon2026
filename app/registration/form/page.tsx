@@ -173,16 +173,32 @@ function RegistrationFormContent() {
         setSubmitting(true);
         
         try {
-            // Include generated image URLs in the form data
-            const submissionData = {
-                ...form,
-                amount,
-                category,
-                photoUrl: typeof window !== 'undefined' ? window.location.origin + photoUrl : photoUrl,
-                proofUrl: typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl
+            const passportPhotoUrl = typeof window !== 'undefined' && photoUrl?.startsWith('/') ? window.location.origin + photoUrl : photoUrl;
+            const paymentProofUrl = typeof window !== 'undefined' && proofUrl?.startsWith('/') ? window.location.origin + proofUrl : proofUrl;
+
+            const payload = {
+                fullName: form.fullName,
+                gender: form.gender,
+                department: form.department,
+                designation: form.designation,
+                category: form.participantCategory,
+                passportPhoto: passportPhotoUrl,
+                institution: form.institution,
+                email: form.email,
+                phone: form.mobile,
+                iapsmMembership: form.iapsmMember,
+                registrationNumber: form.iapsmRegNumber,
+                foodPreference: form.foodPreference,
+                registrationDoneFor: form.registrationFor.join(', '),
+                registrationPlan: `${category} - ${label} - ₹${amount}`,
+                rrn: form.rrnNumber,
+                paymentDate: form.dateOfPayment,
+                paymentProof: paymentProofUrl
             };
+
+            console.log(payload);
             
-            await submitRegistration(submissionData);
+            await submitRegistration(payload);
             
             setSubmitted(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -235,7 +251,7 @@ function RegistrationFormContent() {
             transition: 'border-color 0.2s',
             boxSizing: 'border-box' as const,
         },
-        inputErr: { borderColor: '#ef4444' },
+        inputErr: { border: '1px solid #ef4444' },
         errMsg: { color: '#ef4444', fontSize: '0.78rem', marginTop: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.3rem' },
         // Radio / checkbox grid
         optionGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.65rem' },

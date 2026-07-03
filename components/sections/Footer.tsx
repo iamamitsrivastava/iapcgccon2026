@@ -2,14 +2,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-const Linkedin = ({ size = 20, color = "currentColor" }: { size?: number, color?: string }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-        <rect x="2" y="9" width="4" height="12"></rect>
-        <circle cx="4" cy="4" r="2"></circle>
-    </svg>
-);
-
 const Instagram = ({ size = 20, color = "currentColor" }: { size?: number, color?: string }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -24,9 +16,16 @@ const Facebook = ({ size = 20, color = "currentColor" }: { size?: number, color?
     </svg>
 );
 
-const Twitter = ({ size = 20, color = "currentColor" }: { size?: number, color?: string }) => (
+const PhoneIcon = ({ size = 14, color = "currentColor" }: { size?: number, color?: string }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+);
+
+const MailIcon = ({ size = 14, color = "currentColor" }: { size?: number, color?: string }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+        <polyline points="22,6 12,13 2,6"></polyline>
     </svg>
 );
 
@@ -54,11 +53,11 @@ export default function Footer() {
                     <div className={styles.footerCol}>
                         <h4 className={styles.footerHeading}>Quick Links</h4>
                         <ul className={styles.footerList}>
-                            <li><Link href="#">Speakers</Link></li>
-                            <li><Link href="#">Schedule</Link></li>
+                            <li><Link href="/speakers">Speakers</Link></li>
+                            <li><Link href="/schedule">Schedule</Link></li>
                             <li><Link href="/sponsorship">Sponsorships</Link></li>
-                            <li><Link href="#">Abstract Submission</Link></li>
-                            <li><Link href="/#about-parul">Venue</Link></li>
+                            <li><Link href="/abstract-submission">Abstract Submission</Link></li>
+                            <li><Link href="/venue">Venue</Link></li>
                         </ul>
                     </div>
 
@@ -66,14 +65,26 @@ export default function Footer() {
                     <div className={styles.footerCol}>
                         <h4 className={styles.footerHeading}>Support</h4>
                         <ul className={styles.footerList}>
-                            <li><Link href="/contact" style={{ marginBottom: '0.5rem', display: 'inline-block' }}>Contact Us</Link></li>
-                            <li style={{ marginTop: '0.5rem', lineHeight: '1.2' }}>
-                                <strong>Dr Keyur Mistry</strong><br />
-                                <a href="tel:9727913272" style={{ color: '#94a3b8' }}>9727913272</a>
+                            <li><Link href="/contact" className={styles.contactUsLink}>Contact Us</Link></li>
+                            <li className={styles.contactEmailItem}>
+                                <a href="mailto:iapsmgccon2026@paruluniversity.ac.in" className={styles.contactLink}>
+                                    <MailIcon size={14} />
+                                    <span>  iapsmgccon2026@paruluniversity.ac.in</span>
+                                </a>
                             </li>
-                            <li style={{ marginTop: '0.75rem', lineHeight: '1.2' }}>
-                                <strong>Dr Swapnil Raulji</strong><br />
-                                <a href="tel:7046653327" style={{ color: '#94a3b8' }}>7046653327</a>
+                            <li className={styles.contactItem}>
+                                <span className={styles.contactName}>Dr Keyur Mistry</span>
+                                <a href="tel:9727913272" className={styles.contactLink}>
+                                    <PhoneIcon size={14} />
+                                    <span> 9727913272</span>
+                                </a>
+                            </li>
+                            <li className={styles.contactItem}>
+                                <span className={styles.contactName}>Dr Swapnil Raulji</span>
+                                <a href="tel:7046653327" className={styles.contactLink}>
+                                    <PhoneIcon size={14} />
+                                    <span> 7046653327</span>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -81,25 +92,24 @@ export default function Footer() {
                     {/* Column 4: Branding & Date */}
                     <div className={`${styles.footerCol} ${styles.brandingCol}`}>
                         <div className={styles.footerBrand}>
-                            <div className={styles.logoPlaceholder}>
-                                <div className={styles.logoWrapper}>
-                                    <Image
-                                        src="/parul-university-logo.svg"
-                                        alt="Parul University"
-                                        width={200}
-                                        height={60}
-                                        style={{ objectFit: 'contain' }}
-                                    />
-                                </div>
+                            <div className={styles.logoWrapper}>
+                                <Image
+                                    src="/parul-university-logo.svg"
+                                    alt="Parul University"
+                                    width={200}
+                                    height={60}
+                                    style={{ objectFit: 'contain' }}
+                                    priority={false}
+                                />
                             </div>
                         </div>
                         <h3 className={styles.footerConferenceTitle}>{conference.title}</h3>
                         <p className={styles.footerConferenceSubtitle}>Digital Health for All: Bridging Equity, Access and Innovation</p>
 
                         <div className={styles.footerMeta}>
-                            <p style={{ marginBottom: '0.25rem' }}>PIMSR, Parul University</p>
-                            <p style={{ marginBottom: '0.75rem' }}>Vadodara, Gujarat</p>
-                            <p>26–28 November 2026</p>
+                            <p className={styles.metaText}>PIMSR, Parul University</p>
+                            <p className={styles.metaText}>Vadodara, Gujarat</p>
+                            <p className={styles.metaDate}>26–28 November 2026</p>
                         </div>
 
                         <div className={styles.socialIcons}>
@@ -111,7 +121,7 @@ export default function Footer() {
             </div>
 
             <div className={styles.copyArea}>
-                <div className="container">
+                <div className={`${styles.container} ${styles.copyContainer}`}>
                     <p className={styles.copyText}>
                         Copyright &copy; 2026 {conference.host}. All rights reserved.
                     </p>
@@ -121,20 +131,11 @@ export default function Footer() {
                             href="https://www.linkedin.com/in/amit-srivastava108/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', color: 'inherit' }}
+                            className={styles.devLink}
                         >
-                            <strong style={{ color: '#e2e8f0' }}>Amit Srivastava</strong>
-                            <span style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: '22px',
-                                height: '22px',
-                                borderRadius: '4px',
-                                backgroundColor: '#0077B5',
-                                flexShrink: 0
-                            }}>
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                            <strong>Amit Srivastava</strong>
+                            <span className={styles.linkedinBadge}>
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                                 </svg>
                             </span>

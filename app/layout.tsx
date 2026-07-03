@@ -17,6 +17,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://iapsmgccon2026.paruluniversity.ac.in'),
   title: 'IAPSMGC CON 2026 | Parul University',
   description: 'Digital Health for All: Bridging Equity, Access and Innovation — PIMSR, Parul University, Vadodara, 26–28 November 2026.',
   openGraph: {

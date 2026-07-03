@@ -1,13 +1,12 @@
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycby4iOh7KDCpBf_Dl76RJlEw4wthCJRtYwEzOtDzaioN9tgwWsFXbsBrbrCj5FEICmg/exec";
+  "https://script.google.com/macros/s/AKfycbwgAzVPYjO9_07PbNY5-jNPcrxVnTdnkUwlmvjoReuvVmZoCia9kVfiEpAB8yUMvLe0/exec";
 
 export async function submitRegistration(data: any) {
   const response = await fetch(GOOGLE_SCRIPT_URL, {
     method: "POST",
-    headers: {
-      // Use text/plain to avoid CORS preflight OPTIONS request blocking the request
-      "Content-Type": "text/plain;charset=utf-8",
-    },
+    // headers: {
+    //   "Content-Type": "application/json",
+    // },
     body: JSON.stringify(data),
   });
 
