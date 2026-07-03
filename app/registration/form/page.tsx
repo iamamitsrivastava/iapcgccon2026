@@ -525,7 +525,7 @@ function RegistrationFormContent() {
 
                     {/* 11. IAPSM Reg No */}
                     <div style={s.field}>
-                        <label style={s.label}>IAPSM Registration Number <span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}>(Write NA if not a member)</span></label>
+                        <label style={s.label}>IAPSM Registration Number <span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}></span></label>
                         <input
                             style={{ ...s.input, ...(errors.iapsmRegNumber ? s.inputErr : {}) }}
                             placeholder="e.g. IAPSM-12345 or NA"
