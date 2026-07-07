@@ -37,7 +37,7 @@ export default function PublishingEthicsPage() {
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)'
                 }}>
                     <p style={{ color: '#cbd5e1', textAlign: 'justify', lineHeight: '1.6', fontSize: '0.95rem', margin: 0 }}>
-                        The Scientific Committee warmly invites researchers, academicians, public health professionals, postgraduate students, and practitioners to submit original research abstracts for Oral and Poster Presentations at the conference.<br/><br/>
+                        The Scientific Committee warmly invites researchers, academicians, public health professionals, postgraduate students, and practitioners to submit original research abstracts for Oral and Poster Presentations at the conference.<br /><br />
                         Abstracts addressing a wide range of topics related to community medicine and public health, aligned with the conference themes and sub-themes, are encouraged. Selected abstracts will be showcased during the scientific sessions, and outstanding oral and poster presentations will be recognized with awards.
                     </p>
                 </div>
@@ -104,7 +104,7 @@ export default function PublishingEthicsPage() {
                             Prepare your 10-12 slides using official conference PPT format (Times new roman). Ensure your presentation fits within the allocated time slot.
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                            <a href="https://docs.google.com/presentation/d/1k9V4Xc5lGk935pL_o7QbIZZshx1E8OJk/edit?slide=id.p1#slide=id.p1" target="_blank" rel="noopener noreferrer" style={{
+                            <a href="https://docs.google.com/presentation/d/1k9V4Xc5lGk935pL_o7QbIZZshx1E8OJk/edit?usp=sharing&ouid=103132168783366602458&rtpof=true&sd=true" style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '0.6rem',
@@ -136,7 +136,7 @@ export default function PublishingEthicsPage() {
                                 transition: 'all 0.3s ease',
                                 width: 'fit-content'
                             }}>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                                 View Guidelines
                             </a>
                         </div>
@@ -187,7 +187,7 @@ export default function PublishingEthicsPage() {
                             Follow the guidelines to prepare your poster for an effective presentation. The size of poster is 3 &times; 4 feet.
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                            <a href="https://docs.google.com/presentation/d/12O1At0atcJWvocF8PjAfeURuR3HTYaiS/edit?usp=drive_link&ouid=103132168783366602458&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer" style={{
+                            <a href="https://docs.google.com/presentation/d/12O1At0atcJWvocF8PjAfeURuR3HTYaiS/edit?usp=sharing&ouid=103132168783366602458&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer" style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '0.6rem',
@@ -219,7 +219,7 @@ export default function PublishingEthicsPage() {
                                 transition: 'all 0.3s ease',
                                 width: 'fit-content'
                             }}>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                                 View Guidelines
                             </a>
                         </div>
@@ -323,29 +323,29 @@ export default function PublishingEthicsPage() {
 
                 {/* ── 2. Authors & Their Responsibilities ── */}
                 <div className={styles.section} id="author-resp">
-                        <div className={styles.sectionHeader}>
-                            <div className={`${styles.iconBox} ${styles.iconBoxBlue}`}>
-                                <Users className={styles.iconBlue} />
-                            </div>
-                            <h2 className={styles.sectionTitle}>Authors &amp; Their Responsibilities</h2>
+                    <div className={styles.sectionHeader}>
+                        <div className={`${styles.iconBox} ${styles.iconBoxBlue}`}>
+                            <Users className={styles.iconBlue} />
                         </div>
-                        <div className={styles.content}>
-                            <p>
-                                The paper must be an original, unpublished work written in English. The submitted paper should not have been published
-                                before or be under consideration for publication in another conference proceeding or journal. All authors whose names
-                                appear on the paper must have made substantial contributions to the scientific work and share collective responsibility and
-                                accountability for the results.
-                            </p>
-                            <p>
-                                All papers undergo a double blind peer-review process. Finally, the conference editors review each submission and may reject it if it
-                                does not meet the conference requirements, is not related to the conference subject matter, or is of poor quality. In the second
-                                stage of the review process, the paper is sent to an independent reviewer. Reviewers evaluate the paper and may recommend to
-                                accept it in its current form, with minor corrections, major corrections, or only after corrections and repeated review, or to
-                                reject it. Reviewers include their recommendations and comments, which are then sent to the author(s). The editors
-                                should not reverse decisions on publication unless serious problems are identified.
-                            </p>
-                        </div>
+                        <h2 className={styles.sectionTitle}>Authors &amp; Their Responsibilities</h2>
                     </div>
+                    <div className={styles.content}>
+                        <p>
+                            The paper must be an original, unpublished work written in English. The submitted paper should not have been published
+                            before or be under consideration for publication in another conference proceeding or journal. All authors whose names
+                            appear on the paper must have made substantial contributions to the scientific work and share collective responsibility and
+                            accountability for the results.
+                        </p>
+                        <p>
+                            All papers undergo a double blind peer-review process. Finally, the conference editors review each submission and may reject it if it
+                            does not meet the conference requirements, is not related to the conference subject matter, or is of poor quality. In the second
+                            stage of the review process, the paper is sent to an independent reviewer. Reviewers evaluate the paper and may recommend to
+                            accept it in its current form, with minor corrections, major corrections, or only after corrections and repeated review, or to
+                            reject it. Reviewers include their recommendations and comments, which are then sent to the author(s). The editors
+                            should not reverse decisions on publication unless serious problems are identified.
+                        </p>
+                    </div>
+                </div>
 
                 {/* ── 4. References ── */}
                 <div className={styles.section} id="references">
@@ -358,7 +358,7 @@ export default function PublishingEthicsPage() {
                     <div className={styles.content}>
                         <p>
                             The list of references must be alphabetically arranged according to the first element in the line. All references cited in the text must be part
-                            of the reference list and vice versa. Use VANCOUVER SUPERSCRIPT style with DOI. 
+                            of the reference list and vice versa. Use VANCOUVER SUPERSCRIPT style with DOI.
                         </p>
                         <div className={styles.referenceBox}>
                             Doe J, Smith A. The impact of modern treatments on patient survival. Lancet. 2024;403(1042):1124-30. doi: 10.1016/s0140-6736(24)00123-x

@@ -52,7 +52,7 @@ export function SubmissionGuidelines() {
                     text: "Template for Abstract Submission",
                     variant: "secondary",
                     action: () => {
-                        window.open('https://docs.google.com/document/d/1SUdF-thnnpDH6KG8LPtc62G43PoSrX1v/edit?usp=drive_link&ouid=103132168783366602458&rtpof=true&sd=true', '_blank');
+                        window.open('https://docs.google.com/document/d/1nfChHn7w-64ry0-d9W9xr6Mg8LbUs5n1/edit?usp=sharing&ouid=103132168783366602458&rtpof=true&sd=true', '_blank');
                     }
                 },
                 {
@@ -245,8 +245,8 @@ export function SubmissionGuidelines() {
                             <>
                                 <h2 className={heroStyles.modalTitle}>Enter Access Code</h2>
                                 <p className={heroStyles.modalSubtitle}>
-                                    Please enter your unique access code to proceed. <br/>
-                                    <span style={{color: '#ffbf00', fontWeight: 'bold'}}>Note: One code is valid only once.</span>
+                                    Please enter your unique access code to proceed. <br />
+                                    <span style={{ color: '#ffbf00', fontWeight: 'bold' }}>Note: One code is valid only once.</span>
                                 </p>
                                 <div className={heroStyles.formGroup} style={{ marginBottom: '1.5rem' }}>
                                     <input
