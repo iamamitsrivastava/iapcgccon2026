@@ -4,13 +4,17 @@ import { useState } from 'react';
 import styles from './SubmissionGuidelines.module.css';
 import heroStyles from './Hero.module.css';
 import ScrollReveal from '@/components/ui/ScrollReveal';
-import { X, CheckCircle2, Eye } from 'lucide-react';
+import { X, CheckCircle2, Eye, Lock } from 'lucide-react';
+import { ABSTRACT_ACCESS_CODES, FULL_PAPER_ACCESS_CODES } from './Hero';
 
 export function SubmissionGuidelines() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [submissionType, setSubmissionType] = useState<'ABSTRACT' | 'FULL_PAPER'>('ABSTRACT');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submissionSuccess, setSubmissionSuccess] = useState(false);
+    const [isCodeVerified, setIsCodeVerified] = useState(false);
+    const [accessCode, setAccessCode] = useState('');
+    const [codeError, setCodeError] = useState('');
 
     const [formData, setFormData] = useState({
         name: '',
@@ -48,7 +52,7 @@ export function SubmissionGuidelines() {
                     text: "Template for Abstract Submission",
                     variant: "secondary",
                     action: () => {
-                        window.open('/Template_for_Abstract_Submission.pdf?v=' + Date.now(), '_blank');
+                        window.open('https://docs.google.com/document/d/1SUdF-thnnpDH6KG8LPtc62G43PoSrX1v/edit?usp=drive_link&ouid=103132168783366602458&rtpof=true&sd=true', '_blank');
                     }
                 },
                 {
@@ -56,6 +60,9 @@ export function SubmissionGuidelines() {
                     variant: "primary",
                     action: () => {
                         setSubmissionType('ABSTRACT');
+                        setIsCodeVerified(false);
+                        setAccessCode('');
+                        setCodeError('');
                         setIsModalOpen(true);
                     }
                 }
@@ -76,6 +83,9 @@ export function SubmissionGuidelines() {
                     variant: "primary",
                     action: () => {
                         setSubmissionType('FULL_PAPER');
+                        setIsCodeVerified(false);
+                        setAccessCode('');
+                        setCodeError('');
                         setIsModalOpen(true);
                     }
                 }
@@ -187,10 +197,11 @@ export function SubmissionGuidelines() {
                                                     <button
                                                         key={btnIdx}
                                                         className={btn.variant === 'secondary' ? heroStyles.btnSecondary : heroStyles.btnPrimary}
-                                                        style={{ padding: '0.75rem 1.5rem', fontSize: '0.9rem' }}
+                                                        style={{ padding: '0.75rem 1.5rem', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}
                                                         onClick={btn.action}
                                                     >
                                                         {btn.text}
+                                                        {(btn.text === 'Submit Abstract' || btn.text === 'Submit Full Paper') && <Lock size={16} />}
                                                     </button>
                                                 )
                                             ))}
@@ -230,6 +241,78 @@ export function SubmissionGuidelines() {
                                     Your document has been successfully submitted.
                                 </p>
                             </div>
+                        ) : !isCodeVerified ? (
+                            <>
+                                <h2 className={heroStyles.modalTitle}>Enter Access Code</h2>
+                                <p className={heroStyles.modalSubtitle}>
+                                    Please enter your unique access code to proceed. <br/>
+                                    <span style={{color: '#ffbf00', fontWeight: 'bold'}}>Note: One code is valid only once.</span>
+                                </p>
+                                <div className={heroStyles.formGroup} style={{ marginBottom: '1.5rem' }}>
+                                    <input
+                                        type="text"
+                                        value={accessCode}
+                                        onChange={(e) => {
+                                            setAccessCode(e.target.value);
+                                            setCodeError('');
+                                        }}
+                                        placeholder="Enter Access Code"
+                                        style={{
+                                            width: '100%',
+                                            padding: '0.75rem 1rem',
+                                            borderRadius: '8px',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                                            backgroundColor: 'rgba(15, 23, 42, 0.6)',
+                                            color: 'white',
+                                            fontSize: '1rem',
+                                            outline: 'none',
+                                            transition: 'border-color 0.2s',
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                const code = accessCode.trim().toUpperCase();
+                                                const validCodes = submissionType === 'FULL_PAPER' ? FULL_PAPER_ACCESS_CODES : ABSTRACT_ACCESS_CODES;
+                                                if (validCodes.includes(code)) {
+                                                    const usedCodes = JSON.parse(localStorage.getItem('used_access_codes') || '[]');
+                                                    if (usedCodes.includes(code)) {
+                                                        setCodeError('This code has already been used. One code is valid only once.');
+                                                    } else {
+                                                        usedCodes.push(code);
+                                                        localStorage.setItem('used_access_codes', JSON.stringify(usedCodes));
+                                                        setIsCodeVerified(true);
+                                                    }
+                                                } else {
+                                                    setCodeError('Invalid access code. Please try again.');
+                                                }
+                                            }
+                                        }}
+                                    />
+                                    {codeError && <p style={{ color: '#ef4444', fontSize: '0.85rem', marginTop: '0.5rem', fontWeight: 500 }}>{codeError}</p>}
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const code = accessCode.trim().toUpperCase();
+                                        const validCodes = submissionType === 'FULL_PAPER' ? FULL_PAPER_ACCESS_CODES : ABSTRACT_ACCESS_CODES;
+                                        if (validCodes.includes(code)) {
+                                            const usedCodes = JSON.parse(localStorage.getItem('used_access_codes') || '[]');
+                                            if (usedCodes.includes(code)) {
+                                                setCodeError('This code has already been used. One code is valid only once.');
+                                            } else {
+                                                usedCodes.push(code);
+                                                localStorage.setItem('used_access_codes', JSON.stringify(usedCodes));
+                                                setIsCodeVerified(true);
+                                            }
+                                        } else {
+                                            setCodeError('Invalid access code. Please try again.');
+                                        }
+                                    }}
+                                    className={heroStyles.submitModalBtn}
+                                >
+                                    Verify Code
+                                </button>
+                            </>
                         ) : (
                             <>
                                 <h2 className={heroStyles.modalTitle}>

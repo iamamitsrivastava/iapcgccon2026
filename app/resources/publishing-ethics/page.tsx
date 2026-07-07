@@ -104,7 +104,7 @@ export default function PublishingEthicsPage() {
                             Prepare your 10-12 slides using official conference PPT format (Times new roman). Ensure your presentation fits within the allocated time slot.
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                            <a href="https://drive.google.com/file/d/1SMEuw0oHrfG33vPIAWx2GFEK5eJJQl-R/view?usp=drive_link" target="_blank" rel="noopener noreferrer" style={{
+                            <a href="https://docs.google.com/presentation/d/1k9V4Xc5lGk935pL_o7QbIZZshx1E8OJk/edit?slide=id.p1#slide=id.p1" target="_blank" rel="noopener noreferrer" style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '0.6rem',
@@ -187,7 +187,7 @@ export default function PublishingEthicsPage() {
                             Follow the guidelines to prepare your poster for an effective presentation. The size of poster is 3 &times; 4 feet.
                         </p>
                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                            <a href="/Poster_Presentation_Template.pdf" target="_blank" rel="noopener noreferrer" style={{
+                            <a href="https://docs.google.com/presentation/d/12O1At0atcJWvocF8PjAfeURuR3HTYaiS/edit?usp=drive_link&ouid=103132168783366602458&rtpof=true&sd=true" target="_blank" rel="noopener noreferrer" style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '0.6rem',
