@@ -243,6 +243,27 @@ export function SubmissionGuidelines() {
                             </div>
                         ) : !isCodeVerified ? (
                             <>
+                                <div style={{ marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                                    <h2 className={heroStyles.modalTitle}>Get Your Access Code</h2>
+                                    <div className={heroStyles.formGroup}>
+                                        <input
+                                            type="email"
+                                            placeholder="Enter Your Email"
+                                            style={{
+                                                width: '100%',
+                                                padding: '0.75rem 1rem',
+                                                borderRadius: '8px',
+                                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                                backgroundColor: 'rgba(15, 23, 42, 0.6)',
+                                                color: 'white',
+                                                fontSize: '1rem',
+                                                outline: 'none',
+                                                transition: 'border-color 0.2s',
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
                                 <h2 className={heroStyles.modalTitle}>Enter Access Code</h2>
                                 <p className={heroStyles.modalSubtitle}>
                                     Please enter your unique access code to proceed. <br />

@@ -146,6 +146,7 @@ function RegistrationFormContent() {
     const validate = () => {
         const e: Record<string, string> = {};
         if (!form.fullName.trim()) e.fullName = 'Required';
+        if (!form.gender) e.gender = 'Please select your gender';
         if (!form.department.trim()) e.department = 'Required';
         if (!form.designation.trim()) e.designation = 'Required';
         if (!form.participantCategory) e.participantCategory = 'Required';
@@ -378,8 +379,8 @@ function RegistrationFormContent() {
 
                     {/* 2. Gender */}
                     <div style={s.field}>
-                        <label style={s.label}>Gender</label>
-                        <div style={{ ...s.optionGrid, gridTemplateColumns: 'repeat(2, 1fr)' }}>
+                        <label style={s.label}>Gender <span style={s.required}>*</span></label>
+                        <div style={{ ...s.optionGrid, gridTemplateColumns: 'repeat(2, 1fr)', ...(errors.gender ? { outline: '1px solid #ef4444', borderRadius: '10px', padding: '4px' } : {}) }} data-error={errors.gender ? true : undefined}>
                             {['Male', 'Female'].map(g => (
                                 <div key={g} style={s.option(form.gender === g)} onClick={() => set('gender', g)}>
                                     <div style={s.radioCircle(form.gender === g)}>
@@ -389,6 +390,7 @@ function RegistrationFormContent() {
                                 </div>
                             ))}
                         </div>
+                        {errors.gender && <p style={s.errMsg}><AlertCircle size={13} />{errors.gender}</p>}
                     </div>
 
                     {/* 3. Department */}

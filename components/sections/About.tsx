@@ -101,8 +101,8 @@ export function ConferenceTheme() {
                     <div className={styles.missionBanner}>
                         <div className={styles.missionIcon}>
                             <Image
-                                src="/images/word-cloud-logo.png"
-                                alt="Community Medicine Word Cloud"
+                                src="/images/viksit-bharat-logo.png"
+                                alt="Viksit Bharat Abhiyan"
                                 width={140}
                                 height={70}
                                 style={{ objectFit: 'contain' }}

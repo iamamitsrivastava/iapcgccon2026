@@ -1,9 +1,10 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Calendar, MapPin, ArrowRight, FileText, Award, Layers, Search, Globe, X, CheckCircle2, Clock, Lock } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, FileText, Award, Layers, Search, Globe, X, CheckCircle2, Clock, Lock, Copy, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { conference } from '@/data/conference';
+import { REGISTRATION_MAPPING } from '@/lib/registrationData';
 import styles from './Hero.module.css';
 
 // Unique IAPSMGC access codes for Abstract submission
@@ -103,11 +104,21 @@ export default function Hero() {
   const [isMounted, setIsMounted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCodeVerified, setIsCodeVerified] = useState(false);
+  const [accessEmail, setAccessEmail] = useState('');
+  const [isSendingCode, setIsSendingCode] = useState(false);
+  const [isCodeSent, setIsCodeSent] = useState(false);
+  const [sendCodeSuccess, setSendCodeSuccess] = useState('');
+  const [sendCodeError, setSendCodeError] = useState('');
   const [accessCode, setAccessCode] = useState('');
   const [codeError, setCodeError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [submissionType, setSubmissionType] = useState<'FULL_PAPER' | 'ABSTRACT'>('FULL_PAPER');
+  const [isRegModalOpen, setIsRegModalOpen] = useState(false);
+  const [regEmail, setRegEmail] = useState('');
+  const [foundRegNumbers, setFoundRegNumbers] = useState<string[]>([]);
+  const [regError, setRegError] = useState('');
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -119,7 +130,6 @@ export default function Hero() {
 
   useEffect(() => {
     setIsMounted(true);
-    // Target date: 27th Nov 2026, 09:00:00 IST
     const targetDate = new Date('2026-11-27T09:00:00+05:30').getTime();
 
     const updateTimer = () => {
@@ -141,12 +151,10 @@ export default function Hero() {
     updateTimer();
     const countdownInterval = setInterval(updateTimer, 1000);
 
-    // Profile rotation interval
     const profileInterval = setInterval(() => {
       setCurrentProfile((prev) => (prev + 1) % profiles.length);
     }, 5000);
 
-    // Image slider interval
     const slideInterval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % sliderImages.length);
     }, 4500);
@@ -157,7 +165,6 @@ export default function Hero() {
       clearInterval(slideInterval);
     };
   }, [profiles.length]);
-
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -203,6 +210,41 @@ export default function Hero() {
     }
   };
 
+  const handleGetAccessCode = async () => {
+    // Reject empty values, only accept valid email addresses
+    if (!accessEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(accessEmail.trim())) {
+      setSendCodeError('❌ Please enter a valid email address.');
+      return;
+    }
+
+    setIsSendingCode(true);
+    setSendCodeError('');
+    setSendCodeSuccess('');
+    setIsCodeSent(false);
+
+    try {
+      const response = await fetch('/api/send-access-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: accessEmail.trim() }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSendCodeSuccess('✅ You have been Registered.\n\nPlease check your email.');
+        setIsCodeSent(true);
+        setAccessEmail('');
+      } else {
+        setSendCodeError('❌ Unable to send email.\n\nPlease try again.');
+      }
+    } catch (error) {
+      setSendCodeError('❌ Unable to send email.\n\nPlease try again.');
+    } finally {
+      setIsSendingCode(false);
+    }
+  };
+
   return (
     <section className={styles.hero} id="home">
       <div className={styles.background}>
@@ -245,28 +287,62 @@ export default function Hero() {
               </div>
             </div>
 
-            <div className={`${styles.actions} ${styles.animate} ${styles['delay-500']}`}>
-              {(!isMounted || !isExpired) && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '4rem', width: 'fit-content' }} className={`${styles.animate} ${styles['delay-500']}`}>
+              <div className={styles.actions} style={{ marginBottom: 0 }}>
+                {(!isMounted || !isExpired) && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSubmissionType('ABSTRACT');
+                      setIsCodeVerified(false);
+                      setIsModalOpen(true);
+                    }}
+                    className={styles.btnSecondary}
+                    style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.25rem', padding: '0.6rem 1.5rem', cursor: 'pointer', outline: 'none' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', lineHeight: 1 }}>
+                      Submit Abstract <Lock size={18} />
+                    </div>
+                  </button>
+                )}
+
+                <button onClick={() => { setSubmissionType('FULL_PAPER'); setIsCodeVerified(false); setIsModalOpen(true); }} className={styles.btnPrimary} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', border: 'none' }}>
+                  Submit Full Paper <Lock size={18} />
+                </button>
+              </div>
+
+              <div className={styles.actions} style={{ marginBottom: 0 }}>
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSubmissionType('ABSTRACT');
-                    setIsCodeVerified(false);
-                    setIsModalOpen(true);
-                  }}
+                  onClick={() => setIsRegModalOpen(true)}
                   className={styles.btnSecondary}
-                  style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.25rem', padding: '0.6rem 1.5rem', cursor: 'pointer', outline: 'none' }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '0.8rem 1.5rem',
+                    cursor: 'pointer',
+                    background: 'rgba(15, 23, 42, 0.4)',
+                    color: '#ffbf00',
+                    border: '2px solid #ffbf00',
+                    boxShadow: 'none',
+                    fontWeight: 'bold',
+                    fontSize: '1rem',
+                    transition: 'all 0.3s ease',
+                    width: '100%',
+                    letterSpacing: '0.1em'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 191, 0, 0.1)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.background = 'rgba(15, 23, 42, 0.4)';
+                  }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', lineHeight: 1 }}>
-                    Submit Abstract <Lock size={18} />
-                  </div>
+                  KNOW YOUR REGISTRATION NUMBER
                 </button>
-              )}
-
-              <button onClick={() => { setSubmissionType('FULL_PAPER'); setIsCodeVerified(false); setIsModalOpen(true); }} className={styles.btnPrimary} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', border: 'none' }}>
-                Submit Full Paper <Lock size={18} />
-              </button>
+              </div>
             </div>
 
             {/* Trust Indicators */}
@@ -316,7 +392,7 @@ export default function Hero() {
       {isModalOpen && (
         <div
           className={styles.modalOverlay}
-          onClick={() => { setIsModalOpen(false); setIsCodeVerified(false); setAccessCode(''); setCodeError(''); setSubmissionSuccess(false); }}
+          onClick={() => { setIsModalOpen(false); setIsCodeVerified(false); setAccessCode(''); setCodeError(''); setSubmissionSuccess(false); setIsCodeSent(false); setSendCodeSuccess(''); setSendCodeError(''); }}
         >
           <div
             className={styles.modalContent}
@@ -324,7 +400,7 @@ export default function Hero() {
           >
             <button
               className={styles.closeButton}
-              onClick={() => { setIsModalOpen(false); setIsCodeVerified(false); setAccessCode(''); setCodeError(''); setSubmissionSuccess(false); }}
+              onClick={() => { setIsModalOpen(false); setIsCodeVerified(false); setAccessCode(''); setCodeError(''); setSubmissionSuccess(false); setIsCodeSent(false); setSendCodeSuccess(''); setSendCodeError(''); }}
             >
               <X size={24} />
             </button>
@@ -344,6 +420,69 @@ export default function Hero() {
               </div>
             ) : !isCodeVerified ? (
               <>
+                <div style={{ marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                  <h2 className={styles.modalTitle}>Get Your Access Code</h2>
+                  <div className={styles.formGroup}>
+                    <input
+                      type="email"
+                      placeholder="Enter Your Email"
+                      value={accessEmail}
+                      onChange={(e) => {
+                        setAccessEmail(e.target.value);
+                        setSendCodeError('');
+                        setSendCodeSuccess('');
+                        setIsCodeSent(false);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleGetAccessCode();
+                        }
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '0.75rem 1rem',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        backgroundColor: 'rgba(15, 23, 42, 0.6)',
+                        color: 'white',
+                        fontSize: '1rem',
+                        outline: 'none',
+                        transition: 'border-color 0.2s',
+                      }}
+                      disabled={isSendingCode}
+                    />
+                    <button
+                      type="button"
+                      className={styles.submitModalBtn}
+                      style={{ marginTop: '1rem', opacity: (isSendingCode || isCodeSent) ? 0.7 : 1 }}
+                      onClick={handleGetAccessCode}
+                      disabled={isSendingCode || isCodeSent}
+                    >
+                      {isSendingCode ? (
+                        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                          <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
+                          Sending...
+                        </span>
+                      ) : isCodeSent ? (
+                        'Sent ✓'
+                      ) : (
+                        'Get Code'
+                      )}
+                    </button>
+                    {sendCodeError && (
+                      <p style={{ color: '#ef4444', fontSize: '0.85rem', marginTop: '0.75rem', fontWeight: 500, whiteSpace: 'pre-line' }}>
+                        {sendCodeError}
+                      </p>
+                    )}
+                    {sendCodeSuccess && (
+                      <p style={{ color: '#10b981', fontSize: '0.85rem', marginTop: '0.75rem', fontWeight: 500, whiteSpace: 'pre-line' }}>
+                        {sendCodeSuccess}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
                 <h2 className={styles.modalTitle}>Enter Access Code</h2>
                 <p className={styles.modalSubtitle}>
                   Please enter your provided submission code to access the {submissionType === 'FULL_PAPER' ? 'paper' : 'abstract'} submission form.<br /><br />
@@ -521,6 +660,141 @@ export default function Hero() {
                 </form>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Registration Number Modal */}
+      {isRegModalOpen && (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => {
+            setIsRegModalOpen(false);
+            setRegEmail('');
+            setFoundRegNumbers([]);
+            setRegError('');
+          }}
+        >
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className={styles.closeButton}
+              onClick={() => {
+                setIsRegModalOpen(false);
+                setRegEmail('');
+                setFoundRegNumbers([]);
+                setRegError('');
+              }}
+            >
+              <X size={24} />
+            </button>
+
+            <div style={{ paddingBottom: '0.5rem' }}>
+              <h2 className={styles.modalTitle}>Know Your Registration Number</h2>
+              <div className={styles.formGroup}>
+                <input
+                  type="text"
+                  placeholder="Enter Your Email or Name"
+                  value={regEmail}
+                  onChange={(e) => {
+                    setRegEmail(e.target.value);
+                    setRegError('');
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const emailKey = regEmail.trim().toLowerCase();
+                      const codes = REGISTRATION_MAPPING[emailKey];
+                      if (codes) {
+                        setFoundRegNumbers(codes);
+                        setRegError('');
+                      } else {
+                        setFoundRegNumbers([]);
+                        setRegError('Registration not found for this input.');
+                      }
+                    }
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    backgroundColor: 'rgba(15, 23, 42, 0.6)',
+                    color: 'white',
+                    fontSize: '1rem',
+                    outline: 'none',
+                    transition: 'border-color 0.2s',
+                  }}
+                />
+                <button
+                  type="button"
+                  className={styles.submitModalBtn}
+                  style={{ marginTop: '1rem' }}
+                  onClick={() => {
+                    const emailKey = regEmail.trim().toLowerCase();
+                    const codes = REGISTRATION_MAPPING[emailKey];
+                    if (codes) {
+                      setFoundRegNumbers(codes);
+                      setRegError('');
+                    } else {
+                      setFoundRegNumbers([]);
+                      setRegError('Registration not found for this input.');
+                    }
+                  }}
+                >
+                  Get Registration Number
+                </button>
+                {regError && <p style={{ color: '#ef4444', fontSize: '0.85rem', marginTop: '0.5rem', fontWeight: 500 }}>{regError}</p>}
+                
+                {foundRegNumbers.length > 0 && (
+                  <div style={{ marginTop: '1.5rem', padding: '1.2rem', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '8px' }}>
+                    <h3 style={{ color: '#10b981', margin: '0 0 0.75rem 0', fontSize: '1.05rem', fontWeight: 600 }}>
+                      Your Registration Number{foundRegNumbers.length > 1 ? 's' : ''}:
+                    </h3>
+                    <ul style={{ margin: 0, paddingLeft: '0', listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      {foundRegNumbers.map((code) => (
+                        <li key={code} style={{ 
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          background: 'rgba(15, 23, 42, 0.4)',
+                          padding: '0.5rem 1rem',
+                          borderRadius: '6px'
+                        }}>
+                          <span style={{ fontWeight: 'bold', letterSpacing: '1px', color: '#f8fafc' }}>
+                            {code}
+                          </span>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(code);
+                              setCopiedCode(code);
+                              setTimeout(() => setCopiedCode(null), 2000);
+                            }}
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: copiedCode === code ? '#10b981' : '#94a3b8',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              padding: '0.25rem',
+                              transition: 'color 0.2s',
+                              outline: 'none'
+                            }}
+                            title="Copy code"
+                          >
+                            {copiedCode === code ? <CheckCircle2 size={18} /> : <Copy size={18} />}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}
