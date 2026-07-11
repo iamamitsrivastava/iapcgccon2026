@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 import { ContactSubmission } from '@/types';
 import { ContactInput } from '../validations/contact';
 
-const TARGET_EMAIL = 'iapsmgccon2026@paruluniversity.ac.in';
+const TARGET_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 
 function getPaths() {
     const DATA_DIR = path.join(process.cwd(), 'data');

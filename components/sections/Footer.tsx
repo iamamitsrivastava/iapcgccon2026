@@ -67,9 +67,9 @@ export default function Footer() {
                         <ul className={styles.footerList}>
                             <li><Link href="/contact" className={styles.contactUsLink}>Contact Us</Link></li>
                             <li className={styles.contactEmailItem}>
-                                <a href="mailto:iapsmgccon2026@paruluniversity.ac.in" className={styles.contactLink}>
+                                <a href="mailto:iapsmgc.conference@paruluniversity.ac.in" className={styles.contactLink}>
                                     <MailIcon size={14} />
-                                    <span>  iapsmgccon2026@paruluniversity.ac.in</span>
+                                    <span>  iapsmgc.conference@paruluniversity.ac.in</span>
                                 </a>
                             </li>
                             <li className={styles.contactItem}>

@@ -193,8 +193,8 @@ export default function Sponsorship() {
                                 <div className={styles.contactInfo}>
                                     <h3 style={{ fontSize: '1.25rem', whiteSpace: 'nowrap' }}>Email</h3>
                                     <p>
-                                        <a href="mailto:iapsmgccon2026@paruluniversity.ac.in" style={{ color: '#94a3b8', textDecoration: 'none' }}>
-                                            iapsmgccon2026@paruluniversity.ac.in
+                                        <a href="mailto:iapsmgc.conference@paruluniversity.ac.in" style={{ color: '#94a3b8', textDecoration: 'none' }}>
+                                            iapsmgc.conference@paruluniversity.ac.in
                                         </a>
                                     </p>
                                 </div>

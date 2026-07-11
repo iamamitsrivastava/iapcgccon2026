@@ -76,8 +76,8 @@ export default function Contact() {
                             <div className={styles.contactItem}>
                                 <h4>Email</h4>
                                 <p>
-                                    <a href="mailto:iapsmgccon2026@paruluniversity.ac.in" style={{ color: '#f0c040', wordBreak: 'break-all' }}>
-                                        iapsmgccon2026@paruluniversity.ac.in
+                                    <a href="mailto:iapsmgc.conference@paruluniversity.ac.in" style={{ color: '#f0c040', wordBreak: 'break-all' }}>
+                                        iapsmgc.conference@paruluniversity.ac.in
                                     </a>
                                 </p>
                             </div>

@@ -450,7 +450,9 @@ export default function PublishingEthicsPage() {
                         <Mail className={styles.contactBannerIcon} />
                         <span>
                             For complaints or concerns regarding published articles, contact us at{' '}
-                            <a href="mailto:iapsmgccon2026@paruluniversity.ac.in" className={styles.link}>iapsmgccon2026@paruluniversity.ac.in</a>.
+                            <a href="mailto:iapsmgc.conference@paruluniversity.ac.in" className={styles.link}>
+                                iapsmgc.conference@paruluniversity.ac.in
+                            </a>.
                             We will acknowledge your email and provide an estimated timeframe for investigating your concerns.
                         </span>
                     </div>

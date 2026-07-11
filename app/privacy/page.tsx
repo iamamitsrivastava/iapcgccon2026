@@ -8,13 +8,13 @@ export default function PrivacyPage() {
             <div style={{ paddingTop: '8rem', paddingBottom: '4rem' }} className="container">
                 <div style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: 'rgba(255, 255, 255, 0.05)', padding: '3rem', borderRadius: '1rem', border: '1px solid rgba(255,215,0,0.1)' }}>
                     <h1 style={{ fontSize: '2.5rem', color: '#FACC15', marginBottom: '2rem', fontFamily: 'var(--font-heading)' }}>Privacy Policy</h1>
-                    
+
                     <section style={{ marginBottom: '2rem' }}>
                         <p style={{ lineHeight: '1.6', color: '#cbd5e1', marginBottom: '1rem' }}>
                             At IAPSMGC CON 2026 (Digital Health for All: Bridging Equity, Access and Innovation), organized by Parul Institute of Community Medicine, we are committed to protecting your privacy. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you visit our website, register for the conference, or submit papers.
                         </p>
                     </section>
-                    
+
                     <section style={{ marginBottom: '2rem' }}>
                         <h2 style={{ fontSize: '1.5rem', color: '#FACC15', marginBottom: '1rem' }}>1. Information We Collect</h2>
                         <ul style={{ lineHeight: '1.6', color: '#cbd5e1', listStyleType: 'disc', paddingLeft: '1.5rem' }}>
@@ -44,10 +44,11 @@ export default function PrivacyPage() {
                     <section style={{ marginBottom: '2rem' }}>
                         <h2 style={{ fontSize: '1.5rem', color: '#FACC15', marginBottom: '1rem' }}>4. Contact Us</h2>
                         <p style={{ lineHeight: '1.6', color: '#cbd5e1', marginBottom: '1rem' }}>
-                            If you have questions about this Privacy Policy, please contact us at <strong>iapsmgccon2026@paruluniversity.ac.in</strong>.
+                            If you have questions about this Privacy Policy, please contact us at <strong>iapsmgc.conference@paruluniversity.ac.in
+                            </strong>.
                         </p>
                     </section>
-                    
+
                     <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginTop: '3rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1rem' }}>Last updated: July 2026</p>
                 </div>
             </div>
