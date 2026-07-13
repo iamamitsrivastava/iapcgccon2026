@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Calendar, MapPin, ArrowRight, FileText, Award, Layers, Search, Globe, X, CheckCircle2, Clock, Lock, Copy, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { conference } from '@/data/conference';
-import { REGISTRATION_MAPPING } from '@/lib/registrationData';
+import { REGISTRATION_MAPPING, ACCESS_CODE_MAPPING } from '@/lib/registrationData';
 import styles from './Hero.module.css';
 
 // Unique IAPSMGC access codes for Abstract submission
@@ -105,6 +105,7 @@ export default function Hero() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCodeVerified, setIsCodeVerified] = useState(false);
   const [accessEmail, setAccessEmail] = useState('');
+  const [foundAccessCodes, setFoundAccessCodes] = useState<string[]>([]);
   const [isSendingCode, setIsSendingCode] = useState(false);
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [sendCodeSuccess, setSendCodeSuccess] = useState('');
@@ -214,34 +215,19 @@ export default function Hero() {
     // Reject empty values, only accept valid email addresses
     if (!accessEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(accessEmail.trim())) {
       setSendCodeError('❌ Please enter a valid email address.');
+      setFoundAccessCodes([]);
       return;
     }
 
-    setIsSendingCode(true);
-    setSendCodeError('');
-    setSendCodeSuccess('');
-    setIsCodeSent(false);
+    const emailKey = accessEmail.trim().toLowerCase();
+    const codes = ACCESS_CODE_MAPPING[emailKey];
 
-    try {
-      const response = await fetch('/api/send-access-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: accessEmail.trim() }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        setSendCodeSuccess('✅ You have been Registered.\n\nPlease check your email.');
-        setIsCodeSent(true);
-        setAccessEmail('');
-      } else {
-        setSendCodeError('❌ Unable to send email.\n\nPlease try again.');
-      }
-    } catch (error) {
-      setSendCodeError('❌ Unable to send email.\n\nPlease try again.');
-    } finally {
-      setIsSendingCode(false);
+    if (codes) {
+      setFoundAccessCodes(codes);
+      setSendCodeError('');
+    } else {
+      setFoundAccessCodes([]);
+      setSendCodeError('❌ Access code not found for this email.');
     }
   };
 
@@ -455,30 +441,61 @@ export default function Hero() {
                     <button
                       type="button"
                       className={styles.submitModalBtn}
-                      style={{ marginTop: '1rem', opacity: (isSendingCode || isCodeSent) ? 0.7 : 1 }}
+                      style={{ marginTop: '1rem' }}
                       onClick={handleGetAccessCode}
-                      disabled={isSendingCode || isCodeSent}
                     >
-                      {isSendingCode ? (
-                        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                          <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
-                          Sending...
-                        </span>
-                      ) : isCodeSent ? (
-                        'Sent ✓'
-                      ) : (
-                        'Get Code'
-                      )}
+                      Get Code
                     </button>
                     {sendCodeError && (
                       <p style={{ color: '#ef4444', fontSize: '0.85rem', marginTop: '0.75rem', fontWeight: 500, whiteSpace: 'pre-line' }}>
                         {sendCodeError}
                       </p>
                     )}
-                    {sendCodeSuccess && (
-                      <p style={{ color: '#10b981', fontSize: '0.85rem', marginTop: '0.75rem', fontWeight: 500, whiteSpace: 'pre-line' }}>
-                        {sendCodeSuccess}
-                      </p>
+                    
+                    {foundAccessCodes.length > 0 && (
+                      <div style={{ marginTop: '1.5rem', padding: '1.2rem', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '8px' }}>
+                        <h3 style={{ color: '#10b981', margin: '0 0 0.75rem 0', fontSize: '1.05rem', fontWeight: 600 }}>
+                          Your Access Code{foundAccessCodes.length > 1 ? 's' : ''}:
+                        </h3>
+                        <ul style={{ margin: 0, paddingLeft: '0', listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                          {foundAccessCodes.map((code) => (
+                            <li key={code} style={{ 
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              background: 'rgba(15, 23, 42, 0.4)',
+                              padding: '0.5rem 1rem',
+                              borderRadius: '6px'
+                            }}>
+                              <span style={{ fontWeight: 'bold', letterSpacing: '1px', color: '#f8fafc' }}>
+                                {code}
+                              </span>
+                              <button
+                                onClick={() => {
+                                  navigator.clipboard.writeText(code);
+                                  setCopiedCode(code);
+                                  setTimeout(() => setCopiedCode(null), 2000);
+                                }}
+                                style={{
+                                  background: 'transparent',
+                                  border: 'none',
+                                  color: copiedCode === code ? '#10b981' : '#94a3b8',
+                                  cursor: 'pointer',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  padding: '0.25rem',
+                                  transition: 'color 0.2s',
+                                  outline: 'none'
+                                }}
+                                title="Copy code"
+                              >
+                                {copiedCode === code ? <CheckCircle2 size={18} /> : <Copy size={18} />}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
                   </div>
                 </div>

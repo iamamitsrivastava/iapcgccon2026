@@ -39,3 +39,24 @@ export interface TimelineItem {
     label: string;
     date: string;
 }
+
+export interface RegistrationInput {
+  fullName: string;
+  gender: string;
+  department: string;
+  designation: string;
+  participantCategory: string;
+  institution: string;
+  email: string;
+  mobile: string;
+  iapsmMember: string;
+  iapsmRegNumber: string;
+  foodPreference: string;
+  registrationFor: string[];
+  rrnNumber: string;
+  dateOfPayment: string;
+  // optional URLs for uploaded files (if you store them)
+  passportPhoto?: string;
+  paymentProof?: string;
+  registrationPlan?: string;
+}

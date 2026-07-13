@@ -313,13 +313,13 @@ export const conference = {
         name: "Dr. Niraj Bharadva",
         role: "Organizing Chairperson",
         affiliation: "Professor &Head\n Dept. of Community medicine",
-        image: "/images/niraj-bharadva-v2.jpg"
+        image: "/images/niraj-bharadva.jpg"
       },
       {
         name: "Dr. Utkarsh Shah",
         role: "Co-Chairperson",
         affiliation: "Professor\n Dept. of Community medicine",
-        image: "/images/utkarsh-shah-new.jpg"
+        image: "/images/utkarsh-shah.png"
       }
     ],
 

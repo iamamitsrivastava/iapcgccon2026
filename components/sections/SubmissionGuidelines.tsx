@@ -4,8 +4,9 @@ import { useState } from 'react';
 import styles from './SubmissionGuidelines.module.css';
 import heroStyles from './Hero.module.css';
 import ScrollReveal from '@/components/ui/ScrollReveal';
-import { X, CheckCircle2, Eye, Lock } from 'lucide-react';
+import { X, CheckCircle2, Eye, Lock, Copy } from 'lucide-react';
 import { ABSTRACT_ACCESS_CODES, FULL_PAPER_ACCESS_CODES } from './Hero';
+import { ACCESS_CODE_MAPPING } from '@/lib/registrationData';
 
 export function SubmissionGuidelines() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,8 +14,31 @@ export function SubmissionGuidelines() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submissionSuccess, setSubmissionSuccess] = useState(false);
     const [isCodeVerified, setIsCodeVerified] = useState(false);
+    const [accessEmail, setAccessEmail] = useState('');
+    const [foundAccessCodes, setFoundAccessCodes] = useState<string[]>([]);
+    const [sendCodeError, setSendCodeError] = useState('');
+    const [copiedCode, setCopiedCode] = useState<string | null>(null);
     const [accessCode, setAccessCode] = useState('');
     const [codeError, setCodeError] = useState('');
+
+    const handleGetAccessCode = async () => {
+        if (!accessEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(accessEmail.trim())) {
+            setSendCodeError('❌ Please enter a valid email address.');
+            setFoundAccessCodes([]);
+            return;
+        }
+
+        const emailKey = accessEmail.trim().toLowerCase();
+        const codes = ACCESS_CODE_MAPPING[emailKey];
+
+        if (codes) {
+            setFoundAccessCodes(codes);
+            setSendCodeError('');
+        } else {
+            setFoundAccessCodes([]);
+            setSendCodeError('❌ Access code not found for this email.');
+        }
+    };
 
     const [formData, setFormData] = useState({
         name: '',
@@ -249,6 +273,18 @@ export function SubmissionGuidelines() {
                                         <input
                                             type="email"
                                             placeholder="Enter Your Email"
+                                            value={accessEmail}
+                                            onChange={(e) => {
+                                                setAccessEmail(e.target.value);
+                                                setSendCodeError('');
+                                                setFoundAccessCodes([]);
+                                            }}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    e.preventDefault();
+                                                    handleGetAccessCode();
+                                                }
+                                            }}
                                             style={{
                                                 width: '100%',
                                                 padding: '0.75rem 1rem',
@@ -261,6 +297,64 @@ export function SubmissionGuidelines() {
                                                 transition: 'border-color 0.2s',
                                             }}
                                         />
+                                        <button
+                                            type="button"
+                                            className={heroStyles.submitModalBtn}
+                                            style={{ marginTop: '1rem' }}
+                                            onClick={handleGetAccessCode}
+                                        >
+                                            Get Code
+                                        </button>
+                                        {sendCodeError && (
+                                            <p style={{ color: '#ef4444', fontSize: '0.85rem', marginTop: '0.75rem', fontWeight: 500, whiteSpace: 'pre-line' }}>
+                                                {sendCodeError}
+                                            </p>
+                                        )}
+                                        {foundAccessCodes.length > 0 && (
+                                            <div style={{ marginTop: '1.5rem', padding: '1.2rem', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '8px' }}>
+                                                <h3 style={{ color: '#10b981', margin: '0 0 0.75rem 0', fontSize: '1.05rem', fontWeight: 600 }}>
+                                                    Your Access Code{foundAccessCodes.length > 1 ? 's' : ''}:
+                                                </h3>
+                                                <ul style={{ margin: 0, paddingLeft: '0', listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                                    {foundAccessCodes.map((code) => (
+                                                        <li key={code} style={{ 
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'space-between',
+                                                            background: 'rgba(15, 23, 42, 0.4)',
+                                                            padding: '0.5rem 1rem',
+                                                            borderRadius: '6px'
+                                                        }}>
+                                                            <span style={{ fontWeight: 'bold', letterSpacing: '1px', color: '#f8fafc' }}>
+                                                                {code}
+                                                            </span>
+                                                            <button
+                                                                onClick={() => {
+                                                                    navigator.clipboard.writeText(code);
+                                                                    setCopiedCode(code);
+                                                                    setTimeout(() => setCopiedCode(null), 2000);
+                                                                }}
+                                                                style={{
+                                                                    background: 'transparent',
+                                                                    border: 'none',
+                                                                    color: copiedCode === code ? '#10b981' : '#94a3b8',
+                                                                    cursor: 'pointer',
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'center',
+                                                                    padding: '0.25rem',
+                                                                    transition: 'color 0.2s',
+                                                                    outline: 'none'
+                                                                }}
+                                                                title="Copy code"
+                                                            >
+                                                                {copiedCode === code ? <CheckCircle2 size={18} /> : <Copy size={18} />}
+                                                            </button>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
