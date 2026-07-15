@@ -1,4 +1,5 @@
 export const REGISTRATION_MAPPING: Record<string, string[]> = {
+  "2303051240028@paruluniversity.ac.in": ["26GUJCON000"],
   "prashant.dave29697@paruluniversity.ac.in": ["26GUJCON001"],
   "bhoimanish29399@gmail.com": ["26GUJCON002"],
   "hvp64312@gmail.com": ["26GUJCON003"],
@@ -209,7 +210,8 @@ export const REGISTRATION_MAPPING: Record<string, string[]> = {
   "hmspsm@gmail.com": ["26GUJCON212"],
   "dhiren.modi@sevarural.org": ["26GUJCON213"],
   "sachinias2017@gmail.com": ["26GUJCON214"],
-  "2303051240028@paruluniversity.ac.in": ["IAPSMGC2026"]
+  "patelsuvik30@gmail.com": ["26GUJCON215"],
+  "sahilchaudhary252645@gmail.com": ["26GUJCON216"]
 };
 
 export const ACCESS_CODE_MAPPING: Record<string, string[]> = {
@@ -398,6 +400,27 @@ export const ACCESS_CODE_MAPPING: Record<string, string[]> = {
   "drnirmikapatel@yahoo.com": ["IAPSMGC-R9W6X3"],
   "drshailesh17@gmail.com": ["IAPSMGC-N4Q2M8"],
   "drniraj74@gmail.com": ["IAPSMGC-X1K7T6"],
-  "snehalvasaiya98@gmail.com": ["IAPSMGC-H8V3P5"]
+  "snehalvasaiya98@gmail.com": ["IAPSMGC-H8V3P5"],
+  "amee7799@gmail.com": ["IAPSMGC-Q5L9R2"],
+  "vmp904438@gmail.com": ["IAPSMGC-T2M6W8"],
+  "pankaj.jayaswal001@gmail.com": ["IAPSMGC-A8X5N1"],
+  "jay.nagda1999@gmail.com": ["IAPSMGC-F7R3Q6"],
+  "bhargavc17@gmail.com": ["IAPSMGC-Y9P4L2"],
+  "dhrumi2902@gmail.com": ["IAPSMGC-D6K1W7"],
+  "dertejal97@gmail.com": ["IAPSMGC-M2T9X4"],
+  "sochaliya@gmail.com": ["IAPSMGC-B5Q8R1"],
+  "aasthadraval@gmail.com": ["IAPSMGC-U1L7P9"],
+  "upadhyayvish1998@gmail.com": ["IAPSMGC-C9M4W6"],
+  "archanpagare56@gmail.com": ["IAPSMGC-G3X2K8"],
+  "tjeet2016@gmail.com": ["IAPSMGC-L5N8T1"],
+  "hadiyalashvin1435@gmail.com": ["IAPSMGC-P7W4Q9"],
+  "avani.amin236@gmail.com": ["IAPSMGC-R2K6M5"],
+  "sasichinnu20@gmail.com": ["IAPSMGC-X8P1L3"],
+  "jkkosambiya@gmail.com": ["IAPSMGC-V4Q7T2"],
+  "hmspsm@gmail.com": ["IAPSMGC-H1R9N6"],
+  "dhiren.modi@sevarural.org": ["IAPSMGC-Z5M3W8"],
+  "sachinias2017@gmail.com": ["IAPSMGC-E2K7P4"],
+  "patelsuvik30@gmail.com": ["IAPSMGC-T9L1Q5"],
+  "sahilchaudhary252645@gmail.com": ["IAPSMGC-A6W8X2"]
 };
 
