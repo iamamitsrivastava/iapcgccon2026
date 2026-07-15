@@ -215,6 +215,7 @@ export const REGISTRATION_MAPPING: Record<string, string[]> = {
 };
 
 export const ACCESS_CODE_MAPPING: Record<string, string[]> = {
+  "2303051240028@paruluniversity.ac.in": ["IAPSMGC2026"],
   "prashant.dave29697@paruluniversity.ac.in": ["IAPSMGC-Y3T2X7"],
   "bhoimanish29399@gmail.com": ["IAPSMGC-Y1M7R5"],
   "hvp64312@gmail.com": ["IAPSMGC-F4X9K8"],
