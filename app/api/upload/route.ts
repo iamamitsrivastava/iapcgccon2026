@@ -66,28 +66,10 @@ export async function POST(request: Request) {
       }
     }
 
-    // 3. Fallback to Local Filesystem in local development (Non-Vercel environment)
-    const isVercel = process.env.VERCEL === '1' || process.env.NOW_BUILDER === '1';
-    if (!isVercel) {
-      try {
-        console.log("Local development environment detected. Saving locally...");
-        const uploadDir = join(process.cwd(), 'public/uploads');
-        if (!existsSync(uploadDir)) {
-          mkdirSync(uploadDir, { recursive: true });
-        }
-        const path = join(uploadDir, filename);
-        await writeFile(path, buffer);
-        console.log("Saved locally successfully:", `/uploads/${filename}`);
-        return NextResponse.json({ success: true, url: `/uploads/${filename}` });
-      } catch (localError) {
-        console.error("Failed to save file locally:", localError);
-      }
-    }
-
     const mimeType = file.type || 'application/octet-stream';
     const isImage = mimeType.startsWith('image/');
 
-    // 4. FreeImage.host fallback (Images only) - highly reliable base64 upload
+    // 3. FreeImage.host fallback (Images only) - highly reliable base64 upload
     if (isImage) {
       try {
         console.log("Trying FreeImage.host...");
@@ -114,7 +96,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // 5. Default zero-config fallback for Vercel production: Catbox.moe
+    // 4. Default zero-config fallback: Catbox.moe (Public Links)
     try {
       console.log("Using zero-config fallback (Catbox.moe)...");
       const catboxForm = new FormData();
@@ -140,7 +122,7 @@ export async function POST(request: Request) {
       console.log("Catbox upload failed:", e);
     }
 
-    // 6. Pomf clone fallback
+    // 5. Pomf clone fallback (Public Links)
     try {
       console.log("Catbox failed, trying pomf.lain.la...");
       const pomfForm = new FormData();
@@ -160,6 +142,26 @@ export async function POST(request: Request) {
       }
     } catch (e) {
       console.log("Pomf upload failed:", e);
+    }
+
+    // 6. Absolute Last Resort: Local Filesystem
+    try {
+      console.log("All public hosts failed. Saving locally as last resort...");
+      const uploadDir = join(process.cwd(), 'public/uploads');
+      if (!existsSync(uploadDir)) {
+        mkdirSync(uploadDir, { recursive: true });
+      }
+      const path = join(uploadDir, filename);
+      await writeFile(path, buffer);
+      
+      const host = request.headers.get('host') || 'localhost:3000';
+      const protocol = request.headers.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https');
+      const fullUrl = `${protocol}://${host}/uploads/${filename}`;
+      
+      console.log("Saved locally successfully:", fullUrl);
+      return NextResponse.json({ success: true, url: fullUrl });
+    } catch (localError) {
+      console.error("Failed to save file locally:", localError);
     }
 
     throw new Error("All upload methods and fallbacks failed.");

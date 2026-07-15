@@ -133,6 +133,8 @@ export default function Hero() {
   const [regError, setRegError] = useState('');
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -241,6 +243,43 @@ export default function Hero() {
     } else {
       setFoundAccessCodes([]);
       setSendCodeError('❌ Access code not found for this email.');
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    setUploadError('');
+
+    const formDataUpload = new FormData();
+    formDataUpload.append('file', file);
+
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formDataUpload,
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await response.json();
+      if (data.success && data.url) {
+        setFormData({ ...formData, documentLink: data.url });
+      } else {
+        throw new Error(data.error || 'Failed to get URL');
+      }
+    } catch (err: any) {
+      console.error('Upload Error:', err);
+      setUploadError('Failed to upload document. You can still paste a link manually.');
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -545,12 +584,14 @@ export default function Hero() {
                         const validCodes = submissionType === 'FULL_PAPER' ? FULL_PAPER_ACCESS_CODES : ABSTRACT_ACCESS_CODES;
                         if (validCodes.includes(code)) {
                           const usedCodes = JSON.parse(localStorage.getItem('used_access_codes') || '[]');
-                          if (usedCodes.includes(code)) {
+                          if (usedCodes.includes(code) && code !== 'IAPSMGC2026') {
                             setCodeError('This code has already been used. One code is valid only once.');
                           } else {
-                            // Burn the code immediately upon verification
-                            usedCodes.push(code);
-                            localStorage.setItem('used_access_codes', JSON.stringify(usedCodes));
+                            // Burn the code immediately upon verification, except for the master code
+                            if (code !== 'IAPSMGC2026') {
+                              usedCodes.push(code);
+                              localStorage.setItem('used_access_codes', JSON.stringify(usedCodes));
+                            }
                             setIsCodeVerified(true);
                           }
                         } else {
@@ -568,12 +609,14 @@ export default function Hero() {
                     const validCodes = submissionType === 'FULL_PAPER' ? FULL_PAPER_ACCESS_CODES : ABSTRACT_ACCESS_CODES;
                     if (validCodes.includes(code)) {
                       const usedCodes = JSON.parse(localStorage.getItem('used_access_codes') || '[]');
-                      if (usedCodes.includes(code)) {
+                      if (usedCodes.includes(code) && code !== 'IAPSMGC2026') {
                         setCodeError('This code has already been used. One code is valid only once.');
                       } else {
-                        // Burn the code immediately upon verification
-                        usedCodes.push(code);
-                        localStorage.setItem('used_access_codes', JSON.stringify(usedCodes));
+                        // Burn the code immediately upon verification, except for the master code
+                        if (code !== 'IAPSMGC2026') {
+                          usedCodes.push(code);
+                          localStorage.setItem('used_access_codes', JSON.stringify(usedCodes));
+                        }
                         setIsCodeVerified(true);
                       }
                     } else {
@@ -639,23 +682,28 @@ export default function Hero() {
                   </div>
 
                   <div className={styles.formGroup} style={{ marginBottom: "1.5rem" }}>
-                    <div style={{
-                      backgroundColor: "rgba(59, 130, 246, 0.1)",
-                      borderLeft: "4px solid #3b82f6",
-                      padding: "1rem",
-                      borderRadius: "0 8px 8px 0",
-                      marginBottom: "1.25rem"
-                    }}>
-                      <h4 style={{ color: "#60a5fa", margin: "0 0 0.5rem 0", fontSize: "0.95rem", fontWeight: 600 }}>How to convert a PDF to a Google Doc Link:</h4>
-                      <ol style={{ margin: 0, paddingLeft: "1.2rem", color: "#94a3b8", fontSize: "0.85rem", lineHeight: 1.5 }}>
-                        <li>Upload your PDF file to your <strong>Google Drive</strong>.</li>
-                        <li>Right-click the uploaded PDF, select <strong>"Open with"</strong> &rarr; <strong>"Google Docs"</strong>.</li>
-                        <li>Once open, click the blue <strong>"Share"</strong> button (top right).</li>
-                        <li>Under General access, change "Restricted" to <strong>"Anyone with the link"</strong>.</li>
-                        <li>Click <strong>"Copy link"</strong> and paste it in the field below.</li>
-                      </ol>
+                    <label>Upload Document or Provide Link *</label>
+                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem', alignItems: 'center' }}>
+                      <input
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        onChange={handleFileUpload}
+                        disabled={isUploading}
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                        id="hero-file-upload"
+                      />
+                      <label htmlFor="hero-file-upload" className={styles.submitModalBtn} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.75rem 1rem', background: '#3b82f6', color: 'white', display: 'block', margin: 0 }}>
+                        {isUploading ? 'Uploading...' : 'Upload File'}
+                      </label>
+                      <span style={{ fontSize: '0.9rem', color: '#9ca3af', flex: 1 }}>
+                        Supported: PDF, DOCX
+                      </span>
                     </div>
-                    <label htmlFor="documentLink">Document Link *</label>
+                    {uploadError && <span style={{ color: '#ef4444', fontSize: '0.85rem' }}>{uploadError}</span>}
+                    
+                    <div style={{ margin: '1rem 0', textAlign: 'center', color: '#6b7280', fontSize: '0.9rem' }}>OR manually paste a link below</div>
+
                     <input
                       type="url"
                       id="documentLink"
@@ -664,7 +712,7 @@ export default function Hero() {
                       onChange={(e) =>
                         setFormData({ ...formData, documentLink: e.target.value })
                       }
-                      placeholder="https://docs.google.com/..."
+                      placeholder="https://docs.google.com/... or other link"
                       style={{
                         width: '100%',
                         padding: '0.75rem 1rem',
@@ -681,7 +729,7 @@ export default function Hero() {
 
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isUploading}
                     className={styles.submitModalBtn}
                   >
                     {isSubmitting ? "Submitting..." : "Submit to Committee"}
