@@ -555,7 +555,7 @@ export default function Hero() {
                 <h2 className={styles.modalTitle}>Enter Access Code</h2>
                 <p className={styles.modalSubtitle}>
                   Please enter your provided submission code to access the {submissionType === 'FULL_PAPER' ? 'paper' : 'abstract'} submission form.<br /><br />
-                  <span style={{ color: '#ffbf00', fontWeight: 'bold' }}>Note: Each access code is assigned to a single individual and can be used only by that person. If you wish to submit multiple abstracts, please contact the support team to obtain an additional access code.</span>
+                  <span style={{ color: '#ffbf00', fontWeight: 'bold' }}>Note: Each access code can be used up to 5 times.</span>
                 </p>
                 <div className={styles.formGroup} style={{ marginBottom: '1.5rem' }}>
                   <input
@@ -583,9 +583,10 @@ export default function Hero() {
                         const code = accessCode.trim().toUpperCase();
                         const validCodes = submissionType === 'FULL_PAPER' ? FULL_PAPER_ACCESS_CODES : ABSTRACT_ACCESS_CODES;
                         if (validCodes.includes(code)) {
-                          const usedCodes = JSON.parse(localStorage.getItem('used_access_codes') || '[]');
-                          if (usedCodes.includes(code) && code !== 'IAPSMGC2026') {
-                            setCodeError('This code has already been used. One code is valid only once.');
+                          const usedCodes: string[] = JSON.parse(localStorage.getItem('used_access_codes') || '[]');
+                          const usageCount = usedCodes.filter((c: string) => c === code).length;
+                          if (usageCount >= 5 && code !== 'IAPSMGC2026') {
+                            setCodeError('This code has reached its maximum usage limit of 5 times.');
                           } else {
                             // Burn the code immediately upon verification, except for the master code
                             if (code !== 'IAPSMGC2026') {
@@ -608,9 +609,10 @@ export default function Hero() {
                     const code = accessCode.trim().toUpperCase();
                     const validCodes = submissionType === 'FULL_PAPER' ? FULL_PAPER_ACCESS_CODES : ABSTRACT_ACCESS_CODES;
                     if (validCodes.includes(code)) {
-                      const usedCodes = JSON.parse(localStorage.getItem('used_access_codes') || '[]');
-                      if (usedCodes.includes(code) && code !== 'IAPSMGC2026') {
-                        setCodeError('This code has already been used. One code is valid only once.');
+                      const usedCodes: string[] = JSON.parse(localStorage.getItem('used_access_codes') || '[]');
+                      const usageCount = usedCodes.filter((c: string) => c === code).length;
+                      if (usageCount >= 5 && code !== 'IAPSMGC2026') {
+                        setCodeError('This code has reached its maximum usage limit of 5 times.');
                       } else {
                         // Burn the code immediately upon verification, except for the master code
                         if (code !== 'IAPSMGC2026') {
