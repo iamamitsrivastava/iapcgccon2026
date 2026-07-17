@@ -503,7 +503,7 @@ export default function Hero() {
                         {sendCodeError}
                       </p>
                     )}
-                    
+
                     {foundAccessCodes.length > 0 && (
                       <div style={{ marginTop: '1.5rem', padding: '1.2rem', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '8px' }}>
                         <h3 style={{ color: '#10b981', margin: '0 0 0.75rem 0', fontSize: '1.05rem', fontWeight: 600 }}>
@@ -511,7 +511,7 @@ export default function Hero() {
                         </h3>
                         <ul style={{ margin: 0, paddingLeft: '0', listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                           {foundAccessCodes.map((code) => (
-                            <li key={code} style={{ 
+                            <li key={code} style={{
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'space-between',
@@ -555,7 +555,7 @@ export default function Hero() {
                 <h2 className={styles.modalTitle}>Enter Access Code</h2>
                 <p className={styles.modalSubtitle}>
                   Please enter your provided submission code to access the {submissionType === 'FULL_PAPER' ? 'paper' : 'abstract'} submission form.<br /><br />
-                  <span style={{ color: '#ffbf00', fontWeight: 'bold' }}>Note: One code is valid only once.</span>
+                  <span style={{ color: '#ffbf00', fontWeight: 'bold' }}>Note: Each access code is assigned to a single individual and can be used only by that person. If you wish to submit multiple abstracts, please contact the support team to obtain an additional access code.</span>
                 </p>
                 <div className={styles.formGroup} style={{ marginBottom: '1.5rem' }}>
                   <input
@@ -701,7 +701,7 @@ export default function Hero() {
                       </span>
                     </div>
                     {uploadError && <span style={{ color: '#ef4444', fontSize: '0.85rem' }}>{uploadError}</span>}
-                    
+
                     <div style={{ margin: '1rem 0', textAlign: 'center', color: '#6b7280', fontSize: '0.9rem' }}>OR manually paste a link below</div>
 
                     <input
@@ -790,7 +790,7 @@ export default function Hero() {
                         setRegError('');
                       } else {
                         setFoundRegNumbers([]);
-                        setRegError('Registration not found for this input.');
+                        setRegError('**Your registration number will be generated once your payment has been successfully confirmed. After receiving the payment confirmation email, please try again.');
                       }
                     }
                   }}
@@ -818,14 +818,14 @@ export default function Hero() {
                       setRegError('');
                     } else {
                       setFoundRegNumbers([]);
-                      setRegError('Registration not found for this input.');
+                      setRegError('**Your registration number will be generated once your payment has been successfully confirmed. After receiving the payment confirmation email, please try again.');
                     }
                   }}
                 >
                   Get Registration Number
                 </button>
                 {regError && <p style={{ color: '#ef4444', fontSize: '0.85rem', marginTop: '0.5rem', fontWeight: 500 }}>{regError}</p>}
-                
+
                 {foundRegNumbers.length > 0 && (
                   <div style={{ marginTop: '1.5rem', padding: '1.2rem', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '8px' }}>
                     <h3 style={{ color: '#10b981', margin: '0 0 0.75rem 0', fontSize: '1.05rem', fontWeight: 600 }}>
@@ -833,7 +833,7 @@ export default function Hero() {
                     </h3>
                     <ul style={{ margin: 0, paddingLeft: '0', listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       {foundRegNumbers.map((code) => (
-                        <li key={code} style={{ 
+                        <li key={code} style={{
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
