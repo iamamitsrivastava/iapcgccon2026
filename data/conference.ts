@@ -243,7 +243,7 @@ export const conference = {
         name: "Dr. Raman Damor",
         role: "Vice President",
         affiliation: "Associate Professor\nGovernment Medical college, Vadodara",
-        image: "/images/raman-damor.jpg"
+        image: "/images/raman-damor.png"
       },
       {
         name: "Dr. Nilesh Thakor",
