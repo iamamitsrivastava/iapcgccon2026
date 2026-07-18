@@ -18,13 +18,14 @@ export async function POST(request: Request) {
     }
 
     if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-        return NextResponse.json({ error: 'Email SMTP credentials are not configured.' }, { status: 500 });
+        return NextResponse.json({ error: 'CRITICAL: Email SMTP credentials are NOT configured in Vercel Environment Variables.' }, { status: 500 });
     }
 
+    const port = Number(process.env.SMTP_PORT) || 587;
     const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST || 'smtp.gmail.com',
-        port: Number(process.env.SMTP_PORT) || 587,
-        secure: false, // STARTTLS
+        port: port,
+        secure: port === 465, // true for 465, false for other ports
         auth: {
             user: process.env.SMTP_USER,
             pass: process.env.SMTP_PASS,
