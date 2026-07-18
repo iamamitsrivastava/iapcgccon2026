@@ -93,12 +93,12 @@ export async function POST(request: Request) {
             },
             { status: 200 }
         );
-    } catch (error) {
+    } catch (error: any) {
         console.error('Contact form error:', error);
         return NextResponse.json(
             {
                 success: false,
-                error: 'An internal error occurred. Please try again later.'
+                error: error.message || 'An internal error occurred. Please try again later.'
             },
             { status: 500 }
         );

@@ -93,9 +93,12 @@ export class ContactService {
         try {
             await sendEmailNotification(input);
             console.log(`Contact email sent to ${TARGET_EMAIL}`);
-        } catch (emailError) {
-            // Log but don't fail the submission — user still gets success message
+        } catch (emailError: any) {
             console.error('Failed to send notification email:', emailError);
+            if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+                throw new Error("SMTP credentials are not configured on the server. Please add them to your Vercel Environment Variables.");
+            }
+            throw new Error("Failed to send email. " + emailError.message);
         }
 
         return submission;
