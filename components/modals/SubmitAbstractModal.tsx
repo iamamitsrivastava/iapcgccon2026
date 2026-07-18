@@ -197,7 +197,7 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                                                 style={{ display: 'none' }}
                                                 id="file-upload"
                                             />
-                                            <label htmlFor="file-upload" className={styles.submitBtn} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.5rem 1rem', background: selectedFile ? '#10b981' : '#3b82f6', color: 'white' }}>
+                                            <label htmlFor="file-upload" className={styles.submitBtn} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.5rem 1rem', background: selectedFile ? '#10b981' : '#3b82f6', color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>
                                                 {selectedFile ? selectedFile.name : 'Upload File'}
                                             </label>
                                             <span style={{ fontSize: '0.9rem', color: '#9ca3af', flex: 1 }}>

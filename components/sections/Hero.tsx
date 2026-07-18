@@ -671,7 +671,7 @@ export default function Hero() {
                         style={{ display: 'none' }}
                         id="hero-file-upload"
                       />
-                      <label htmlFor="hero-file-upload" className={styles.submitModalBtn} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.75rem 1rem', background: selectedFile ? '#10b981' : '#3b82f6', color: 'white', display: 'block', margin: 0 }}>
+                      <label htmlFor="hero-file-upload" className={styles.submitModalBtn} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.75rem 1rem', background: selectedFile ? '#10b981' : '#3b82f6', color: 'white', display: 'block', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>
                         {selectedFile ? selectedFile.name : 'Upload File'}
                       </label>
                       <span style={{ fontSize: '0.9rem', color: '#9ca3af', flex: 1 }}>
