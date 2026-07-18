@@ -6,6 +6,7 @@ const TARGET_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
+    const submissionType = (formData.get('submissionType') as string) || 'ABSTRACT';
     const fullName = formData.get('fullName') as string;
     const registrationNo = formData.get('registrationNo') as string;
     const email = formData.get('email') as string;
@@ -49,14 +50,16 @@ export async function POST(request: Request) {
         docText = `Document Link: ${documentLink}`;
     }
 
+    const typeLabel = submissionType === 'FULL_PAPER' ? 'Full Paper' : 'Abstract';
+
     const mailOptions = {
         from: `"IAPSMGC CON 2026 Website" <${process.env.SMTP_USER}>`,
         to: TARGET_EMAIL,
-        subject: `New Abstract Submission — ${fullName}`,
+        subject: `New ${typeLabel} Submission — ${fullName}`,
         html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                 <h2 style="color: #D4AF37; border-bottom: 2px solid #D4AF37; padding-bottom: 8px;">
-                    New Abstract Submission
+                    New ${typeLabel} Submission
                 </h2>
                 <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
                     <tr style="background: #f9f9f9;">
@@ -82,17 +85,17 @@ export async function POST(request: Request) {
                 </table>
                 <p style="margin-top: 20px; font-size: 12px; color: #888;">
                     Submitted on: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST<br/>
-                    Source: IAPSMGC CON 2026 Website — Abstract Submission Form
+                    Source: IAPSMGC CON 2026 Website — ${typeLabel} Submission Form
                 </p>
             </div>
         `,
-        text: `New Abstract Submission\n\nFull Name: ${fullName}\nRegistration No: ${registrationNo}\nEmail: ${email}\n${docText}\n\nSubmitted: ${new Date().toISOString()}`,
+        text: `New ${typeLabel} Submission\n\nFull Name: ${fullName}\nRegistration No: ${registrationNo}\nEmail: ${email}\n${docText}\n\nSubmitted: ${new Date().toISOString()}`,
         attachments: attachments,
     };
 
     await transporter.sendMail(mailOptions);
 
-    return NextResponse.json({ success: true, message: 'Abstract submitted successfully.' });
+    return NextResponse.json({ success: true, message: `${typeLabel} submitted successfully.` });
   } catch (error: any) {
     console.error('Error submitting abstract via email:', error);
     return NextResponse.json({ error: error.message || 'Failed to submit data' }, { status: 500 });

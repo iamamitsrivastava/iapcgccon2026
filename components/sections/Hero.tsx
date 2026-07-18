@@ -189,38 +189,42 @@ export default function Hero() {
     try {
       const { name: fullName, registrationNumber, email, documentLink } = formData;
 
-      const res = await fetch(
-        "https://script.google.com/macros/s/AKfycbzoIwZzQ10_hAxt1efM8iYh5qyfbXGDjmmUPf_VVodjyRvDz12OlfK_ZcfxdePfwTCBUw/exec",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8",
-          },
-          body: JSON.stringify({
-            type: submissionType,
-            fullName,
-            registrationNumber,
-            email,
-            documentLink
-          }),
-        }
-      );
+      const submitData = new FormData();
+      submitData.append('submissionType', submissionType); // 'FULL_PAPER' or 'ABSTRACT'
+      submitData.append('fullName', fullName);
+      submitData.append('registrationNo', registrationNumber);
+      submitData.append('email', email);
+      
+      if (selectedFile) {
+        submitData.append('file', selectedFile);
+      }
+      if (documentLink) {
+        submitData.append('documentLink', documentLink);
+      }
 
-      if (res.status === 200) {
+      const res = await fetch("/api/submit-abstract", {
+          method: "POST",
+          body: submitData,
+      });
+
+      if (res.ok) {
         setSubmissionSuccess(true);
 
         setTimeout(() => {
           setIsModalOpen(false);
           setSubmissionSuccess(false);
           setFormData({ name: "", registrationNumber: "", email: "", documentLink: "" });
+          setSelectedFile(null);
+          if (fileInputRef.current) fileInputRef.current.value = '';
         }, 2000);
       } else {
-        throw new Error("Server error");
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Server error");
       }
 
     } catch (error: any) {
       console.error("Submission error:", error);
-      alert("Submission failed ❌");
+      alert(`Submission failed ❌: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -246,41 +250,13 @@ export default function Hero() {
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setIsUploading(true);
+    setSelectedFile(file);
+    setFormData(prev => ({ ...prev, documentLink: '' }));
     setUploadError('');
-
-    const formDataUpload = new FormData();
-    formDataUpload.append('file', file);
-
-    try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formDataUpload,
-      });
-
-      if (!response.ok) {
-        throw new Error('Upload failed');
-      }
-
-      const data = await response.json();
-      if (data.success && data.url) {
-        setFormData({ ...formData, documentLink: data.url });
-      } else {
-        throw new Error(data.error || 'Failed to get URL');
-      }
-    } catch (err: any) {
-      console.error('Upload Error:', err);
-      setUploadError('Failed to upload document. You can still paste a link manually.');
-    } finally {
-      setIsUploading(false);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
-    }
   };
 
   return (
@@ -689,14 +665,13 @@ export default function Hero() {
                       <input
                         type="file"
                         accept=".pdf,.doc,.docx"
-                        onChange={handleFileUpload}
-                        disabled={isUploading}
+                        onChange={handleFileSelect}
                         ref={fileInputRef}
                         style={{ display: 'none' }}
                         id="hero-file-upload"
                       />
-                      <label htmlFor="hero-file-upload" className={styles.submitModalBtn} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.75rem 1rem', background: '#3b82f6', color: 'white', display: 'block', margin: 0 }}>
-                        {isUploading ? 'Uploading...' : 'Upload File'}
+                      <label htmlFor="hero-file-upload" className={styles.submitModalBtn} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.75rem 1rem', background: selectedFile ? '#10b981' : '#3b82f6', color: 'white', display: 'block', margin: 0 }}>
+                        {selectedFile ? selectedFile.name : 'Upload File'}
                       </label>
                       <span style={{ fontSize: '0.9rem', color: '#9ca3af', flex: 1 }}>
                         Supported: PDF, DOCX
@@ -709,11 +684,15 @@ export default function Hero() {
                     <input
                       type="url"
                       id="documentLink"
-                      required
+                      required={!selectedFile}
                       value={formData.documentLink || ""}
-                      onChange={(e) =>
-                        setFormData({ ...formData, documentLink: e.target.value })
-                      }
+                      onChange={(e) => {
+                        setFormData({ ...formData, documentLink: e.target.value });
+                        if (e.target.value) {
+                            setSelectedFile(null);
+                            if (fileInputRef.current) fileInputRef.current.value = '';
+                        }
+                      }}
                       placeholder="https://docs.google.com/... or other link"
                       style={{
                         width: '100%',
@@ -731,7 +710,7 @@ export default function Hero() {
 
                   <button
                     type="submit"
-                    disabled={isSubmitting || isUploading}
+                    disabled={isSubmitting}
                     className={styles.submitModalBtn}
                   >
                     {isSubmitting ? "Submitting..." : "Submit to Committee"}
