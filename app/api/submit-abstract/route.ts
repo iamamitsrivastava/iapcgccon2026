@@ -5,10 +5,14 @@ const TARGET_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { fullName, registrationNo, email, documentLink } = body;
+    const formData = await request.formData();
+    const fullName = formData.get('fullName') as string;
+    const registrationNo = formData.get('registrationNo') as string;
+    const email = formData.get('email') as string;
+    const documentLink = formData.get('documentLink') as string;
+    const file = formData.get('file') as File | null;
 
-    if (!fullName || !registrationNo || !email || !documentLink) {
+    if (!fullName || !registrationNo || !email || (!documentLink && !file)) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -25,6 +29,25 @@ export async function POST(request: Request) {
             pass: process.env.SMTP_PASS,
         },
     });
+
+    let attachments = [];
+    let docHtml = '';
+    let docText = '';
+
+    if (file) {
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        attachments.push({
+            filename: file.name,
+            content: buffer,
+            contentType: file.type || 'application/octet-stream',
+        });
+        docHtml = `<strong>See attached file:</strong> ${file.name}`;
+        docText = `See attached file: ${file.name}`;
+    } else {
+        docHtml = `<a href="${documentLink}" target="_blank" rel="noopener noreferrer">${documentLink}</a>`;
+        docText = `Document Link: ${documentLink}`;
+    }
 
     const mailOptions = {
         from: `"IAPSMGC CON 2026 Website" <${process.env.SMTP_USER}>`,
@@ -51,9 +74,9 @@ export async function POST(request: Request) {
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding: 10px 14px; font-weight: bold; border: 1px solid #ddd; vertical-align: top;">Document Link</td>
+                        <td style="padding: 10px 14px; font-weight: bold; border: 1px solid #ddd; vertical-align: top;">Document</td>
                         <td style="padding: 10px 14px; border: 1px solid #ddd;">
-                            <a href="${documentLink}" target="_blank" rel="noopener noreferrer">${documentLink}</a>
+                            ${docHtml}
                         </td>
                     </tr>
                 </table>
@@ -63,7 +86,8 @@ export async function POST(request: Request) {
                 </p>
             </div>
         `,
-        text: `New Abstract Submission\n\nFull Name: ${fullName}\nRegistration No: ${registrationNo}\nEmail: ${email}\nDocument Link: ${documentLink}\n\nSubmitted: ${new Date().toISOString()}`,
+        text: `New Abstract Submission\n\nFull Name: ${fullName}\nRegistration No: ${registrationNo}\nEmail: ${email}\n${docText}\n\nSubmitted: ${new Date().toISOString()}`,
+        attachments: attachments,
     };
 
     await transporter.sendMail(mailOptions);

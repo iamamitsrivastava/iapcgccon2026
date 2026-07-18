@@ -17,7 +17,7 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
     const [email, setEmail] = useState('');
     const [documentLink, setDocumentLink] = useState('');
     
-    const [isUploading, setIsUploading] = useState(false);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [uploadError, setUploadError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -37,60 +37,42 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
         }
     };
 
-    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        setIsUploading(true);
+        setSelectedFile(file);
+        setDocumentLink(''); // clear link if file is selected
         setUploadError('');
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        try {
-            const response = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (!response.ok) {
-                throw new Error('Upload failed');
-            }
-
-            const data = await response.json();
-            if (data.success && data.url) {
-                setDocumentLink(data.url);
-            } else {
-                throw new Error(data.error || 'Failed to get URL');
-            }
-        } catch (err: any) {
-            console.error('Upload Error:', err);
-            setUploadError('Failed to upload document. You can still paste a link manually.');
-        } finally {
-            setIsUploading(false);
-            if (fileInputRef.current) {
-                fileInputRef.current.value = '';
-            }
-        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        if (!selectedFile && !documentLink) {
+            setError('Please either upload a file or provide a link.');
+            return;
+        }
+
         setIsSubmitting(true);
         setError('');
+
+        const formData = new FormData();
+        formData.append('fullName', fullName);
+        formData.append('registrationNo', registrationNo);
+        formData.append('email', email);
+        
+        if (selectedFile) {
+            formData.append('file', selectedFile);
+        }
+        if (documentLink) {
+            formData.append('documentLink', documentLink);
+        }
 
         try {
             const response = await fetch('/api/submit-abstract', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    fullName,
-                    registrationNo,
-                    email,
-                    documentLink,
-                }),
+                body: formData,
             });
 
             if (!response.ok) {
@@ -106,6 +88,8 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                 setRegistrationNo('');
                 setEmail('');
                 setDocumentLink('');
+                setSelectedFile(null);
+                if (fileInputRef.current) fileInputRef.current.value = '';
                 setIsLocked(true);
                 setAccessCode('');
             }, 3000);
@@ -208,14 +192,13 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                                             <input
                                                 type="file"
                                                 accept=".pdf,.doc,.docx"
-                                                onChange={handleFileUpload}
-                                                disabled={isUploading}
+                                                onChange={handleFileSelect}
                                                 ref={fileInputRef}
                                                 style={{ display: 'none' }}
                                                 id="file-upload"
                                             />
-                                            <label htmlFor="file-upload" className={styles.submitBtn} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.5rem 1rem', background: '#3b82f6', color: 'white' }}>
-                                                {isUploading ? 'Uploading...' : 'Upload File'}
+                                            <label htmlFor="file-upload" className={styles.submitBtn} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.5rem 1rem', background: selectedFile ? '#10b981' : '#3b82f6', color: 'white' }}>
+                                                {selectedFile ? selectedFile.name : 'Upload File'}
                                             </label>
                                             <span style={{ fontSize: '0.9rem', color: '#9ca3af', flex: 1 }}>
                                                 Supported: PDF, DOCX
@@ -230,12 +213,18 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                                             className={styles.input}
                                             placeholder="https://docs.google.com/... or other link"
                                             value={documentLink}
-                                            onChange={(e) => setDocumentLink(e.target.value)}
-                                            required
+                                            onChange={(e) => {
+                                                setDocumentLink(e.target.value);
+                                                if (e.target.value) {
+                                                    setSelectedFile(null);
+                                                    if (fileInputRef.current) fileInputRef.current.value = '';
+                                                }
+                                            }}
+                                            required={!selectedFile}
                                         />
                                         </div>
 
-                                    <button type="submit" className={styles.submitBtn} disabled={isSubmitting || isUploading}>
+                                    <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
                                         {isSubmitting ? 'Submitting...' : 'Submit to Committee'}
                                     </button>
                                 </>
