@@ -310,7 +310,12 @@ export default function Hero() {
                     onClick={(e) => {
                       e.preventDefault();
                       setSubmissionType('ABSTRACT');
-                      setIsCodeVerified(false);
+                      const unlockedUntil = localStorage.getItem('access_code_unlocked_until');
+                      if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
+                        setIsCodeVerified(true);
+                      } else {
+                        setIsCodeVerified(false);
+                      }
                       setIsModalOpen(true);
                     }}
                     className={styles.btnSecondary}
@@ -322,7 +327,16 @@ export default function Hero() {
                   </button>
                 )}
 
-                <button onClick={() => { setSubmissionType('FULL_PAPER'); setIsCodeVerified(false); setIsModalOpen(true); }} className={styles.btnPrimary} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', border: 'none' }}>
+                <button onClick={() => { 
+                  setSubmissionType('FULL_PAPER'); 
+                  const unlockedUntil = localStorage.getItem('access_code_unlocked_until');
+                  if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
+                    setIsCodeVerified(true);
+                  } else {
+                    setIsCodeVerified(false);
+                  }
+                  setIsModalOpen(true); 
+                }} className={styles.btnPrimary} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', border: 'none' }}>
                   Submit Full Paper <Lock size={18} />
                 </button>
               </div>
@@ -596,6 +610,7 @@ export default function Hero() {
                           usedCodes.push(code);
                           localStorage.setItem('used_access_codes', JSON.stringify(usedCodes));
                         }
+                        localStorage.setItem('access_code_unlocked_until', (Date.now() + 5 * 60 * 1000).toString());
                         setIsCodeVerified(true);
                       }
                     } else {
