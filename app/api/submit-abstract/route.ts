@@ -32,7 +32,7 @@ export async function POST(request: Request) {
         },
     });
 
-    let attachments = [];
+    const attachments = [];
     let docHtml = '';
     let docText = '';
 

@@ -62,7 +62,7 @@ export function SubmissionGuidelines() {
                     text: "Abstract Submission Guidlines",
                     variant: "primary",
                     action: () => {
-                        window.open('/Eligibility_and_Process_Guidelines.pdf?v=' + Date.now(), '_blank');
+                        window.open('/Eligibility_and_Process_Guidelines.pdf', '_blank');
                     }
                 }
             ]
