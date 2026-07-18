@@ -14,7 +14,7 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
 
     React.useEffect(() => {
         if (isOpen) {
-            const unlockedUntil = localStorage.getItem('access_code_unlocked_until');
+            const unlockedUntil = localStorage.getItem('abstract_code_unlocked_until');
             if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
                 setIsLocked(false);
             } else {
@@ -41,7 +41,7 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
         e.preventDefault();
         // Placeholder access code check (replace with real validation later if needed)
         if (accessCode.trim().toUpperCase() === 'IAPSMGC2026') {
-            localStorage.setItem('access_code_unlocked_until', (Date.now() + 5 * 60 * 1000).toString());
+            localStorage.setItem('abstract_code_unlocked_until', (Date.now() + 5 * 60 * 1000).toString());
             setIsLocked(false);
             setError('');
         } else {

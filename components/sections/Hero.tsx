@@ -310,7 +310,7 @@ export default function Hero() {
                     onClick={(e) => {
                       e.preventDefault();
                       setSubmissionType('ABSTRACT');
-                      const unlockedUntil = localStorage.getItem('access_code_unlocked_until');
+                      const unlockedUntil = localStorage.getItem('abstract_code_unlocked_until');
                       if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
                         setIsCodeVerified(true);
                       } else {
@@ -329,7 +329,7 @@ export default function Hero() {
 
                 <button onClick={() => { 
                   setSubmissionType('FULL_PAPER'); 
-                  const unlockedUntil = localStorage.getItem('access_code_unlocked_until');
+                  const unlockedUntil = localStorage.getItem('full_paper_code_unlocked_until');
                   if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
                     setIsCodeVerified(true);
                   } else {
@@ -610,7 +610,8 @@ export default function Hero() {
                           usedCodes.push(code);
                           localStorage.setItem('used_access_codes', JSON.stringify(usedCodes));
                         }
-                        localStorage.setItem('access_code_unlocked_until', (Date.now() + 5 * 60 * 1000).toString());
+                        const cacheKey = submissionType === 'FULL_PAPER' ? 'full_paper_code_unlocked_until' : 'abstract_code_unlocked_until';
+                        localStorage.setItem(cacheKey, (Date.now() + 5 * 60 * 1000).toString());
                         setIsCodeVerified(true);
                       }
                     } else {
