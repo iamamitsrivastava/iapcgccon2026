@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     const fullName = formData.get('fullName') as string;
     const registrationNo = formData.get('registrationNo') as string;
     const email = formData.get('email') as string;
-    const documentLink = formData.get('documentLink') as string;
+    let documentLink = formData.get('documentLink') as string;
 
     if (!fullName || !registrationNo || !email || !documentLink) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });

@@ -96,28 +96,31 @@ export async function POST(request: Request) {
       }
     }
 
-    // 4. tmpfiles.org (Highly reliable, no IP block, keeps files for 60 mins)
+    // 4. Google Drive (via Apps Script)
     try {
-      console.log("Trying tmpfiles.org...");
-      const tmpForm = new FormData();
-      tmpForm.append('file', new Blob([buffer], { type: mimeType }), filename);
+      console.log("Trying Google Drive via Apps Script...");
+      const base64Str = buffer.toString('base64');
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzchvpJn0a-3FJS3mBx1jLDPABbCwMfBIPxlD4zQVF9S95AnvPHSHRcZPLtiJOuImzeRg/exec";
       
-      const tmpRes = await fetch('https://tmpfiles.org/api/v1/upload', {
+      const gsRes = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
-        body: tmpForm
+        body: JSON.stringify({
+          action: "uploadOnly",
+          fileBase64: base64Str,
+          fileName: filename,
+          fileMimeType: mimeType
+        })
       });
 
-      if (tmpRes.ok) {
-        const tmpData = await tmpRes.json();
-        if (tmpData.status === 'success' && tmpData.data && tmpData.data.url) {
-          // Convert view URL to direct download URL
-          const url = tmpData.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
-          console.log("Uploaded successfully to tmpfiles.org:", url);
-          return NextResponse.json({ success: true, url });
+      if (gsRes.ok) {
+        const gsData = await gsRes.json();
+        if (gsData.success && gsData.url) {
+          console.log("Uploaded successfully to Google Drive:", gsData.url);
+          return NextResponse.json({ success: true, url: gsData.url });
         }
       }
     } catch (e) {
-      console.log("tmpfiles.org upload failed:", e);
+      console.log("Google Drive upload failed:", e);
     }
 
     // 6. Absolute Last Resort: Local Filesystem

@@ -7,7 +7,7 @@ import { ContactInput } from '../validations/contact';
 const TARGET_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 
 function getPaths() {
-    const DATA_DIR = path.join(process.cwd(), 'data');
+    const DATA_DIR = path.join(/*turbopackIgnore: true*/ process.cwd(), 'data');
     const SUBMISSIONS_DIR = path.join(DATA_DIR, 'submissions');
     const CONTACT_FILE = path.join(SUBMISSIONS_DIR, 'contact.json');
     return { DATA_DIR, SUBMISSIONS_DIR, CONTACT_FILE };
