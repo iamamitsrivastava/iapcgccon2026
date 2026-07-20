@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Calendar, MapPin, ArrowRight, FileText, Award, Layers, Search, Globe, X, CheckCircle2, Clock, Lock, Copy, Loader2 } from 'lucide-react';
+import { Calendar, MapPin, ArrowRight, FileText, Award, Layers, Search, Globe, X, CheckCircle2, Clock, Lock, Copy, Loader2, Upload } from 'lucide-react';
 import Image from 'next/image';
 import { conference } from '@/data/conference';
 import { REGISTRATION_MAPPING, ACCESS_CODE_MAPPING } from '@/lib/registrationData';
@@ -136,6 +136,8 @@ export default function Hero() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [isDraggingDoc, setIsDraggingDoc] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -251,13 +253,34 @@ export default function Hero() {
     }
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setSelectedFile(file);
+  const handleFileSelect = async (file: File) => {
+    if (file.size > 10 * 1024 * 1024) {
+      setUploadError('File too large. Max 10 MB.');
+      return;
+    }
     setFormData(prev => ({ ...prev, documentLink: '' }));
     setUploadError('');
+    setSelectedFile(file);
+    setUploadedUrl(null);
+    setIsUploading(true);
+    const fd = new FormData();
+    fd.append('file', file);
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setUploadedUrl(data.url);
+        setFormData(prev => ({ ...prev, documentLink: data.url }));
+      } else {
+        setUploadError(data.error || 'Upload failed. Please paste a link instead.');
+        setSelectedFile(null);
+      }
+    } catch {
+      setUploadError('Upload failed. Please paste a link instead.');
+      setSelectedFile(null);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -677,50 +700,98 @@ export default function Hero() {
                   </div>
 
                   <div className={styles.formGroup} style={{ marginBottom: "1.5rem" }}>
-                    <label>Upload Document or Provide Link *</label>
-                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem', alignItems: 'center' }}>
-                      <input
-                        type="file"
-                        accept=".pdf,.doc,.docx"
-                        onChange={handleFileSelect}
-                        ref={fileInputRef}
-                        style={{ display: 'none' }}
-                        id="hero-file-upload"
-                      />
-                      <label htmlFor="hero-file-upload" className={styles.submitModalBtn} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.75rem 1rem', background: selectedFile ? '#10b981' : '#3b82f6', color: 'white', display: 'block', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>
-                        {selectedFile ? selectedFile.name : 'Upload File'}
-                      </label>
-                      <span style={{ fontSize: '0.9rem', color: '#9ca3af', flex: 1 }}>
-                        Supported: PDF, DOCX
-                      </span>
-                    </div>
-                    {uploadError && <span style={{ color: '#ef4444', fontSize: '0.85rem' }}>{uploadError}</span>}
+                    <label style={{ display: 'block', marginBottom: '0.75rem', fontWeight: 600 }}>
+                      Upload Document or Provide Link *
+                      <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.78rem', marginLeft: '0.4rem' }}>(PDF/DOCX, Max 10 MB)</span>
+                    </label>
 
-                    <div style={{ margin: '1rem 0', textAlign: 'center', color: '#6b7280', fontSize: '0.9rem' }}>OR manually paste a link below</div>
+                    {/* Hidden file input */}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      style={{ display: 'none' }}
+                      onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFileSelect(f); }}
+                    />
+
+                    {/* Dashed drag-and-drop zone */}
+                    <div
+                      onClick={() => { if (!isUploading) fileInputRef.current?.click(); }}
+                      onDragOver={(e) => { e.preventDefault(); setIsDraggingDoc(true); }}
+                      onDragLeave={() => setIsDraggingDoc(false)}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        setIsDraggingDoc(false);
+                        const f = e.dataTransfer.files?.[0];
+                        if (f) handleFileSelect(f);
+                      }}
+                      style={{
+                        border: `2px dashed ${isDraggingDoc ? '#FACC15' : uploadedUrl ? '#FACC15' : 'rgba(255,255,255,0.15)'}`,
+                        borderRadius: '12px',
+                        padding: '1.5rem',
+                        textAlign: 'center',
+                        cursor: isUploading ? 'wait' : 'pointer',
+                        transition: 'all 0.2s',
+                        background: isDraggingDoc ? 'rgba(250,204,21,0.06)' : uploadedUrl ? 'rgba(250,204,21,0.05)' : 'rgba(255,255,255,0.02)',
+                        marginBottom: '0.5rem',
+                      }}
+                    >
+                      {isUploading ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                          <Loader2 size={28} color="#FACC15" style={{ animation: 'spin 1s linear infinite' }} />
+                          <span style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Uploading...</span>
+                        </div>
+                      ) : uploadedUrl ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                          <CheckCircle2 size={28} color="#22c55e" />
+                          <span style={{ color: '#22c55e', fontSize: '0.85rem', fontWeight: 600 }}>✓ {selectedFile?.name}</span>
+                          <span style={{ color: '#64748b', fontSize: '0.78rem' }}>Click to replace</span>
+                        </div>
+                      ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                          <Upload size={28} color="#FACC15" />
+                          <span style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Click to upload or drag &amp; drop</span>
+                          <span style={{ color: '#475569', fontSize: '0.78rem' }}>PDF or DOCX · Max 10 MB</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {uploadError && (
+                      <span style={{ color: '#ef4444', fontSize: '0.82rem', display: 'block', marginBottom: '0.5rem' }}>{uploadError}</span>
+                    )}
+
+                    {/* OR divider */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0.85rem 0' }}>
+                      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+                      <span style={{ color: '#64748b', fontSize: '0.78rem', fontWeight: 600 }}>OR paste a link</span>
+                      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+                    </div>
 
                     <input
                       type="url"
                       id="documentLink"
-                      required={!selectedFile}
-                      value={formData.documentLink || ""}
+                      value={uploadedUrl ? '' : (formData.documentLink || '')}
+                      disabled={!!uploadedUrl}
                       onChange={(e) => {
                         setFormData({ ...formData, documentLink: e.target.value });
                         if (e.target.value) {
-                            setSelectedFile(null);
-                            if (fileInputRef.current) fileInputRef.current.value = '';
+                          setSelectedFile(null);
+                          setUploadedUrl(null);
+                          if (fileInputRef.current) fileInputRef.current.value = '';
                         }
                       }}
-                      placeholder="https://docs.google.com/... or other link"
+                      placeholder={uploadedUrl ? '(File uploaded above)' : 'https://docs.google.com/... or other link'}
                       style={{
                         width: '100%',
                         padding: '0.75rem 1rem',
                         borderRadius: '8px',
                         border: '1px solid rgba(255, 255, 255, 0.1)',
-                        backgroundColor: 'rgba(15, 23, 42, 0.6)',
-                        color: 'white',
+                        backgroundColor: uploadedUrl ? 'rgba(255,255,255,0.03)' : 'rgba(15, 23, 42, 0.6)',
+                        color: uploadedUrl ? '#64748b' : 'white',
                         fontSize: '1rem',
                         outline: 'none',
-                        transition: 'border-color 0.2s',
+                        cursor: uploadedUrl ? 'not-allowed' : 'text',
+                        boxSizing: 'border-box',
                       }}
                     />
                   </div>

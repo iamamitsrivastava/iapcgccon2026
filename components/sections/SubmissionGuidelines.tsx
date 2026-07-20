@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styles from './SubmissionGuidelines.module.css';
 import heroStyles from './Hero.module.css';
 import ScrollReveal from '@/components/ui/ScrollReveal';
-import { X, CheckCircle2, Eye, Lock, Copy } from 'lucide-react';
+import { X, CheckCircle2, Eye, Lock, Copy, Upload, Loader2 } from 'lucide-react';
 import { ABSTRACT_ACCESS_CODES, FULL_PAPER_ACCESS_CODES } from './Hero';
 import { ACCESS_CODE_MAPPING } from '@/lib/registrationData';
 
@@ -20,6 +20,48 @@ export function SubmissionGuidelines() {
     const [copiedCode, setCopiedCode] = useState<string | null>(null);
     const [accessCode, setAccessCode] = useState('');
     const [codeError, setCodeError] = useState('');
+
+    // File upload state
+    const docFileRef = useRef<HTMLInputElement>(null);
+    const [docFile, setDocFile] = useState<File | null>(null);
+    const [docFileUrl, setDocFileUrl] = useState<string | null>(null);
+    const [uploadingDoc, setUploadingDoc] = useState(false);
+    const [uploadError, setUploadError] = useState('');
+    const [isDragging, setIsDragging] = useState(false);
+
+    const handleDocumentUpload = async (file: File) => {
+        if (file.size > 10 * 1024 * 1024) {
+            setUploadError('File too large. Max 10 MB.');
+            return;
+        }
+        const allowed = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        if (!allowed.includes(file.type)) {
+            setUploadError('Only PDF or DOCX files are supported.');
+            return;
+        }
+        setUploadError('');
+        setDocFile(file);
+        setDocFileUrl(null);
+        setUploadingDoc(true);
+        const fd = new FormData();
+        fd.append('file', file);
+        try {
+            const res = await fetch('/api/upload', { method: 'POST', body: fd });
+            const data = await res.json();
+            if (data.success && data.url) {
+                setDocFileUrl(data.url);
+                setFormData(prev => ({ ...prev, documentLink: data.url }));
+            } else {
+                setUploadError(data.error || 'Upload failed. Please paste a link instead.');
+                setDocFile(null);
+            }
+        } catch {
+            setUploadError('Upload failed. Please paste a link instead.');
+            setDocFile(null);
+        } finally {
+            setUploadingDoc(false);
+        }
+    };
 
     const handleGetAccessCode = async () => {
         if (!accessEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(accessEmail.trim())) {
@@ -46,6 +88,7 @@ export function SubmissionGuidelines() {
         email: '',
         documentLink: '',
     });
+
 
     const guidelinesData = [
         {
@@ -119,6 +162,12 @@ export function SubmissionGuidelines() {
 
     const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!formData.documentLink) {
+            setUploadError('Please upload a file or paste a document link.');
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
@@ -164,6 +213,9 @@ export function SubmissionGuidelines() {
                     setIsModalOpen(false);
                     setSubmissionSuccess(false);
                     setFormData({ name: "", registrationNo: "", email: "", documentLink: "" });
+                    setDocFile(null);
+                    setDocFileUrl(null);
+                    setUploadError('');
                 }, 2000);
             }
         } catch (error: any) {
@@ -173,6 +225,7 @@ export function SubmissionGuidelines() {
             setIsSubmitting(false);
         }
     };
+
 
     return (
         <section className={`section ${styles.guidelines}`} id="submit">
@@ -475,40 +528,92 @@ export function SubmissionGuidelines() {
                                     </div>
 
                                     <div className={heroStyles.formGroup}>
-                                        <div style={{
-                                            backgroundColor: "rgba(59, 130, 246, 0.1)",
-                                            borderLeft: "4px solid #3b82f6",
-                                            padding: "1rem",
-                                            borderRadius: "0 8px 8px 0",
-                                            marginBottom: "1.25rem"
-                                        }}>
-                                            <h4 style={{ color: "#60a5fa", margin: "0 0 0.5rem 0", fontSize: "0.95rem", fontWeight: 600 }}>How to convert a PDF to a Google Doc Link:</h4>
-                                            <ol style={{ margin: 0, paddingLeft: "1.2rem", color: "#94a3b8", fontSize: "0.85rem", lineHeight: 1.5 }}>
-                                                <li>Upload your PDF file to your <strong>Google Drive</strong>.</li>
-                                                <li>Right-click the uploaded PDF, select <strong>"Open with"</strong> &rarr; <strong>"Google Docs"</strong>.</li>
-                                                <li>Once open, click the blue <strong>"Share"</strong> button (top right).</li>
-                                                <li>Under General access, change "Restricted" to <strong>"Anyone with the link"</strong>.</li>
-                                                <li>Click <strong>"Copy link"</strong> and paste it in the field below.</li>
-                                            </ol>
+                                        <label style={{ display: 'block', color: '#cbd5e1', fontSize: '0.88rem', fontWeight: 600, marginBottom: '0.75rem', letterSpacing: '0.02em' }}>
+                                            Upload Document or Provide Link <span style={{ color: '#FACC15' }}>*</span>
+                                            <span style={{ color: '#94a3b8', fontWeight: 400, marginLeft: '0.5rem' }}>(PDF/DOCX only, Max 10 MB)</span>
+                                        </label>
+
+                                        {/* Drag-and-drop upload zone */}
+                                        <input
+                                            ref={docFileRef}
+                                            type="file"
+                                            accept=".pdf,.doc,.docx"
+                                            style={{ display: 'none' }}
+                                            onChange={(e) => { const f = e.target.files?.[0]; if (f) handleDocumentUpload(f); }}
+                                        />
+                                        <div
+                                            onClick={() => docFileRef.current?.click()}
+                                            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                                            onDragLeave={() => setIsDragging(false)}
+                                            onDrop={(e) => {
+                                                e.preventDefault();
+                                                setIsDragging(false);
+                                                const f = e.dataTransfer.files?.[0];
+                                                if (f) handleDocumentUpload(f);
+                                            }}
+                                            style={{
+                                                border: `2px dashed ${isDragging ? '#FACC15' : docFileUrl ? '#10b981' : 'rgba(255,255,255,0.2)'}`,
+                                                borderRadius: '12px',
+                                                padding: '2rem',
+                                                textAlign: 'center',
+                                                cursor: 'pointer',
+                                                background: isDragging ? 'rgba(250,204,21,0.05)' : docFileUrl ? 'rgba(16,185,129,0.05)' : 'rgba(255,255,255,0.03)',
+                                                transition: 'all 0.2s',
+                                                marginBottom: '0.75rem',
+                                            }}
+                                        >
+                                            {uploadingDoc ? (
+                                                <>
+                                                    <Loader2 size={28} style={{ color: '#FACC15', margin: '0 auto 0.5rem', animation: 'spin 1s linear infinite', display: 'block' }} />
+                                                    <p style={{ color: '#94a3b8', margin: 0, fontSize: '0.9rem' }}>Uploading...</p>
+                                                </>
+                                            ) : docFileUrl ? (
+                                                <>
+                                                    <CheckCircle2 size={28} style={{ color: '#10b981', margin: '0 auto 0.5rem', display: 'block' }} />
+                                                    <p style={{ color: '#10b981', margin: '0 0 0.25rem', fontWeight: 600, fontSize: '0.9rem' }}>{docFile?.name}</p>
+                                                    <p style={{ color: '#64748b', margin: 0, fontSize: '0.78rem' }}>Click to replace</p>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Upload size={28} style={{ color: '#FACC15', margin: '0 auto 0.75rem', display: 'block' }} />
+                                                    <p style={{ color: '#e2e8f0', margin: '0 0 0.25rem', fontWeight: 600, fontSize: '0.95rem' }}>Click to upload or drag & drop</p>
+                                                    <p style={{ color: '#64748b', margin: 0, fontSize: '0.8rem' }}>PDF or DOCX · Max 10 MB</p>
+                                                </>
+                                            )}
                                         </div>
-                                        <label htmlFor="guidelines_link">Document Link *</label>
+                                        {uploadError && (
+                                            <p style={{ color: '#ef4444', fontSize: '0.82rem', marginBottom: '0.75rem' }}>{uploadError}</p>
+                                        )}
+
+                                        {/* OR divider */}
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0.75rem 0' }}>
+                                            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+                                            <span style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: 600 }}>OR paste a link</span>
+                                            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+                                        </div>
+
                                         <input
                                             type="url"
                                             id="guidelines_link"
-                                            required
-                                            value={formData.documentLink}
-                                            onChange={(e) => setFormData({ ...formData, documentLink: e.target.value })}
-                                            placeholder="https://docs.google.com/..."
+                                            value={docFileUrl ? '' : formData.documentLink}
+                                            disabled={!!docFileUrl}
+                                            onChange={(e) => {
+                                                setFormData({ ...formData, documentLink: e.target.value });
+                                                setDocFile(null);
+                                                setDocFileUrl(null);
+                                            }}
+                                            placeholder={docFileUrl ? '(File uploaded above)' : 'https://docs.google.com/... or other link'}
                                             style={{
                                                 width: '100%',
                                                 padding: '0.75rem 1rem',
                                                 borderRadius: '8px',
                                                 border: '1px solid rgba(255, 255, 255, 0.1)',
-                                                backgroundColor: 'rgba(15, 23, 42, 0.6)',
-                                                color: 'white',
-                                                fontSize: '1rem',
+                                                backgroundColor: docFileUrl ? 'rgba(255,255,255,0.03)' : 'rgba(15, 23, 42, 0.6)',
+                                                color: docFileUrl ? '#64748b' : 'white',
+                                                fontSize: '0.95rem',
                                                 outline: 'none',
-                                                transition: 'border-color 0.2s'
+                                                boxSizing: 'border-box',
+                                                cursor: docFileUrl ? 'not-allowed' : 'text',
                                             }}
                                         />
                                     </div>

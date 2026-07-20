@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { Upload, Loader2, CheckCircle2 } from 'lucide-react';
 import styles from './SubmitAbstractModal.module.css';
 
 interface SubmitAbstractModalProps {
@@ -32,8 +33,11 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
     const [uploadError, setUploadError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
     
-    const fileInputRef = React.useRef<HTMLInputElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     if (!isOpen) return null;
 
@@ -49,19 +53,40 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
         }
     };
 
-    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        setSelectedFile(file);
-        setDocumentLink(''); // clear link if file is selected
+    const handleFileSelect = async (file: File) => {
+        if (file.size > 10 * 1024 * 1024) {
+            setUploadError('File too large. Max 10 MB.');
+            return;
+        }
+        setDocumentLink('');
         setUploadError('');
+        setSelectedFile(file);
+        setUploadedUrl(null);
+        setIsUploading(true);
+
+        const fd = new FormData();
+        fd.append('file', file);
+        try {
+            const res = await fetch('/api/upload', { method: 'POST', body: fd });
+            const data = await res.json();
+            if (data.success && data.url) {
+                setUploadedUrl(data.url);
+            } else {
+                setUploadError(data.error || 'Upload failed. Please paste a link instead.');
+                setSelectedFile(null);
+            }
+        } catch {
+            setUploadError('Upload failed. Please paste a link instead.');
+            setSelectedFile(null);
+        } finally {
+            setIsUploading(false);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         
-        if (!selectedFile && !documentLink) {
+        if (!uploadedUrl && !documentLink) {
             setError('Please either upload a file or provide a link.');
             return;
         }
@@ -69,22 +94,23 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
         setIsSubmitting(true);
         setError('');
 
-        const formData = new FormData();
-        formData.append('fullName', fullName);
-        formData.append('registrationNo', registrationNo);
-        formData.append('email', email);
-        
-        if (selectedFile) {
-            formData.append('file', selectedFile);
-        }
-        if (documentLink) {
-            formData.append('documentLink', documentLink);
-        }
-
         try {
+            let finalDocumentLink = uploadedUrl || documentLink;
+
+            if (!finalDocumentLink) {
+                throw new Error('No document URL available. Please re-upload or paste a link.');
+            }
+
+            // Now submit with the public URL (no file attachment)
+            const submitForm = new FormData();
+            submitForm.append('fullName', fullName);
+            submitForm.append('registrationNo', registrationNo);
+            submitForm.append('email', email);
+            submitForm.append('documentLink', finalDocumentLink);
+
             const response = await fetch('/api/submit-abstract', {
                 method: 'POST',
-                body: formData,
+                body: submitForm,
             });
 
             if (!response.ok) {
@@ -101,6 +127,8 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                 setEmail('');
                 setDocumentLink('');
                 setSelectedFile(null);
+                setUploadedUrl(null);
+                setUploadError('');
                 if (fileInputRef.current) fileInputRef.current.value = '';
                 setIsLocked(true);
                 setAccessCode('');
@@ -199,42 +227,90 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                                     </div>
 
                                     <div className={styles.formGroup}>
-                                        <label className={styles.label}>Upload Document or Provide Link *</label>
-                                        <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.5rem', alignItems: 'center' }}>
-                                            <input
-                                                type="file"
-                                                accept=".pdf,.doc,.docx"
-                                                onChange={handleFileSelect}
-                                                ref={fileInputRef}
-                                                style={{ display: 'none' }}
-                                                id="file-upload"
-                                            />
-                                            <label htmlFor="file-upload" className={styles.submitBtn} style={{ cursor: 'pointer', flex: 1, textAlign: 'center', padding: '0.5rem 1rem', background: selectedFile ? '#10b981' : '#3b82f6', color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>
-                                                {selectedFile ? selectedFile.name : 'Upload File'}
-                                            </label>
-                                            <span style={{ fontSize: '0.9rem', color: '#9ca3af', flex: 1 }}>
-                                                Supported: PDF, DOCX
-                                            </span>
+                                        <label className={styles.label}>
+                                            Upload Document or Provide Link *
+                                            <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.78rem', marginLeft: '0.4rem' }}>(PDF/DOCX, Max 10 MB)</span>
+                                        </label>
+
+                                        {/* Hidden file input */}
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            accept=".pdf,.doc,.docx"
+                                            style={{ display: 'none' }}
+                                            onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFileSelect(f); }}
+                                        />
+
+                                        {/* Drag-and-drop zone — matches payment proof style */}
+                                        <div
+                                            onClick={() => { if (!isUploading) fileInputRef.current?.click(); }}
+                                            onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                                            onDragLeave={() => setIsDragging(false)}
+                                            onDrop={(e) => {
+                                                e.preventDefault();
+                                                setIsDragging(false);
+                                                const f = e.dataTransfer.files?.[0];
+                                                if (f) handleFileSelect(f);
+                                            }}
+                                            style={{
+                                                border: `2px dashed ${isDragging ? '#FACC15' : uploadedUrl ? '#FACC15' : 'rgba(255,255,255,0.15)'}`,
+                                                borderRadius: '12px',
+                                                padding: '1.5rem',
+                                                textAlign: 'center',
+                                                cursor: isUploading ? 'wait' : 'pointer',
+                                                transition: 'all 0.2s',
+                                                background: isDragging ? 'rgba(250,204,21,0.06)' : uploadedUrl ? 'rgba(250,204,21,0.05)' : 'rgba(255,255,255,0.02)',
+                                                marginBottom: '0.5rem',
+                                            }}
+                                        >
+                                            {isUploading ? (
+                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                                    <Loader2 size={28} color="#FACC15" style={{ animation: 'spin 1s linear infinite' }} />
+                                                    <span style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Uploading...</span>
+                                                </div>
+                                            ) : uploadedUrl ? (
+                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                                    <CheckCircle2 size={28} color="#22c55e" />
+                                                    <span style={{ color: '#22c55e', fontSize: '0.85rem', fontWeight: 600 }}>✓ {selectedFile?.name}</span>
+                                                    <span style={{ color: '#64748b', fontSize: '0.78rem' }}>Click to replace</span>
+                                                </div>
+                                            ) : (
+                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                                    <Upload size={28} color="#FACC15" />
+                                                    <span style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Click to upload or drag &amp; drop</span>
+                                                    <span style={{ color: '#475569', fontSize: '0.78rem' }}>PDF or DOCX · Max 10 MB</span>
+                                                </div>
+                                            )}
                                         </div>
-                                        {uploadError && <span style={{ color: '#ef4444', fontSize: '0.85rem' }}>{uploadError}</span>}
-                                        
-                                        <div style={{ margin: '1rem 0', textAlign: 'center', color: '#6b7280', fontSize: '0.9rem' }}>OR manually paste a link below</div>
+
+                                        {uploadError && (
+                                            <span style={{ color: '#ef4444', fontSize: '0.82rem', display: 'block', marginBottom: '0.5rem' }}>{uploadError}</span>
+                                        )}
+
+                                        {/* OR divider */}
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0.85rem 0' }}>
+                                            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+                                            <span style={{ color: '#64748b', fontSize: '0.78rem', fontWeight: 600 }}>OR paste a link</span>
+                                            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+                                        </div>
 
                                         <input
                                             type="url"
                                             className={styles.input}
-                                            placeholder="https://docs.google.com/... or other link"
-                                            value={documentLink}
+                                            placeholder={uploadedUrl ? '(File uploaded above)' : 'https://docs.google.com/... or other link'}
+                                            value={uploadedUrl ? '' : documentLink}
+                                            disabled={!!uploadedUrl}
                                             onChange={(e) => {
                                                 setDocumentLink(e.target.value);
                                                 if (e.target.value) {
                                                     setSelectedFile(null);
+                                                    setUploadedUrl(null);
                                                     if (fileInputRef.current) fileInputRef.current.value = '';
                                                 }
                                             }}
-                                            required={!selectedFile}
+                                            style={uploadedUrl ? { opacity: 0.4, cursor: 'not-allowed' } : {}}
                                         />
-                                        </div>
+                                    </div>
 
                                     <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
                                         {isSubmitting ? 'Submitting...' : 'Submit to Committee'}
@@ -244,6 +320,7 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                         </form>
                     )}
                 </div>
+                <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
             </div>
         </div>
     );
