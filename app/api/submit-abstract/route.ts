@@ -52,6 +52,25 @@ export async function POST(request: Request) {
     const docHtml = `<a href="${documentLink}" target="_blank" rel="noopener noreferrer">${documentLink}</a>`;
     const typeLabel = submissionType === 'FULL_PAPER' ? 'Full Paper' : 'Abstract';
 
+      let mailAttachments = [];
+      if (documentLink && documentLink.includes('tmpfiles.org')) {
+        try {
+          console.log("Downloading tmpfiles.org link for email attachment...");
+          const res = await fetch(documentLink);
+          if (res.ok) {
+            const buffer = Buffer.from(await res.arrayBuffer());
+            const fileName = documentLink.split('/').pop() || 'submission-document';
+            mailAttachments.push({
+              filename: fileName,
+              content: buffer
+            });
+            console.log("Attachment downloaded successfully.");
+          }
+        } catch (downloadErr) {
+          console.error("Failed to download tmpfiles attachment:", downloadErr);
+        }
+      }
+
     await transporter.sendMail({
       from: `"IAPSMGC CON 2026 Website" <${process.env.SMTP_USER}>`,
       to: TARGET_EMAIL,
@@ -88,6 +107,7 @@ export async function POST(request: Request) {
         </div>
       `,
       text: `New ${typeLabel} Submission\n\nFull Name: ${fullName}\nRegistration No: ${registrationNo}\nEmail: ${email}\nDocument: ${documentLink}\n\nSubmitted: ${new Date().toISOString()}`,
+      attachments: mailAttachments
     });
 
     return NextResponse.json({ success: true, message: `${typeLabel} submitted successfully.` });

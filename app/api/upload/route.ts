@@ -96,49 +96,28 @@ export async function POST(request: Request) {
       }
     }
 
-    // 4. Pixeldrain (Extremely reliable, allows Vercel IPs, retains for 60 days)
+    // 4. tmpfiles.org (Highly reliable, no IP block, keeps files for 60 mins)
     try {
-      console.log("Trying Pixeldrain...");
-      const pdForm = new FormData();
-      pdForm.append('file', new Blob([buffer], { type: mimeType }), filename);
+      console.log("Trying tmpfiles.org...");
+      const tmpForm = new FormData();
+      tmpForm.append('file', new Blob([buffer], { type: mimeType }), filename);
       
-      const pdRes = await fetch('https://pixeldrain.com/api/file', {
+      const tmpRes = await fetch('https://tmpfiles.org/api/v1/upload', {
         method: 'POST',
-        body: pdForm
+        body: tmpForm
       });
 
-      if (pdRes.ok) {
-        const pdData = await pdRes.json();
-        if (pdData.success && pdData.id) {
-          const url = `https://pixeldrain.com/u/${pdData.id}`;
-          console.log("Uploaded successfully to Pixeldrain:", url);
+      if (tmpRes.ok) {
+        const tmpData = await tmpRes.json();
+        if (tmpData.status === 'success' && tmpData.data && tmpData.data.url) {
+          // Convert view URL to direct download URL
+          const url = tmpData.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+          console.log("Uploaded successfully to tmpfiles.org:", url);
           return NextResponse.json({ success: true, url });
         }
       }
     } catch (e) {
-      console.log("Pixeldrain upload failed:", e);
-    }
-
-    // 5. Uguu.se (Fallback, retains for 48 hours)
-    try {
-      console.log("Trying Uguu.se...");
-      const uguuForm = new FormData();
-      uguuForm.append('files[]', new Blob([buffer], { type: mimeType }), filename);
-      const uguuRes = await fetch('https://uguu.se/api.php?d=upload-tool', {
-        method: 'POST',
-        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
-        body: uguuForm
-      });
-
-      if (uguuRes.ok) {
-        const uguuData = await uguuRes.json();
-        if (uguuData.success && uguuData.files && uguuData.files[0]) {
-          console.log("Uploaded successfully to Uguu.se:", uguuData.files[0].url);
-          return NextResponse.json({ success: true, url: uguuData.files[0].url });
-        }
-      }
-    } catch (e) {
-      console.log("Uguu upload failed:", e);
+      console.log("tmpfiles.org upload failed:", e);
     }
 
     // 6. Absolute Last Resort: Local Filesystem
