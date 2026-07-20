@@ -123,28 +123,33 @@ export async function POST(request: Request) {
       console.log("Google Drive upload failed:", e);
     }
 
-    // 5. tmpfiles.org (Highly reliable, no IP block, keeps files for 60 mins)
+    // 5. gofile.io (Keeps files until inactive, much better than tmpfiles.org)
     try {
-      console.log("Trying tmpfiles.org...");
-      const tmpForm = new FormData();
-      tmpForm.append('file', new Blob([buffer], { type: mimeType }), filename);
-      
-      const tmpRes = await fetch('https://tmpfiles.org/api/v1/upload', {
-        method: 'POST',
-        body: tmpForm
-      });
+      console.log("Trying gofile.io...");
+      const sRes = await fetch('https://api.gofile.io/servers');
+      if (sRes.ok) {
+        const sData = await sRes.json();
+        if (sData.status === 'ok' && sData.data.servers.length > 0) {
+          const server = sData.data.servers[0].name;
+          const goForm = new FormData();
+          goForm.append('file', new Blob([buffer], { type: mimeType }), filename);
+          
+          const goRes = await fetch(`https://${server}.gofile.io/contents/uploadfile`, {
+            method: 'POST',
+            body: goForm
+          });
 
-      if (tmpRes.ok) {
-        const tmpData = await tmpRes.json();
-        if (tmpData.status === 'success' && tmpData.data && tmpData.data.url) {
-          // Convert view URL to direct download URL
-          const url = tmpData.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
-          console.log("Uploaded successfully to tmpfiles.org:", url);
-          return NextResponse.json({ success: true, url });
+          if (goRes.ok) {
+            const goData = await goRes.json();
+            if (goData.status === 'ok' && goData.data && goData.data.downloadPage) {
+              console.log("Uploaded successfully to gofile.io:", goData.data.downloadPage);
+              return NextResponse.json({ success: true, url: goData.data.downloadPage });
+            }
+          }
         }
       }
     } catch (e) {
-      console.log("tmpfiles.org upload failed:", e);
+      console.log("gofile.io upload failed:", e);
     }
 
     // 6. Absolute Last Resort: Local Filesystem
