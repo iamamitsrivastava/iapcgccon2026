@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 const TARGET_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbj3B8LH2KF-Ub26idKgjpr-xa7tanlwnsQ0ouGv1lUZwf-M5Y4OaW5-e0B7m9hYF-HA/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzchvpJn0a-3FJS3mBx1jLDPABbCwMfBIPxlD4zQVF9S95AnvPHSHRcZPLtiJOuImzeRg/exec";
 
 export async function POST(request: Request) {
   try {
@@ -17,18 +17,61 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // ── 1. Log to Google Sheet (non-fatal) ─────────────────────────────────
+    // ── 1. Fetch file from tmpfiles.org and convert to base64 ────────────────
+    let fileBase64 = null;
+    let fileName = null;
+    let fileMimeType = 'application/pdf';
+
+    if (documentLink && documentLink.includes('tmpfiles.org')) {
+      try {
+        console.log("Fetching tmpfiles.org file to send to Google Drive...");
+        const res = await fetch(documentLink);
+        if (res.ok) {
+          const buffer = Buffer.from(await res.arrayBuffer());
+          fileBase64 = buffer.toString('base64');
+          fileName = documentLink.split('/').pop() || 'submission-document.pdf';
+          if (fileName.toLowerCase().endsWith('.docx')) {
+            fileMimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch tmpfiles document:", e);
+      }
+    }
+
+    // ── 2. Log to Google Sheet and Create Drive File ─────────────────────────
     try {
-      await fetch(GOOGLE_SCRIPT_URL, {
+      const gsPayload: any = {
+        type: submissionType,
+        fullName,
+        registrationNumber: registrationNo,
+        email,
+        documentLink: documentLink, // Fallback if Drive upload fails
+      };
+
+      if (fileBase64 && fileName) {
+        gsPayload.fileBase64 = fileBase64;
+        gsPayload.fileName = fileName;
+        gsPayload.fileMimeType = fileMimeType;
+      }
+
+      const gsRes = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify({
-          type: submissionType,
-          fullName,
-          registrationNumber: registrationNo,
-          email,
-          documentLink,
-        }),
+        body: JSON.stringify(gsPayload),
       });
+
+      // We can also extract the permanent drive URL if Apps Script returns it
+      if (gsRes.ok) {
+         try {
+           const gsData = await gsRes.json();
+           if (gsData.driveUrl) {
+             console.log("Got permanent Drive URL from Apps Script:", gsData.driveUrl);
+             // Update the documentLink to the permanent drive URL for the email
+             documentLink = gsData.driveUrl;
+           }
+         } catch(e) { /* ignore parse error */ }
+      }
+
     } catch (sheetErr) {
       console.error('⚠️ Google Sheet logging failed (non-fatal):', sheetErr);
     }
