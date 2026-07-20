@@ -25,7 +25,7 @@ export default function Timeline() {
 
                 <div className={styles.timeline}>
                     {conference.timeline.map((item: TimelineItem, index: number) => (
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        // 
                         <ScrollReveal key={index} delay={(index * 100) as any} animation="fade-up">
                             <div className={styles.item}>
                                 <div className={styles.dot}>

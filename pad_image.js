@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 const Jimp = require('jimp');
 
 async function padImage(filePath) {

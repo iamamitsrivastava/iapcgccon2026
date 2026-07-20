@@ -95,7 +95,7 @@ export async function POST(request: Request) {
     const docHtml = `<a href="${documentLink}" target="_blank" rel="noopener noreferrer">${documentLink}</a>`;
     const typeLabel = submissionType === 'FULL_PAPER' ? 'Full Paper' : 'Abstract';
 
-      let mailAttachments = [];
+      const mailAttachments: any[] = [];
       if (documentLink && documentLink.includes('tmpfiles.org')) {
         try {
           console.log("Downloading tmpfiles.org link for email attachment...");

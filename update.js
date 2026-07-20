@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 const fs = require('fs');
 const content = fs.readFileSync('components/sections/Travel.tsx', 'utf8');
 const map1 = "https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Vadodara+Airport+BDQ+to+Parul+University&t=&z=13&ie=UTF8&iwloc=B&output=embed";

@@ -95,7 +95,7 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
         setError('');
 
         try {
-            let finalDocumentLink = uploadedUrl || documentLink;
+            const finalDocumentLink = uploadedUrl || documentLink;
 
             if (!finalDocumentLink) {
                 throw new Error('No document URL available. Please re-upload or paste a link.');

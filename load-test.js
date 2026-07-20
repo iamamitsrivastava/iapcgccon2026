@@ -11,7 +11,7 @@
  *   node load-test.js http://localhost:3000 100 60
  */
 
-/* eslint-disable @typescript-eslint/no-require-imports */
+ 
 const http = require('http');
 const https = require('https');
 const { URL } = require('url');

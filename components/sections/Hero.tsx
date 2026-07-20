@@ -183,7 +183,7 @@ export default function Hero() {
       clearInterval(profileInterval);
       clearInterval(slideInterval);
     };
-  }, [profiles.length]);
+  }, [profiles.length, sliderImages.length]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
