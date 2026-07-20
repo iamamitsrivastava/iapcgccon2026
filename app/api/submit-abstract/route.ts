@@ -22,7 +22,23 @@ export async function POST(request: Request) {
     let fileName = null;
     let fileMimeType = 'application/pdf';
 
-    if (documentLink && documentLink.includes('tmpfiles.org')) {
+    if (documentLink && documentLink.startsWith('data:')) {
+      try {
+        console.log("Intercepted Data URI. Extracting base64 directly...");
+        const parts = documentLink.split(',');
+        if (parts.length === 2) {
+          fileBase64 = parts[1];
+          // Extract mime type if possible
+          const mimeMatch = parts[0].match(/:(.*?);/);
+          if (mimeMatch) fileMimeType = mimeMatch[1];
+          fileName = 'submission-document.pdf';
+        }
+        // Truncate documentLink so it doesn't crash Google Sheets (50k char limit)
+        documentLink = "Attachment sent via Email (Google Drive upload failed)";
+      } catch (e) {
+        console.error("Failed to parse Data URI:", e);
+      }
+    } else if (documentLink && documentLink.includes('tmpfiles.org')) {
       try {
         console.log("Fetching tmpfiles.org file to send to Google Drive...");
         const res = await fetch(documentLink);

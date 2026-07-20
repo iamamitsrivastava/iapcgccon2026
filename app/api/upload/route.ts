@@ -123,6 +123,30 @@ export async function POST(request: Request) {
       console.log("Google Drive upload failed:", e);
     }
 
+    // 5. tmpfiles.org (Highly reliable, no IP block, keeps files for 60 mins)
+    try {
+      console.log("Trying tmpfiles.org...");
+      const tmpForm = new FormData();
+      tmpForm.append('file', new Blob([buffer], { type: mimeType }), filename);
+      
+      const tmpRes = await fetch('https://tmpfiles.org/api/v1/upload', {
+        method: 'POST',
+        body: tmpForm
+      });
+
+      if (tmpRes.ok) {
+        const tmpData = await tmpRes.json();
+        if (tmpData.status === 'success' && tmpData.data && tmpData.data.url) {
+          // Convert view URL to direct download URL
+          const url = tmpData.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+          console.log("Uploaded successfully to tmpfiles.org:", url);
+          return NextResponse.json({ success: true, url });
+        }
+      }
+    } catch (e) {
+      console.log("tmpfiles.org upload failed:", e);
+    }
+
     // 6. Absolute Last Resort: Local Filesystem
     try {
       console.log("All public hosts failed. Saving locally as last resort...");
@@ -143,7 +167,12 @@ export async function POST(request: Request) {
       console.error("Failed to save file locally:", localError);
     }
 
-    throw new Error("All upload methods and fallbacks failed.");
+    // 7. Ultimate Fallback: Return Base64 Data URI
+    console.log("All public hosts and local save failed. Returning Base64 Data URI...");
+    const base64Str = buffer.toString('base64');
+    const dataUri = `data:${mimeType};base64,${base64Str}`;
+    return NextResponse.json({ success: true, url: dataUri });
+
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
