@@ -96,52 +96,49 @@ export async function POST(request: Request) {
       }
     }
 
-    // 4. Default zero-config fallback: Catbox.moe (Public Links)
+    // 4. Pixeldrain (Extremely reliable, allows Vercel IPs, retains for 60 days)
     try {
-      console.log("Using zero-config fallback (Catbox.moe)...");
-      const catboxForm = new FormData();
-      catboxForm.append('reqtype', 'fileupload');
-      catboxForm.append('fileToUpload', new Blob([buffer], { type: mimeType }), filename);
-
-      const catboxRes = await fetch('https://catbox.moe/user/api.php', {
+      console.log("Trying Pixeldrain...");
+      const pdForm = new FormData();
+      pdForm.append('file', new Blob([buffer], { type: mimeType }), filename);
+      
+      const pdRes = await fetch('https://pixeldrain.com/api/file', {
         method: 'POST',
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' // Some hosts block fetch/node User-Agents
-        },
-        body: catboxForm
+        body: pdForm
       });
 
-      if (catboxRes.ok) {
-        const url = await catboxRes.text();
-        if (url.startsWith('http')) {
-          console.log("Uploaded successfully to Catbox:", url);
+      if (pdRes.ok) {
+        const pdData = await pdRes.json();
+        if (pdData.success && pdData.id) {
+          const url = `https://pixeldrain.com/u/${pdData.id}`;
+          console.log("Uploaded successfully to Pixeldrain:", url);
           return NextResponse.json({ success: true, url });
         }
       }
     } catch (e) {
-      console.log("Catbox upload failed:", e);
+      console.log("Pixeldrain upload failed:", e);
     }
 
-    // 5. Pomf clone fallback (Public Links)
+    // 5. Uguu.se (Fallback, retains for 48 hours)
     try {
-      console.log("Catbox failed, trying pomf.lain.la...");
-      const pomfForm = new FormData();
-      pomfForm.append('files[]', new Blob([buffer], { type: mimeType }), filename);
-      const pomfRes = await fetch('https://pomf.lain.la/upload.php', {
+      console.log("Trying Uguu.se...");
+      const uguuForm = new FormData();
+      uguuForm.append('files[]', new Blob([buffer], { type: mimeType }), filename);
+      const uguuRes = await fetch('https://uguu.se/api.php?d=upload-tool', {
         method: 'POST',
         headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
-        body: pomfForm
+        body: uguuForm
       });
 
-      if (pomfRes.ok) {
-        const pomfData = await pomfRes.json();
-        if (pomfData.success && pomfData.files && pomfData.files[0]) {
-          console.log("Uploaded successfully to Pomf:", pomfData.files[0].url);
-          return NextResponse.json({ success: true, url: pomfData.files[0].url });
+      if (uguuRes.ok) {
+        const uguuData = await uguuRes.json();
+        if (uguuData.success && uguuData.files && uguuData.files[0]) {
+          console.log("Uploaded successfully to Uguu.se:", uguuData.files[0].url);
+          return NextResponse.json({ success: true, url: uguuData.files[0].url });
         }
       }
     } catch (e) {
-      console.log("Pomf upload failed:", e);
+      console.log("Uguu upload failed:", e);
     }
 
     // 6. Absolute Last Resort: Local Filesystem
