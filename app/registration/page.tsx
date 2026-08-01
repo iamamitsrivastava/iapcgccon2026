@@ -41,7 +41,7 @@ const VALID_GROUP_CODES = [
 
 export default function RegistrationPage() {
     const router = useRouter();
-    const earlyBirdEnd = new Date('2026-07-31T23:59:59').getTime();
+    const earlyBirdEnd = new Date('2026-08-15T23:59:59').getTime();
     const lateBirdEnd = new Date('2026-11-26T23:59:59').getTime();
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
     const [groupCode, setGroupCode] = useState('');
@@ -234,7 +234,7 @@ export default function RegistrationPage() {
                                 <tr>
                                     <th className={styles.categoryHeader} rowSpan={2} style={{ verticalAlign: 'middle' }}>Category</th>
                                     <th className={`${styles.groupHeader}`} colSpan={2} style={{ textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                                        Early Bird {isEarlyBirdLocked && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}<br /><span style={{ fontSize: '0.75rem', fontWeight: 500 }}>(Till 31st July 2026)</span>
+                                        Early Bird {isEarlyBirdLocked && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}<br /><span style={{ fontSize: '0.75rem', fontWeight: 500 }}>(Till 15th August 2026)</span>
                                     </th>
                                     <th className={`${styles.groupHeader}`} colSpan={2} style={{ textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                                         Standard Registration {isLateBirdLocked && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}<br /><span style={{ fontSize: '0.75rem', fontWeight: 500 }}>(After 15th August 2026)</span>
