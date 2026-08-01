@@ -131,7 +131,7 @@ export default function RegistrationPage() {
     };
 
     const keyDates = [
-        { label: 'Early Bird registration closing soon', value: '31th July' },
+        { label: 'Early Bird registration closing soon', value: '15th Aug' },
         { label: 'Abstract Submission Deadline', value: '15th September' },
         { label: 'Notification for Acceptance (Abstract)', value: '15th October' },
         { label: 'Pre-Conference Date', value: '26th November' },
@@ -237,7 +237,7 @@ export default function RegistrationPage() {
                                         Early Bird {isEarlyBirdLocked && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}<br /><span style={{ fontSize: '0.75rem', fontWeight: 500 }}>(Till 31st July 2026)</span>
                                     </th>
                                     <th className={`${styles.groupHeader}`} colSpan={2} style={{ textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                                        Late Bird {isLateBirdLocked && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}<br /><span style={{ fontSize: '0.75rem', fontWeight: 500 }}>(After 31st July 2026)</span>
+                                        Standard Registration {isLateBirdLocked && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}<br /><span style={{ fontSize: '0.75rem', fontWeight: 500 }}>(After 15th August 2026)</span>
                                     </th>
                                     <th className={`${styles.groupHeader}`} rowSpan={2} style={{ verticalAlign: 'middle', textAlign: 'center' }}>
                                         <div style={{
