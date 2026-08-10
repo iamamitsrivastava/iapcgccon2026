@@ -10,6 +10,8 @@ export const metadata = {
     description: 'Pre-Conference Workshops and Main Conference Scientific Program for IAPSMGC CON 2026 at PIMSR, Parul University, Vadodara.',
 };
 
+import WorkshopList from '@/components/sections/WorkshopList';
+
 /* ─── Workshop Data ─── */
 const workshops = [
     {
@@ -219,18 +221,7 @@ export default function ProgramPage() {
                         </div>
                     </div>
 
-                    <div style={{ padding: '6rem 2rem', textAlign: 'center', background: 'rgba(212, 175, 55, 0.05)', borderRadius: '16px', border: '1px solid rgba(212, 175, 55, 0.2)', marginTop: '2rem' }}>
-                        <h3 style={{ 
-                            fontSize: '2.5rem', 
-                            color: '#D4AF37', 
-                            fontWeight: 700, 
-                            textTransform: 'uppercase',
-                            letterSpacing: '3px',
-                            textShadow: '0 0 15px rgba(212, 175, 55, 0.6), 0 0 30px rgba(212, 175, 55, 0.4)'
-                        }}>
-                            Will be announced Soon
-                        </h3>
-                    </div>
+                    <WorkshopList />
                 </div>
             </section>
 

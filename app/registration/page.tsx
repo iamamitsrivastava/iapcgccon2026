@@ -48,6 +48,9 @@ export default function RegistrationPage() {
     const [codeMessage, setCodeMessage] = useState({ text: '', type: '' });
     const [isDiscountApplied, setIsDiscountApplied] = useState(false);
 
+    const preConfDiscountEnd = new Date('2026-08-31T23:59:59').getTime();
+    const isPreConfDiscountActive = currentTime <= preConfDiscountEnd;
+
     const isEarlyBirdLocked = currentTime > earlyBirdEnd;
     const isLateBirdLocked = currentTime <= earlyBirdEnd || currentTime > lateBirdEnd;
     const isSpotLocked = currentTime <= lateBirdEnd;
@@ -67,6 +70,7 @@ export default function RegistrationPage() {
         if (!numMatch) return;
         let amount = parseInt(numMatch[0]);
         if (isDiscountApplied && isConf) amount = Math.round(amount * 0.9);
+        if (!isConf && isPreConfDiscountActive) amount = Math.round(amount * 0.9);
         router.push(`/registration/form?amount=${amount}&label=${encodeURIComponent(label)}&category=${encodeURIComponent(category)}`);
     };
 
@@ -114,6 +118,20 @@ export default function RegistrationPage() {
             <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
                 <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
                 <span style={{ color: '#FACC15', fontWeight: 800 }}>₹{discounted}</span>
+            </span>
+        );
+    };
+
+    const renderPreConfFee = (priceStr: string | undefined) => {
+        if (!priceStr) return priceStr;
+        if (!isPreConfDiscountActive) return priceStr;
+        const num = parseAmount(priceStr);
+        const discounted = Math.round(num * 0.9);
+        return (
+            <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
+                <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
+                <span style={{ color: '#FACC15', fontWeight: 800 }}>₹{discounted}</span>
+                <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>Till 31 Aug</span>
             </span>
         );
     };
@@ -301,7 +319,7 @@ export default function RegistrationPage() {
                                                     style={isEarlyBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                                 >
                                                     <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
-                                                        {item.earlyBird.preConf}
+                                                        {renderPreConfFee(item.earlyBird.preConf)}
                                                         {isEarlyBirdLocked && <Lock size={14} />}
                                                     </span>
                                                 </a>
@@ -333,7 +351,7 @@ export default function RegistrationPage() {
                                                     style={isLateBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                                 >
                                                     <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
-                                                        {item.lateBird.preConf}
+                                                        {renderPreConfFee(item.lateBird.preConf)}
                                                         {isLateBirdLocked && <Lock size={14} />}
                                                     </span>
                                                 </a>
