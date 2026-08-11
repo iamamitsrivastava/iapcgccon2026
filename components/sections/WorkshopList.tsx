@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ChevronDown, ChevronUp, Clock, User, Users, CheckCircle } from 'lucide-react';
 
 const workshopsData = [
@@ -48,6 +49,7 @@ const workshopsData = [
 ];
 
 export default function WorkshopList() {
+  const router = useRouter();
   const [openId, setOpenId] = useState<number | null>(null);
 
   const toggleOpen = (id: number) => {
@@ -56,6 +58,21 @@ export default function WorkshopList() {
 
   return (
     <div className="workshops-list-container" style={{ marginTop: '2rem' }}>
+      <style>{`
+        .workshop-btn-container {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          margin-top: 1rem;
+          padding-top: 1rem;
+          border-top: 1px solid #e2e8f0;
+        }
+        @media (max-width: 768px) {
+          .workshop-btn-container {
+            justify-content: center;
+          }
+        }
+      `}</style>
       {workshopsData.map((workshop) => (
         <div 
           key={workshop.id} 
@@ -141,27 +158,21 @@ export default function WorkshopList() {
                   </div>
                 )}
                 
-                <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Workshop Fee</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ fontSize: '1.25rem', fontWeight: '700', color: '#0F172A' }}>₹1350</span>
-                      <span style={{ fontSize: '0.9rem', color: '#94a3b8', textDecoration: 'line-through' }}>₹1500</span>
-                      <span style={{ fontSize: '0.75rem', background: '#ecfdf5', color: '#059669', padding: '0.1rem 0.4rem', borderRadius: '4px', fontWeight: '600' }}>Till 31 Aug</span>
-                    </div>
-                  </div>
-                  <button style={{
-                    background: 'linear-gradient(135deg, #D4AF37 0%, #aa8c2c 100%)',
-                    color: '#0a1124',
-                    border: 'none',
-                    padding: '0.6rem 1.5rem',
-                    borderRadius: '8px',
-                    fontWeight: '700',
-                    fontSize: '0.9rem',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 12px rgba(212,175,55,0.25)',
-                    transition: 'transform 0.2s'
-                  }}>
+                <div className="workshop-btn-container">
+                  <button 
+                    onClick={() => router.push('/registration')}
+                    style={{
+                      background: 'linear-gradient(135deg, #D4AF37 0%, #aa8c2c 100%)',
+                      color: '#0a1124',
+                      border: 'none',
+                      padding: '0.6rem 1.5rem',
+                      borderRadius: '8px',
+                      fontWeight: '700',
+                      fontSize: '0.9rem',
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 12px rgba(212,175,55,0.25)',
+                      transition: 'transform 0.2s'
+                    }}>
                     Register & Pay
                   </button>
                 </div>

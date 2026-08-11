@@ -39,6 +39,31 @@ const VALID_GROUP_CODES = [
     "GROUP10-Z9T3N1", "GROUP10-A5M8W9", "GROUP10-B1X4Y7", "GROUP10-C6P2L8", "GROUP10-D5R9V3"
 ];
 
+const PRE_CONF_GROUP_CODES = [
+    "GROUP10-K3W8N5", "GROUP10-P9R2X6", "GROUP10-Z4M7T1", "GROUP10-V6Q1L8", "GROUP10-E5K9P3",
+    "GROUP10-R8N4W2", "GROUP10-X2T7M9", "GROUP10-H1P6Q4", "GROUP10-Q8L3R7", "GROUP10-T5X9K2",
+    "GROUP10-A7M4N8", "GROUP10-F1W6P5", "GROUP10-Y3Q8T9", "GROUP10-D9L2X1", "GROUP10-M4R7K6",
+    "GROUP10-B8P5W1", "GROUP10-U6N9Q3", "GROUP10-C2X4T7", "GROUP10-G5M1L9", "GROUP10-L7K3R8",
+    "GROUP10-P1Q6N4", "GROUP10-R4T8W9", "GROUP10-X9M2P7", "GROUP10-V3L5K1", "GROUP10-H6R8Q2",
+    "GROUP10-Z1W4T5", "GROUP10-E8P7M3", "GROUP10-T3N1X9", "GROUP10-A4Q6L7", "GROUP10-F9K5R2",
+    "GROUP10-Y6T1W8", "GROUP10-D2M9P4", "GROUP10-M8X3Q5", "GROUP10-B7L1N6", "GROUP10-U4R2K9",
+    "GROUP10-C5P8T3", "GROUP10-G9W6M1", "GROUP10-L2Q7X4", "GROUP10-P8N5R9", "GROUP10-R6K1L3",
+    "GROUP10-X5T2W7", "GROUP10-V1M8Q6", "GROUP10-H7P9N2", "GROUP10-Z3R4K5", "GROUP10-E6X1T8",
+    "GROUP10-T8L9M4", "GROUP10-A1W5Q7", "GROUP10-F4N2P8", "GROUP10-Y7K6R3", "GROUP10-D5T8X9",
+    "GROUP10-M1Q4W6", "GROUP10-B3P7L2", "GROUP10-U9R5N1", "GROUP10-C8M6K4", "GROUP10-G2X9T5",
+    "GROUP10-L6W1P3", "GROUP10-P4Q8R2", "GROUP10-R3N7M5", "GROUP10-X7K4L9", "GROUP10-V8T2Q1",
+    "GROUP10-H5M3W7", "GROUP10-Z9P6X2", "GROUP10-E1R8N4", "GROUP10-T6Q5K9", "GROUP10-A9L7M3",
+    "GROUP10-F2W8R1", "GROUP10-Y5P3T6", "GROUP10-D7X4Q8", "GROUP10-M6N2L5", "GROUP10-B1K9W7",
+    "GROUP10-U3T5P2", "GROUP10-C4R1X8", "GROUP10-G8Q7M6", "GROUP10-L1P9N3", "GROUP10-P2W4K8",
+    "GROUP10-R5M6T1", "GROUP10-X3Q9L7", "GROUP10-V7R1P4", "GROUP10-H4N8W5", "GROUP10-Z6T3K2",
+    "GROUP10-E3M5Q1", "GROUP10-T1X7R9", "GROUP10-A2P6L4", "GROUP10-F5Q3N8", "GROUP10-Y8W2M1",
+    "GROUP10-D4K7T6", "GROUP10-M9R1X5", "GROUP10-B6L8Q3", "GROUP10-U5P4W9", "GROUP10-C3N1K7",
+    "GROUP10-G7T9R4", "GROUP10-L9M5X2", "GROUP10-P6Q1W3", "GROUP10-R2K8N7", "GROUP10-X1L4T9",
+    "GROUP10-V5M7P6", "GROUP10-H2Q9R1", "GROUP10-Z8W5L4", "GROUP10-E4T2N7", "GROUP10-T9P1K3",
+    "GROUP10-A3X8M6", "GROUP10-F6R4Q9", "GROUP10-Y2N7W5"
+];
+
+
 export default function RegistrationPage() {
     const router = useRouter();
     const earlyBirdEnd = new Date('2026-08-15T23:59:59').getTime();
@@ -47,6 +72,7 @@ export default function RegistrationPage() {
     const [groupCode, setGroupCode] = useState('');
     const [codeMessage, setCodeMessage] = useState({ text: '', type: '' });
     const [isDiscountApplied, setIsDiscountApplied] = useState(false);
+    const [isPreConfGroupDiscountApplied, setIsPreConfGroupDiscountApplied] = useState(false);
 
     const preConfDiscountEnd = new Date('2026-08-31T23:59:59').getTime();
     const isPreConfDiscountActive = currentTime <= preConfDiscountEnd;
@@ -70,7 +96,10 @@ export default function RegistrationPage() {
         if (!numMatch) return;
         let amount = parseInt(numMatch[0]);
         if (isDiscountApplied && isConf) amount = Math.round(amount * 0.9);
-        if (!isConf && isPreConfDiscountActive) amount = Math.round(amount * 0.9);
+        if (!isConf) {
+            if (isPreConfDiscountActive) amount = Math.round(amount * 0.9);
+            if (isPreConfGroupDiscountApplied) amount = Math.round(amount * 0.9);
+        }
         router.push(`/registration/form?amount=${amount}&label=${encodeURIComponent(label)}&category=${encodeURIComponent(category)}`);
     };
 
@@ -85,7 +114,10 @@ export default function RegistrationPage() {
         const code = groupCode.trim().toUpperCase();
         if (!code) return;
 
-        if (!VALID_GROUP_CODES.includes(code)) {
+        const isConfCode = VALID_GROUP_CODES.includes(code);
+        const isPreConfCode = PRE_CONF_GROUP_CODES.includes(code);
+
+        if (!isConfCode && !isPreConfCode) {
             setCodeMessage({ text: 'Invalid group discount code.', type: 'error' });
             return;
         }
@@ -98,8 +130,15 @@ export default function RegistrationPage() {
 
         usedCodes.push(code);
         localStorage.setItem('used_group_codes', JSON.stringify(usedCodes));
-        setIsDiscountApplied(true);
-        setCodeMessage({ text: 'Code applied! 10% discount added to Conference fees.', type: 'success' });
+        
+        if (isConfCode) {
+            setIsDiscountApplied(true);
+            setCodeMessage({ text: 'Code applied! 10% discount added to Conference fees.', type: 'success' });
+        } else if (isPreConfCode) {
+            setIsPreConfGroupDiscountApplied(true);
+            setCodeMessage({ text: 'Code applied! 10% discount added to Pre-Conference fees.', type: 'success' });
+        }
+        
         setGroupCode('');
     };
 
@@ -124,14 +163,23 @@ export default function RegistrationPage() {
 
     const renderPreConfFee = (priceStr: string | undefined) => {
         if (!priceStr) return priceStr;
-        if (!isPreConfDiscountActive) return priceStr;
+        if (!isPreConfDiscountActive && !isPreConfGroupDiscountApplied) return priceStr;
+        
         const num = parseAmount(priceStr);
-        const discounted = Math.round(num * 0.9);
+        let discounted = num;
+        if (isPreConfDiscountActive) discounted = Math.round(discounted * 0.9);
+        if (isPreConfGroupDiscountApplied) discounted = Math.round(discounted * 0.9);
+
         return (
             <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
                 <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
                 <span style={{ color: '#FACC15', fontWeight: 800 }}>₹{discounted}</span>
-                <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>Till 31 Aug</span>
+                {isPreConfDiscountActive && !isPreConfGroupDiscountApplied && (
+                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>Till 31 Aug</span>
+                )}
+                {isPreConfGroupDiscountApplied && (
+                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>Group Discount</span>
+                )}
             </span>
         );
     };
@@ -401,7 +449,7 @@ export default function RegistrationPage() {
                                 Group Discount
                             </h3>
                             <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '1rem' }}>
-                                Enter a valid group code to get a flat 10% discount on Early Bird and Late Bird Conference fees.
+                                Enter a valid group code to get a flat 10% discount on Early Bird and Late Bird fees.
                                 <br/>
                                 <strong style={{ color: '#ef4444' }}>Note: One code is valid once.</strong>
                             </p>
