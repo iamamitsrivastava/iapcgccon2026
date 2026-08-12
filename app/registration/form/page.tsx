@@ -9,6 +9,15 @@ import { submitRegistration } from '@/lib/googleSheet';
 const UPI_ID = '4063202604130001@cbin';
 const UPI_NAME = 'IAPSMGC CON 2026';
 
+const WORKSHOPS = [
+    "Capturing Digital Public Health Through the Lens: Practical Photography, Videography and Drone Imaging for Community Medicine.",
+    "Essential Public Health Updates for Viksit Bharat by 2047.",
+    "MEDPRENEUR 2026: From White Coat to Startup.",
+    "Smart SRMA: Hands-on Systematic Review and Meta-analysis using AI tools.",
+    "From Research Idea to Thesis Submission—Digitally, Efficiently, ethically.",
+    "Transforming Competency-Based Medical Education through Digital Media–Based Innovative Teaching–Learning Approaches for Gender-Sensitive Medical Education"
+];
+
 function RegistrationFormContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -16,6 +25,8 @@ function RegistrationFormContent() {
     const amount = parseInt(searchParams.get('amount') || '0');
     const label = searchParams.get('label') || 'Conference Registration';
     const category = searchParams.get('category') || '';
+    
+    const isPreConf = label.toLowerCase().includes('pre-conference');
 
     const upiString = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent('IAPSMGC CON 2026 - ' + label)}`;
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiString)}&bgcolor=ffffff&color=0b1c35&margin=12`;
@@ -46,9 +57,9 @@ function RegistrationFormContent() {
         iapsmMember: '',
         iapsmRegNumber: '',
         foodPreference: '',
-        registrationFor: [] as string[],
         rrnNumber: '',
         dateOfPayment: '',
+        workshopPriorities: ['', '', '', '', '', ''] // 6 priorities
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -157,10 +168,22 @@ function RegistrationFormContent() {
         if (!form.iapsmMember) e.iapsmMember = 'Required';
         if (!form.iapsmRegNumber.trim()) e.iapsmRegNumber = 'Required';
         if (!form.foodPreference) e.foodPreference = 'Required';
-        if (form.registrationFor.length === 0) e.registrationFor = 'Select at least one';
         if (!form.rrnNumber.trim()) e.rrnNumber = 'Required';
         if (!form.dateOfPayment) e.dateOfPayment = 'Required';
         if (!proofPreview) e.proof = 'Please upload your payment proof';
+        
+        if (isPreConf) {
+            const hasEmpty = form.workshopPriorities.some(p => !p);
+            if (hasEmpty) {
+                e.workshopPriorities = 'Please select a workshop for all 6 priorities';
+            } else {
+                const unique = new Set(form.workshopPriorities);
+                if (unique.size !== form.workshopPriorities.length) {
+                    e.workshopPriorities = 'Please select a different workshop for each priority. Duplicate priorities are not allowed.';
+                }
+            }
+        }
+        
         setErrors(e);
         return Object.keys(e).length === 0;
     };
@@ -178,6 +201,7 @@ function RegistrationFormContent() {
             const paymentProofUrl = typeof window !== 'undefined' && proofUrl?.startsWith('/') ? window.location.origin + proofUrl : proofUrl;
 
             const payload = {
+                amount: amount,
                 fullName: form.fullName,
                 gender: form.gender,
                 department: form.department,
@@ -190,11 +214,18 @@ function RegistrationFormContent() {
                 iapsmMembership: form.iapsmMember,
                 registrationNumber: form.iapsmRegNumber,
                 foodPreference: form.foodPreference,
-                registrationDoneFor: form.registrationFor.join(', '),
+                registrationDoneFor: isPreConf ? 'Pre-conference Workshop' : 'Conference',
                 registrationPlan: `${category} - ${label} - ₹${amount}`,
                 rrn: form.rrnNumber,
                 paymentDate: form.dateOfPayment,
-                paymentProof: paymentProofUrl
+                paymentProof: paymentProofUrl,
+                priority1: isPreConf ? form.workshopPriorities[0] : '',
+                priority2: isPreConf ? form.workshopPriorities[1] : '',
+                priority3: isPreConf ? form.workshopPriorities[2] : '',
+                priority4: isPreConf ? form.workshopPriorities[3] : '',
+                priority5: isPreConf ? form.workshopPriorities[4] : '',
+                priority6: isPreConf ? form.workshopPriorities[5] : '',
+                workshopPriorities: isPreConf ? form.workshopPriorities.map((p, i) => `Priority ${i + 1}: ${p}`).join('\n') : ''
             };
 
             console.log(payload);
@@ -572,26 +603,43 @@ function RegistrationFormContent() {
                         {errors.foodPreference && <p style={s.errMsg}><AlertCircle size={13} />{errors.foodPreference}</p>}
                     </div>
 
-                    {/* 13. Registration For */}
-                    <div style={s.field}>
-                        <label style={s.label}>Registration Done For <span style={s.required}>*</span></label>
-                        <div style={{ ...s.optionGrid, gridTemplateColumns: 'repeat(2, 1fr)' }} data-error={errors.registrationFor ? true : undefined}>
-                            {['Conference', 'Pre-conference Workshop'].map(v => {
-                                const selected = form.registrationFor.includes(v);
-                                return (
-                                    <div key={v} style={s.option(selected)} onClick={() => toggleCheckbox('registrationFor', v)}>
-                                        <div style={s.checkBox(selected)}>
-                                            {selected && <ChevronRight size={10} color="#0B1C35" strokeWidth={3} />}
-                                        </div>
-                                        {v}
+                    {/* ── Section 5: Workshop Preferences ── */}
+                    {isPreConf && (
+                        <>
+                            <div style={s.sectionHead}><div style={s.sectionDot} /><span style={s.sectionTitle}>Workshop Preferences</span></div>
+                            <div style={{ background: 'rgba(250,204,21,0.05)', border: '1px solid rgba(250,204,21,0.2)', borderRadius: '12px', padding: '1.5rem', marginBottom: '2.5rem' }}>
+                                <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '1.25rem', lineHeight: 1.6 }}>
+                                    Please select your preferred workshops in order of priority (Priority 1 being your most preferred). You must rank all 6 workshops and each workshop can only be selected once.
+                                </p>
+                                
+                                {form.workshopPriorities.map((priority, index) => (
+                                    <div key={index} style={s.field}>
+                                        <label style={s.label}>Priority {index + 1} Preference <span style={s.required}>*</span></label>
+                                        <select
+                                            style={{ ...s.input, ...(errors.workshopPriorities ? s.inputErr : {}), appearance: 'auto', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                                            value={form.workshopPriorities[index]}
+                                            onChange={(e) => {
+                                                const newPriorities = [...form.workshopPriorities];
+                                                newPriorities[index] = e.target.value;
+                                                set('workshopPriorities', newPriorities as any);
+                                            }}
+                                            data-error={errors.workshopPriorities ? true : undefined}
+                                        >
+                                            <option value="" disabled>Select a workshop</option>
+                                            {WORKSHOPS.map((workshop, wIndex) => (
+                                                <option key={wIndex} value={workshop} disabled={form.workshopPriorities.includes(workshop) && form.workshopPriorities[index] !== workshop}>
+                                                    {workshop}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
-                                );
-                            })}
-                        </div>
-                        {errors.registrationFor && <p style={s.errMsg}><AlertCircle size={13} />{errors.registrationFor}</p>}
-                    </div>
+                                ))}
+                                {errors.workshopPriorities && <p style={s.errMsg}><AlertCircle size={13} />{errors.workshopPriorities}</p>}
+                            </div>
+                        </>
+                    )}
 
-                    {/* ── Section 5: Payment ── */}
+                    {/* ── Section 6: Payment ── */}
                     <div style={s.sectionHead}><div style={s.sectionDot} /><span style={s.sectionTitle}>Payment Details</span></div>
 
                     {/* 14. RRN */}

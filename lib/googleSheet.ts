@@ -6,8 +6,16 @@ import { RegistrationInput } from '@/types';
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwgAzVPYjO9_07PbNY5-jNPcrxVnTdnkUwlmvjoReuvVmZoCia9kVfiEpAB8yUMvLe0/exec";
 
+// PLACEHOLDER: Replace this with the Web App URL from your new Google Apps Script
+const GOOGLE_SCRIPT_URL_PRE_CONF =
+  "https://script.google.com/macros/s/AKfycbyym0XlBUg-scmh_50MBACYl7yXWagwpzn3pkb3NKSeRpTBZBGb_Rzq-SNLC7qOpANk/exec";
+
 export async function submitRegistration(data: any) {
-  const response = await fetch(GOOGLE_SCRIPT_URL, {
+  // Check if this is a Pre-Conference registration
+  const isPreConf = data.registrationPlan && data.registrationPlan.toLowerCase().includes('pre-conference');
+  const targetUrl = isPreConf ? GOOGLE_SCRIPT_URL_PRE_CONF : GOOGLE_SCRIPT_URL;
+
+  const response = await fetch(targetUrl, {
     method: "POST",
     // headers: {
     //   "Content-Type": "application/json",
