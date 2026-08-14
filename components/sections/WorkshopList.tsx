@@ -36,7 +36,7 @@ const workshopsData = [
     id: 5,
     title: "5. From Research Idea to Thesis Submission—Digitally, Efficiently, ethically",
     proposer: "Dr Krupal Joshi, Head of Department and Additional Professor AIIMS Rajkot",
-    otherFaculties: " Dr Anjali Modi (Associate Professor AIIMS Rajkot) | Resource Person 3: Dr Shailee Vyas (Assistant Professor Government medical College)",
+    otherFaculties: " Dr Anjali Modi (Associate Professor AIIMS Rajkot) |",
     duration: "8 Hours",
   },
   {
@@ -164,10 +164,10 @@ export default function WorkshopList() {
                 {/* FRONT */}
                 <div className="flip-card-front">
                   <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                    <h3 style={{ 
-                      fontSize: '1.2rem', 
-                      fontWeight: '700', 
-                      color: '#0F172A', 
+                    <h3 style={{
+                      fontSize: '1.2rem',
+                      fontWeight: '700',
+                      color: '#0F172A',
                       marginBottom: '1.5rem',
                       lineHeight: '1.5'
                     }}>
@@ -218,7 +218,7 @@ export default function WorkshopList() {
                         })}
                       </div>
                     </div>
-                    
+
                     {workshop.otherFaculties !== "-" && (
                       <div>
                         <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#64748b', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -247,9 +247,9 @@ export default function WorkshopList() {
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="workshop-btn-container">
-                    <button 
+                    <button
                       onClick={() => router.push('/registration')}
                       style={{
                         background: 'linear-gradient(135deg, #D4AF37 0%, #aa8c2c 100%)',
