@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/sections/Header';
 import Footer from "../../components/sections/Footer";
-import { Landmark, AlertCircle, Lock, Clock, Sparkles } from 'lucide-react';
+import { Landmark, AlertCircle, Lock } from 'lucide-react';
 import styles from './page.module.css';
 
 const VALID_GROUP_CODES = [
@@ -68,8 +68,6 @@ export default function RegistrationPage() {
     const router = useRouter();
     const earlyBirdEnd = new Date('2026-08-31T23:59:59').getTime();
     const lateBirdEnd = new Date('2026-11-26T23:59:59').getTime();
-    const specialOfferStart = new Date('2026-08-15T00:00:00').getTime();
-    const specialOfferEnd = new Date('2026-08-15T23:59:59').getTime();
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
     const [groupCode, setGroupCode] = useState('');
     const [codeMessage, setCodeMessage] = useState({ text: '', type: '' });
@@ -79,7 +77,6 @@ export default function RegistrationPage() {
     const isEarlyBirdLocked = currentTime > earlyBirdEnd;
     const isLateBirdLocked = currentTime <= earlyBirdEnd || currentTime > lateBirdEnd;
     const isSpotLocked = currentTime <= lateBirdEnd;
-    const isSpecialOfferActive = currentTime >= specialOfferStart && currentTime <= specialOfferEnd;
 
     // Navigate to registration form with amount + label
     const openPayment = (
@@ -96,23 +93,13 @@ export default function RegistrationPage() {
         if (!numMatch) return;
         let amount = parseInt(numMatch[0]);
 
-        // 5% Special Offer for 15 Aug on both Conference and Pre-Conference
-        if (isSpecialOfferActive) {
-            amount = Math.round(amount * 0.95);
-        }
-
         // 10% Group Discounts
         if (isDiscountApplied && isConf) amount = Math.round(amount * 0.9);
         if (!isConf && isPreConfGroupDiscountApplied) {
             amount = Math.round(amount * 0.9);
         }
 
-        let finalLabel = label;
-        if (isSpecialOfferActive) {
-            finalLabel += ' (Special 15th Aug Offer 5% Off)';
-        }
-
-        router.push(`/registration/form?amount=${amount}&label=${encodeURIComponent(finalLabel)}&category=${encodeURIComponent(category)}`);
+        router.push(`/registration/form?amount=${amount}&label=${encodeURIComponent(label)}&category=${encodeURIComponent(category)}`);
     };
 
     useEffect(() => {
@@ -168,11 +155,6 @@ export default function RegistrationPage() {
         let hasDiscount = false;
         let discounted = num;
 
-        if (isSpecialOfferActive) {
-            hasDiscount = true;
-            discounted = Math.round(discounted * 0.95);
-        }
-
         if (isDiscountApplied && isConf) {
             hasDiscount = true;
             discounted = Math.round(discounted * 0.9);
@@ -184,10 +166,8 @@ export default function RegistrationPage() {
             <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
                 <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
                 <span style={{ color: '#FACC15', fontWeight: 800 }}>₹{discounted}</span>
-                {isSpecialOfferActive && (
-                    <span style={{ fontSize: '0.62rem', color: '#38bdf8', fontWeight: 700, background: 'rgba(56,189,248,0.15)', padding: '1px 5px', borderRadius: '4px', marginTop: '2px', border: '1px solid rgba(56,189,248,0.3)' }}>
-                        5% OFF
-                    </span>
+                {isDiscountApplied && isConf && (
+                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>Group Discount</span>
                 )}
             </span>
         );
@@ -201,11 +181,6 @@ export default function RegistrationPage() {
         let hasDiscount = false;
         let discounted = num;
 
-        if (isSpecialOfferActive) {
-            hasDiscount = true;
-            discounted = Math.round(discounted * 0.95);
-        }
-
         if (isPreConfGroupDiscountApplied) {
             hasDiscount = true;
             discounted = Math.round(discounted * 0.9);
@@ -217,25 +192,11 @@ export default function RegistrationPage() {
             <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
                 <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
                 <span style={{ color: '#FACC15', fontWeight: 800 }}>₹{discounted}</span>
-                {isSpecialOfferActive && (
-                    <span style={{ fontSize: '0.62rem', color: '#38bdf8', fontWeight: 700, background: 'rgba(56,189,248,0.15)', padding: '1px 5px', borderRadius: '4px', marginTop: '2px', border: '1px solid rgba(56,189,248,0.3)' }}>
-                        5% OFF
-                    </span>
-                )}
                 {isPreConfGroupDiscountApplied && (
                     <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>Group Discount</span>
                 )}
             </span>
         );
-    };
-
-    const formatOfferCountdown = () => {
-        const diff = specialOfferEnd - currentTime;
-        if (diff <= 0) return null;
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        return `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
     };
 
     const formatCountdown = () => {
@@ -336,90 +297,6 @@ export default function RegistrationPage() {
                         ))}
                     </div>
                 </div>
-
-                {/* 15th August Special Offer Banner */}
-                {isSpecialOfferActive ? (
-                    <div style={{
-                        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-                        border: '2px solid #f59e0b',
-                        borderRadius: '12px',
-                        padding: '1.25rem 1.75rem',
-                        marginBottom: '2rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        flexWrap: 'wrap',
-                        gap: '1.25rem',
-                        boxShadow: '0 10px 25px -5px rgba(245, 158, 11, 0.25)'
-                    }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                            <span style={{ fontSize: '2.5rem' }}>🇮🇳</span>
-                            <div>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-                                    <span style={{ background: '#f59e0b', color: '#0f172a', fontWeight: 800, fontSize: '0.75rem', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                        Independence Day Special
-                                    </span>
-                                    <span style={{ color: '#ffffff', fontWeight: 800, fontSize: '1.2rem' }}>
-                                        Special Offer: Flat 5% OFF on Conference &amp; Pre-Conference!
-                                    </span>
-                                </div>
-                                <p style={{ color: '#f1f5f9', fontSize: '0.95rem', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
-                                    Get flat <strong style={{ color: '#fde047' }}>5% OFF</strong> on Conference &amp; Pre-Conference registrations on <strong style={{ color: '#ffffff' }}>15th August only</strong> (ends 15th Aug at 12:00 AM midnight)! Early Bird extended till <strong style={{ color: '#38bdf8' }}>31st August 2026</strong>.
-                                </p>
-                            </div>
-                        </div>
-                        <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.6rem',
-                            background: 'rgba(0, 0, 0, 0.6)',
-                            padding: '0.6rem 1.2rem',
-                            borderRadius: '8px',
-                            border: '1px solid rgba(245, 158, 11, 0.5)'
-                        }}>
-                            <Clock size={20} color="#f59e0b" />
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                <span style={{ fontSize: '0.7rem', color: '#cbd5e1', textTransform: 'uppercase', fontWeight: 700 }}>Offer Ends In</span>
-                                <span style={{ color: '#f59e0b', fontWeight: 800, fontSize: '1.1rem', fontFamily: 'monospace' }}>
-                                    {formatOfferCountdown() || 'Ends 15th Aug 12:00 AM'}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    currentTime < specialOfferStart && (
-                        <div style={{
-                            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-                            border: '2px solid #f59e0b',
-                            borderRadius: '12px',
-                            padding: '1.25rem 1.75rem',
-                            marginBottom: '2rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            flexWrap: 'wrap',
-                            gap: '1.25rem',
-                            boxShadow: '0 10px 25px -5px rgba(245, 158, 11, 0.2)'
-                        }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                <span style={{ fontSize: '2.5rem' }}>🇮🇳</span>
-                                <div>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-                                        <span style={{ background: '#f59e0b', color: '#0f172a', fontWeight: 800, fontSize: '0.75rem', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                            Upcoming Special Offer
-                                        </span>
-                                        <span style={{ color: '#ffffff', fontWeight: 800, fontSize: '1.2rem' }}>
-                                            15th August Independence Day Special Offer
-                                        </span>
-                                    </div>
-                                    <p style={{ color: '#f1f5f9', fontSize: '0.95rem', margin: '0.35rem 0 0 0', fontWeight: 500 }}>
-                                        Get flat <strong style={{ color: '#fde047' }}>5% OFF</strong> on Conference &amp; Pre-Conference registrations on <strong style={{ color: '#ffffff' }}>15th August only</strong> (ends 15th Aug at 12:00 AM midnight)! Early Bird extended till <strong style={{ color: '#38bdf8' }}>31st August 2026</strong>.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                )}
 
                 <div className={styles.tableContainer}>
                     <div className={styles.tableHeader}>
