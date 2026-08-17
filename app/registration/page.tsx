@@ -6,6 +6,24 @@ import Footer from "../../components/sections/Footer";
 import { Landmark, AlertCircle, Lock } from 'lucide-react';
 import styles from './page.module.css';
 
+const CONFERENCE_100_CODES = [
+    "IAPSMGC-70P4R7", "IAPSMGC-70W6N2", "IAPSMGC-70H9T5", "IAPSMGC-70C3M8", "IAPSMGC-70Y7Q1",
+    "IAPSMGC-70F2X6", "IAPSMGC-70N5L9", "IAPSMGC-70T8P4", "IAPSMGC-70K1R6", "IAPSMGC-70B7W3",
+    "IAPSMGC-70M4Q8", "IAPSMGC-70X9N5", "IAPSMGC-70D2T7", "IAPSMGC-70G6K1", "IAPSMGC-70U3P9",
+    "IAPSMGC-70J8M4", "IAPSMGC-70S5R2", "IAPSMGC-70V1X7", "IAPSMGC-70E9Q3", "IAPSMGC-71A4N8",
+    "IAPSMGC-71P7K2", "IAPSMGC-71W3T9", "IAPSMGC-71H6R1", "IAPSMGC-71C8Q5", "IAPSMGC-71Y2M7",
+    "IAPSMGC-71F9L4", "IAPSMGC-71N1X6", "IAPSMGC-71T5P8", "IAPSMGC-71K3W2", "IAPSMGC-71B6R9",
+    "IAPSMGC-71M8Q4", "IAPSMGC-71X2T7", "IAPSMGC-71D5N1", "IAPSMGC-71G9P3", "IAPSMGC-71U4K8",
+    "IAPSMGC-71J7X2", "IAPSMGC-71S1M6", "IAPSMGC-71V5Q9", "IAPSMGC-71E3R7", "IAPSMGC-72A9W4",
+    "IAPSMGC-72P2N7", "IAPSMGC-72W8K5", "IAPSMGC-72H3T1", "IAPSMGC-72C6R9", "IAPSMGC-72Y4Q8",
+    "IAPSMGC-72F7M2", "IAPSMGC-72N9X3", "IAPSMGC-72T1P6", "IAPSMGC-72K5W8", "IAPSMGC-72B3R7",
+    "IAPSMGC-72M6Q1", "IAPSMGC-72X8N4", "IAPSMGC-72D7T2", "IAPSMGC-72G1K9", "IAPSMGC-72U5P3",
+    "IAPSMGC-72J9M7", "IAPSMGC-72S4X1", "IAPSMGC-72V8Q6", "IAPSMGC-72E2R5", "IAPSMGC-73A6N9",
+    "IAPSMGC-73P1K4", "IAPSMGC-73W5T8", "IAPSMGC-73H2R7", "IAPSMGC-73C9Q3", "IAPSMGC-73Y6M1",
+    "IAPSMGC-73F4L8", "IAPSMGC-73N7X2", "IAPSMGC-73T3P5", "IAPSMGC-73K8W1", "IAPSMGC-73B5R4",
+    "IAPSMGC-73M2Q9", "IAPSMGC-73X6T7", "IAPSMGC-73D1N8", "IAPSMGC-70A8K3"
+];
+
 const VALID_GROUP_CODES = [
     "GROUP10-A7K9M2", "GROUP10-P4R8T5", "GROUP10-W3N6Q1", "GROUP10-H8V2L7", "GROUP10-Z4M9K3",
     "GROUP10-B7T5X8", "GROUP10-R2Q6N4", "GROUP10-K9W3P7", "GROUP10-C5L8T2", "GROUP10-Y1M7R6",
@@ -71,6 +89,7 @@ export default function RegistrationPage() {
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
     const [groupCode, setGroupCode] = useState('');
     const [codeMessage, setCodeMessage] = useState({ text: '', type: '' });
+    const [is100DiscountApplied, setIs100DiscountApplied] = useState(false);
     const [isDiscountApplied, setIsDiscountApplied] = useState(false);
     const [isPreConfGroupDiscountApplied, setIsPreConfGroupDiscountApplied] = useState(false);
 
@@ -93,8 +112,12 @@ export default function RegistrationPage() {
         if (!numMatch) return;
         let amount = parseInt(numMatch[0]);
 
-        // 10% Group Discounts
-        if (isDiscountApplied && isConf) amount = Math.round(amount * 0.9);
+        // Discounts
+        if (is100DiscountApplied && isConf) {
+            amount = 0;
+        } else if (isDiscountApplied && isConf) {
+            amount = Math.round(amount * 0.9);
+        }
         if (!isConf && isPreConfGroupDiscountApplied) {
             amount = Math.round(amount * 0.9);
         }
@@ -113,11 +136,12 @@ export default function RegistrationPage() {
         const code = groupCode.trim().toUpperCase();
         if (!code) return;
 
+        const is100ConfCode = CONFERENCE_100_CODES.includes(code);
         const isConfCode = VALID_GROUP_CODES.includes(code);
         const isPreConfCode = PRE_CONF_GROUP_CODES.includes(code);
 
-        if (!isConfCode && !isPreConfCode) {
-            setCodeMessage({ text: 'Invalid group discount code.', type: 'error' });
+        if (!is100ConfCode && !isConfCode && !isPreConfCode) {
+            setCodeMessage({ text: 'Invalid discount code.', type: 'error' });
             return;
         }
 
@@ -130,7 +154,10 @@ export default function RegistrationPage() {
         usedCodes.push(code);
         localStorage.setItem('used_group_codes', JSON.stringify(usedCodes));
         
-        if (isConfCode) {
+        if (is100ConfCode) {
+            setIs100DiscountApplied(true);
+            setCodeMessage({ text: 'Code applied! 100% discount added to Conference fees.', type: 'success' });
+        } else if (isConfCode) {
             setIsDiscountApplied(true);
             setCodeMessage({ text: 'Code applied! 10% discount added to Conference fees.', type: 'success' });
         } else if (isPreConfCode) {
@@ -155,7 +182,10 @@ export default function RegistrationPage() {
         let hasDiscount = false;
         let discounted = num;
 
-        if (isDiscountApplied && isConf) {
+        if (is100DiscountApplied && isConf) {
+            hasDiscount = true;
+            discounted = 0;
+        } else if (isDiscountApplied && isConf) {
             hasDiscount = true;
             discounted = Math.round(discounted * 0.9);
         }
@@ -166,6 +196,9 @@ export default function RegistrationPage() {
             <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
                 <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
                 <span style={{ color: '#FACC15', fontWeight: 800 }}>₹{discounted}</span>
+                {is100DiscountApplied && isConf && (
+                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.15)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>100% OFF (FREE)</span>
+                )}
                 {isDiscountApplied && isConf && (
                     <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>Group Discount</span>
                 )}
@@ -461,17 +494,17 @@ export default function RegistrationPage() {
                         <div className={styles.infoCard}>
                             <h3 className={styles.infoSectionTitle} style={{ marginBottom: '1rem', color: 'var(--color-secondary)' }}>
                                 <AlertCircle className={styles.infoIcon} size={24} />
-                                Group Discount
+                                Promo / Group Discount
                             </h3>
                             <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '1rem' }}>
-                                Enter a valid group code to get a flat 10% discount on Early Bird and Late Bird fees.
+                                Enter a valid promo or group discount code to apply discounts to Conference or Pre-Conference fees.
                                 <br/>
                                 <strong style={{ color: '#ef4444' }}>Note: One code is valid once.</strong>
                             </p>
                             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
                                 <input
                                     type="text"
-                                    placeholder="Enter Group Code"
+                                    placeholder="Enter Promo / Group Code"
                                     value={groupCode}
                                     onChange={(e) => setGroupCode(e.target.value.toUpperCase())}
                                     style={{

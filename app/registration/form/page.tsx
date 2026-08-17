@@ -153,7 +153,6 @@ function RegistrationFormContent() {
     };
 
     const copyUpiId = () => copyToClipboard(UPI_ID, setCopied);
-
     const validate = () => {
         const e: Record<string, string> = {};
         if (!form.fullName.trim()) e.fullName = 'Required';
@@ -168,9 +167,14 @@ function RegistrationFormContent() {
         if (!form.iapsmMember) e.iapsmMember = 'Required';
         if (!form.iapsmRegNumber.trim()) e.iapsmRegNumber = 'Required';
         if (!form.foodPreference) e.foodPreference = 'Required';
-        if (!form.rrnNumber.trim()) e.rrnNumber = 'Required';
-        if (!form.dateOfPayment) e.dateOfPayment = 'Required';
-        if (!proofPreview) e.proof = 'Please upload your payment proof';
+        
+        if (amount > 0) {
+            if (!form.rrnNumber.trim()) e.rrnNumber = 'Required';
+            if (!form.dateOfPayment) e.dateOfPayment = 'Required';
+            if (!proofPreview) e.proof = 'Please upload your payment proof';
+        } else {
+            if (!proofPreview) e.proof = 'Please upload your age proof';
+        }
         
         if (isPreConf) {
             const hasEmpty = form.workshopPriorities.some(p => !p);
@@ -216,9 +220,10 @@ function RegistrationFormContent() {
                 foodPreference: form.foodPreference,
                 registrationDoneFor: isPreConf ? 'Pre-conference Workshop' : 'Conference',
                 registrationPlan: `${category} - ${label} - ₹${amount}`,
-                rrn: form.rrnNumber,
-                paymentDate: form.dateOfPayment,
+                rrn: amount === 0 ? (form.rrnNumber.trim() || 'AGE PROOF VERIFICATION') : form.rrnNumber,
+                paymentDate: amount === 0 ? (form.dateOfPayment || new Date().toISOString().split('T')[0]) : form.dateOfPayment,
                 paymentProof: paymentProofUrl,
+                ageProof: amount === 0 ? paymentProofUrl : '',
                 priority1: isPreConf ? form.workshopPriorities[0] : '',
                 priority2: isPreConf ? form.workshopPriorities[1] : '',
                 priority3: isPreConf ? form.workshopPriorities[2] : '',
@@ -227,8 +232,6 @@ function RegistrationFormContent() {
                 priority6: isPreConf ? form.workshopPriorities[5] : '',
                 workshopPriorities: isPreConf ? form.workshopPriorities.map((p, i) => `Priority ${i + 1}: ${p}`).join('\n') : ''
             };
-
-            console.log(payload);
             
             await submitRegistration(payload);
             
@@ -378,18 +381,16 @@ function RegistrationFormContent() {
 
             <div style={s.wrap}>
                 {/* Selected plan chip */}
-                {amount > 0 && (
-                    <div style={s.amountChip}>
-                        <div>
-                            <p style={{ color: '#94a3b8', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>Selected Plan</p>
-                            <p style={{ color: 'white', fontWeight: 700, fontSize: '0.95rem' }}>{label}</p>
-                        </div>
-                        <div style={{ textAlign: 'right' }}>
-                            <p style={{ color: '#94a3b8', fontSize: '0.72rem', marginBottom: '0.1rem' }}>Amount</p>
-                            <p style={{ color: '#FACC15', fontWeight: 900, fontSize: '1.75rem', lineHeight: 1 }}>₹{amount}</p>
-                        </div>
+                <div style={s.amountChip}>
+                    <div>
+                        <p style={{ color: '#94a3b8', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>Selected Plan</p>
+                        <p style={{ color: 'white', fontWeight: 700, fontSize: '0.95rem' }}>{label}</p>
                     </div>
-                )}
+                    <div style={{ textAlign: 'right' }}>
+                        <p style={{ color: '#94a3b8', fontSize: '0.72rem', marginBottom: '0.1rem' }}>Amount</p>
+                        <p style={{ color: '#FACC15', fontWeight: 900, fontSize: '1.75rem', lineHeight: 1 }}>{amount === 0 ? 'FREE (₹0)' : `₹${amount}`}</p>
+                    </div>
+                </div>
 
                 <form onSubmit={handleSubmit} noValidate>
                     {/* ── Section 1: Personal Info ── */}
@@ -639,120 +640,170 @@ function RegistrationFormContent() {
                         </>
                     )}
 
-                    {/* ── Section 6: Payment ── */}
-                    <div style={s.sectionHead}><div style={s.sectionDot} /><span style={s.sectionTitle}>Payment Details</span></div>
-
-                    {/* 14. RRN */}
-                    <div style={s.field}>
-                        <label style={s.label}>RRN Number <span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}>(Enter the correct RRN Number after successful payment)</span></label>
-                        <input
-                            style={{ ...s.input, ...(errors.rrnNumber ? s.inputErr : {}) }}
-                            placeholder="Enter RRN / Transaction Reference Number"
-                            value={form.rrnNumber}
-                            onChange={e => set('rrnNumber', e.target.value)}
-                        />
-                        {errors.rrnNumber && <p style={s.errMsg}><AlertCircle size={13} />{errors.rrnNumber}</p>}
+                    {/* ── Section 6: Payment Details OR Age Details ── */}
+                    <div style={s.sectionHead}>
+                        <div style={s.sectionDot} />
+                        <span style={s.sectionTitle}>{amount === 0 ? 'Age Details' : 'Payment Details'}</span>
                     </div>
 
-                    {/* 15. Date of Payment */}
-                    <div style={s.field}>
-                        <label style={s.label}>Date of Payment <span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}>(DD/MM/YYYY format)</span></label>
-                        <input
-                            type="date"
-                            style={{ ...s.input, ...(errors.dateOfPayment ? s.inputErr : {}), colorScheme: 'dark' }}
-                            value={form.dateOfPayment}
-                            onChange={e => set('dateOfPayment', e.target.value)}
-                        />
-                        {errors.dateOfPayment && <p style={s.errMsg}><AlertCircle size={13} />{errors.dateOfPayment}</p>}
-                    </div>
+                    {amount > 0 ? (
+                        <>
+                            {/* 14. RRN */}
+                            <div style={s.field}>
+                                <label style={s.label}>RRN Number <span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}>(Enter the correct RRN Number after successful payment)</span></label>
+                                <input
+                                    style={{ ...s.input, ...(errors.rrnNumber ? s.inputErr : {}) }}
+                                    placeholder="Enter RRN / Transaction Reference Number"
+                                    value={form.rrnNumber}
+                                    onChange={e => set('rrnNumber', e.target.value)}
+                                />
+                                {errors.rrnNumber && <p style={s.errMsg}><AlertCircle size={13} />{errors.rrnNumber}</p>}
+                            </div>
 
-                    {/* ── QR Code Block (between Q15 and Q16) ── */}
-                    {amount > 0 && (
-                        <div style={{
-                            background: 'linear-gradient(145deg, rgba(15,28,55,0.9) 0%, rgba(10,18,38,1) 100%)',
-                            border: '1px solid rgba(250,204,21,0.25)',
-                            borderRadius: '18px',
-                            overflow: 'hidden',
-                            marginBottom: '1.75rem',
-                        }}>
-                            <div style={{ height: '4px', background: 'linear-gradient(90deg, #FACC15, #d4af37, #FACC15)' }} />
-                            <div style={{ padding: '1.75rem', display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-                                {/* QR */}
-                                <div style={{ background: 'white', borderRadius: '14px', padding: '0.85rem', boxShadow: '0 8px 32px rgba(0,0,0,0.4)', flexShrink: 0 }}>
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={qrUrl} alt={`UPI QR ₹${amount}`} width={180} height={180} style={{ display: 'block', borderRadius: '6px' }} />
-                                    <p style={{ color: '#0b1c35', fontSize: '0.65rem', fontWeight: 800, textAlign: 'center', marginTop: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                        Scan to Pay ₹{amount}
-                                    </p>
-                                </div>
-                                {/* Instructions */}
-                                <div style={{ flex: 1, minWidth: '200px' }}>
-                                    <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1rem', marginBottom: '0.25rem' }}>Pay ₹{amount} via UPI</p>
-                                    <p style={{ color: '#94a3b8', fontSize: '0.82rem', marginBottom: '1.1rem', lineHeight: 1.6 }}>
-                                        Scan the QR code with <strong style={{ color: '#cbd5e1' }}>GPay, PhonePe, Paytm or BHIM</strong>, or pay directly to the UPI ID below.
-                                    </p>
-                                    {/* UPI ID row */}
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0.6rem 0.85rem', marginBottom: '1rem' }}>
-                                        <span style={{ flex: 1, color: 'white', fontWeight: 700, fontSize: '0.9rem' }}>{UPI_ID}</span>
-                                        <button type="button" onClick={copyUpiId} style={{ background: copied ? 'rgba(34,197,94,0.15)' : 'rgba(250,204,21,0.12)', border: `1px solid ${copied ? 'rgba(34,197,94,0.4)' : 'rgba(250,204,21,0.3)'}`, borderRadius: '6px', padding: '0.35rem 0.65rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', color: copied ? '#22c55e' : '#FACC15', fontSize: '0.75rem', fontWeight: 700, whiteSpace: 'nowrap' as const }}>
-                                            {copied ? <CheckCircle size={12} /> : <Copy size={12} />}
-                                            {copied ? 'Copied!' : 'Copy'}
-                                        </button>
-                                    </div>
-                                    <div style={{ background: 'rgba(250,204,21,0.07)', border: '1px solid rgba(250,204,21,0.15)', borderRadius: '8px', padding: '0.65rem 0.85rem' }}>
-                                        <p style={{ color: '#fde68a', fontSize: '0.78rem', lineHeight: 1.6 }}>
-                                            ⚠️ After payment, note your <strong>RRN/Transaction ID</strong> and upload the payment screenshot below.
+                            {/* 15. Date of Payment */}
+                            <div style={s.field}>
+                                <label style={s.label}>Date of Payment <span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}>(DD/MM/YYYY format)</span></label>
+                                <input
+                                    type="date"
+                                    style={{ ...s.input, ...(errors.dateOfPayment ? s.inputErr : {}), colorScheme: 'dark' }}
+                                    value={form.dateOfPayment}
+                                    onChange={e => set('dateOfPayment', e.target.value)}
+                                />
+                                {errors.dateOfPayment && <p style={s.errMsg}><AlertCircle size={13} />{errors.dateOfPayment}</p>}
+                            </div>
+
+                            {/* ── QR Code Block (between Q15 and Q16) ── */}
+                            <div style={{
+                                background: 'linear-gradient(145deg, rgba(15,28,55,0.9) 0%, rgba(10,18,38,1) 100%)',
+                                border: '1px solid rgba(250,204,21,0.25)',
+                                borderRadius: '18px',
+                                overflow: 'hidden',
+                                marginBottom: '1.75rem',
+                            }}>
+                                <div style={{ height: '4px', background: 'linear-gradient(90deg, #FACC15, #d4af37, #FACC15)' }} />
+                                <div style={{ padding: '1.75rem', display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                    {/* QR */}
+                                    <div style={{ background: 'white', borderRadius: '14px', padding: '0.85rem', boxShadow: '0 8px 32px rgba(0,0,0,0.4)', flexShrink: 0 }}>
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={qrUrl} alt={`UPI QR ₹${amount}`} width={180} height={180} style={{ display: 'block', borderRadius: '6px' }} />
+                                        <p style={{ color: '#0b1c35', fontSize: '0.65rem', fontWeight: 800, textAlign: 'center', marginTop: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                            Scan to Pay ₹{amount}
                                         </p>
                                     </div>
+                                    {/* Instructions */}
+                                    <div style={{ flex: 1, minWidth: '200px' }}>
+                                        <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1rem', marginBottom: '0.25rem' }}>Pay ₹{amount} via UPI</p>
+                                        <p style={{ color: '#94a3b8', fontSize: '0.82rem', marginBottom: '1.1rem', lineHeight: 1.6 }}>
+                                            Scan the QR code with <strong style={{ color: '#cbd5e1' }}>GPay, PhonePe, Paytm or BHIM</strong>, or pay directly to the UPI ID below.
+                                        </p>
+                                        {/* UPI ID row */}
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0.6rem 0.85rem', marginBottom: '1rem' }}>
+                                            <span style={{ flex: 1, color: 'white', fontWeight: 700, fontSize: '0.9rem' }}>{UPI_ID}</span>
+                                            <button type="button" onClick={copyUpiId} style={{ background: copied ? 'rgba(34,197,94,0.15)' : 'rgba(250,204,21,0.12)', border: `1px solid ${copied ? 'rgba(34,197,94,0.4)' : 'rgba(250,204,21,0.3)'}`, borderRadius: '6px', padding: '0.35rem 0.65rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', color: copied ? '#22c55e' : '#FACC15', fontSize: '0.75rem', fontWeight: 700, whiteSpace: 'nowrap' as const }}>
+                                                {copied ? <CheckCircle size={12} /> : <Copy size={12} />}
+                                                {copied ? 'Copied!' : 'Copy'}
+                                            </button>
+                                        </div>
+                                        <div style={{ background: 'rgba(250,204,21,0.07)', border: '1px solid rgba(250,204,21,0.15)', borderRadius: '8px', padding: '0.65rem 0.85rem' }}>
+                                            <p style={{ color: '#fde68a', fontSize: '0.78rem', lineHeight: 1.6 }}>
+                                                ⚠️ After payment, note your <strong>RRN/Transaction ID</strong> and upload the payment screenshot below.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                            {/* 16. Upload Payment Proof */}
+                            <div style={s.field}>
+                                <label style={s.label}>Upload Payment Proof <span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}>(PDF/JPG only, Max 10 MB)</span></label>
+                                <div
+                                    style={s.fileZone(!!proofPreview)}
+                                    onClick={() => proofRef.current?.click()}
+                                    data-error={errors.proof ? true : undefined}
+                                >
+                                    <input ref={proofRef} type="file" accept="image/*,application/pdf" style={{ display: 'none' }} onChange={handleProofChange} />
+                                    {proofPreview ? (
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img src={proofPreview} alt="Payment proof" style={{ height: '90px', maxWidth: '100%', objectFit: 'contain', borderRadius: '8px', border: '2px solid #FACC15' }} />
+                                            <span style={{ color: '#22c55e', fontSize: '0.85rem', fontWeight: 600 }}>✓ Payment proof uploaded. Click to change.</span>
+                                        </div>
+                                    ) : (
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                            <Upload size={28} color="#FACC15" />
+                                            <span style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Click to upload payment screenshot or PDF</span>
+                                            <span style={{ color: '#475569', fontSize: '0.78rem' }}>JPG, PNG or PDF · Max 10 MB</span>
+                                        </div>
+                                    )}
+                                    {uploadingProof && (
+                                        <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#FACC15', fontSize: '0.85rem' }}>
+                                            <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Uploading...
+                                        </div>
+                                    )}
+                                </div>
+                                {proofUrl && (
+                                    <div style={{ marginTop: '0.75rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <span style={{ flex: 1, fontSize: '0.85rem', color: '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            {typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl}
+                                        </span>
+                                        <button type="button" onClick={() => {
+                                            const urlToCopy = typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl;
+                                            copyToClipboard(urlToCopy || '', setProofCopied);
+                                        }} style={{ background: proofCopied ? 'rgba(34,197,94,0.15)' : 'rgba(250,204,21,0.12)', border: `1px solid ${proofCopied ? 'rgba(34,197,94,0.4)' : 'rgba(250,204,21,0.3)'}`, borderRadius: '6px', padding: '0.35rem 0.65rem', cursor: 'pointer', color: proofCopied ? '#22c55e' : '#FACC15', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.3rem', whiteSpace: 'nowrap' }}>
+                                            {proofCopied ? <CheckCircle size={12} /> : <Copy size={12} />}
+                                            {proofCopied ? 'Copied!' : 'Copy Link'}
+                                        </button>
+                                    </div>
+                                )}
+                                {errors.proof && <p style={s.errMsg}><AlertCircle size={13} />{errors.proof}</p>}
+                            </div>
+                        </>
+                    ) : (
+                        /* When amount === 0 (100% discount applied): Show ONLY Upload Age Proof */
+                        <div style={s.field}>
+                            <label style={s.label}>Upload Age Proof <span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}>(Govt ID / Passport / Driving License / Birth Certificate - PDF/JPG only, Max 10 MB)</span></label>
+                            <div
+                                style={s.fileZone(!!proofPreview)}
+                                onClick={() => proofRef.current?.click()}
+                                data-error={errors.proof ? true : undefined}
+                            >
+                                <input ref={proofRef} type="file" accept="image/*,application/pdf" style={{ display: 'none' }} onChange={handleProofChange} />
+                                {proofPreview ? (
+                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={proofPreview} alt="Age proof" style={{ height: '90px', maxWidth: '100%', objectFit: 'contain', borderRadius: '8px', border: '2px solid #FACC15' }} />
+                                        <span style={{ color: '#22c55e', fontSize: '0.85rem', fontWeight: 600 }}>✓ Age proof uploaded. Click to change.</span>
+                                    </div>
+                                ) : (
+                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                        <Upload size={28} color="#FACC15" />
+                                        <span style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Click to upload Age Proof document</span>
+                                        <span style={{ color: '#475569', fontSize: '0.78rem' }}>JPG, PNG or PDF · Max 10 MB</span>
+                                    </div>
+                                )}
+                                {uploadingProof && (
+                                    <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#FACC15', fontSize: '0.85rem' }}>
+                                        <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Uploading...
+                                    </div>
+                                )}
+                            </div>
+                            {proofUrl && (
+                                <div style={{ marginTop: '0.75rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                    <span style={{ flex: 1, fontSize: '0.85rem', color: '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                        {typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl}
+                                    </span>
+                                    <button type="button" onClick={() => {
+                                        const urlToCopy = typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl;
+                                        copyToClipboard(urlToCopy || '', setProofCopied);
+                                    }} style={{ background: proofCopied ? 'rgba(34,197,94,0.15)' : 'rgba(250,204,21,0.12)', border: `1px solid ${proofCopied ? 'rgba(34,197,94,0.4)' : 'rgba(250,204,21,0.3)'}`, borderRadius: '6px', padding: '0.35rem 0.65rem', cursor: 'pointer', color: proofCopied ? '#22c55e' : '#FACC15', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.3rem', whiteSpace: 'nowrap' }}>
+                                        {proofCopied ? <CheckCircle size={12} /> : <Copy size={12} />}
+                                        {proofCopied ? 'Copied!' : 'Copy Link'}
+                                    </button>
+                                </div>
+                            )}
+                            {errors.proof && <p style={s.errMsg}><AlertCircle size={13} />{errors.proof}</p>}
                         </div>
                     )}
-
-                    {/* 16. Upload Payment Proof */}
-                    <div style={s.field}>
-                        <label style={s.label}>Upload Payment Proof <span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}>(PDF/JPG only, Max 10 MB)</span></label>
-                        <div
-                            style={s.fileZone(!!proofPreview)}
-                            onClick={() => proofRef.current?.click()}
-                            data-error={errors.proof ? true : undefined}
-                        >
-                            <input ref={proofRef} type="file" accept="image/*,application/pdf" style={{ display: 'none' }} onChange={handleProofChange} />
-                            {proofPreview ? (
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={proofPreview} alt="Payment proof" style={{ height: '90px', maxWidth: '100%', objectFit: 'contain', borderRadius: '8px', border: '2px solid #FACC15' }} />
-                                    <span style={{ color: '#22c55e', fontSize: '0.85rem', fontWeight: 600 }}>✓ Payment proof uploaded. Click to change.</span>
-                                </div>
-                            ) : (
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                                    <Upload size={28} color="#FACC15" />
-                                    <span style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Click to upload payment screenshot or PDF</span>
-                                    <span style={{ color: '#475569', fontSize: '0.78rem' }}>JPG, PNG or PDF · Max 10 MB</span>
-                                </div>
-                            )}
-                            {uploadingProof && (
-                                <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#FACC15', fontSize: '0.85rem' }}>
-                                    <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Uploading...
-                                </div>
-                            )}
-                        </div>
-                        {proofUrl && (
-                            <div style={{ marginTop: '0.75rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                <span style={{ flex: 1, fontSize: '0.85rem', color: '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                    {typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl}
-                                </span>
-                                <button type="button" onClick={() => {
-                                    const urlToCopy = typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl;
-                                    copyToClipboard(urlToCopy || '', setProofCopied);
-                                }} style={{ background: proofCopied ? 'rgba(34,197,94,0.15)' : 'rgba(250,204,21,0.12)', border: `1px solid ${proofCopied ? 'rgba(34,197,94,0.4)' : 'rgba(250,204,21,0.3)'}`, borderRadius: '6px', padding: '0.35rem 0.65rem', cursor: 'pointer', color: proofCopied ? '#22c55e' : '#FACC15', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.3rem', whiteSpace: 'nowrap' }}>
-                                    {proofCopied ? <CheckCircle size={12} /> : <Copy size={12} />}
-                                    {proofCopied ? 'Copied!' : 'Copy Link'}
-                                </button>
-                            </div>
-                        )}
-                        {errors.proof && <p style={s.errMsg}><AlertCircle size={13} />{errors.proof}</p>}
-                    </div>
 
                     {/* Validation summary */}
                     {Object.keys(errors).length > 0 && (
