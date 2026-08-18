@@ -342,7 +342,7 @@ export const conference = {
     advisory: [
       "Dr. A.M Kadri",
       "Dr. Bhavesh Modi",
-      "Dr. Deepak Sakxena",
+      "Dr. Deepak Saxena",
       "Dr. Narayan Gaonkar",
       "Dr. Bharat Patel",
       "Dr. Jivraj Damor",
