@@ -224,7 +224,7 @@ export const conference = {
       {
         name: "Dr. Chandresh Pandya",
         role: "Immediate Past President",
-        affiliation: "Associate Professor\n Baroda Medical College, Vadodara, Gujarat",
+        affiliation: "Associate Professor\n Baroda Medical College",
         image: "/images/chandresh-pandya.png"
       },
       {
