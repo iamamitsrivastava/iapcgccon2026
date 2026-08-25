@@ -356,7 +356,8 @@ export const conference = {
       "Ms. Farida Khatri",
       "Dr. Khusbu Chauhan",
       "Dr. Nirmal Jyoti Jyotsana",
-      "Dr. Honey Patel"
+      "Dr. Honey Patel",
+      "Dr. Bhavna Dhakate"
     ],
     scientificCommittee: [
       "Dr. P. S. Ganguly (Chairman)",
@@ -392,7 +393,6 @@ export const conference = {
       "Dr Charvi Mistry",
       "Dr. Kalpita Shringarpure",
       "Ms. Komal Parmar",
-      "Dr. Bhavna Dhakate",
       "Dr. Dhvani Mevada"
     ],
     transportAccommodation: [

@@ -36,7 +36,7 @@ const workshopsData = [
     id: 5,
     title: "5. From Research Idea to Thesis Submission—Digitally, Efficiently, ethically",
     proposer: "Dr.Chandresh Pandya ,Professor Medical College Baroda",
-    otherFaculties: " Dr Anjali Modi (Associate Professor AIIMS Rajkot) |",
+    otherFaculties: " Dr Anjali Modi (Associate Professor AIIMS Rajkot)",
     duration: "8 Hours",
   },
   {

@@ -119,7 +119,7 @@ export default function RegistrationPage() {
             amount = Math.round(amount * 0.9);
         }
         if (!isConf && isPreConfGroupDiscountApplied) {
-            amount = Math.round(amount * 0.9);
+            amount = Math.round(amount * 0.95);
         }
 
         router.push(`/registration/form?amount=${amount}&label=${encodeURIComponent(label)}&category=${encodeURIComponent(category)}`);
@@ -162,7 +162,7 @@ export default function RegistrationPage() {
             setCodeMessage({ text: 'Code applied! 10% discount added to Conference fees.', type: 'success' });
         } else if (isPreConfCode) {
             setIsPreConfGroupDiscountApplied(true);
-            setCodeMessage({ text: 'Code applied! 10% discount added to Pre-Conference fees.', type: 'success' });
+            setCodeMessage({ text: 'Code applied! 5% discount added to Pre-Conference fees.', type: 'success' });
         }
         
         setGroupCode('');
@@ -216,7 +216,7 @@ export default function RegistrationPage() {
 
         if (isPreConfGroupDiscountApplied) {
             hasDiscount = true;
-            discounted = Math.round(discounted * 0.9);
+            discounted = Math.round(discounted * 0.95);
         }
 
         if (!hasDiscount) return priceStr;
