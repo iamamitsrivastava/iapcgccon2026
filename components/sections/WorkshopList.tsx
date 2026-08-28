@@ -15,7 +15,7 @@ const workshopsData = [
     id: 2,
     title: "2. Essential Public Health Updates for Viksit Bharat by 2047",
     proposer: "Dr. Bhaveshbhai R. Bariya, Assistant Professor, Medical College Baroda, Vadodara",
-    otherFaculties: " Dr. Neha A. Patel (Associate Professor, Community Medicine GMERS Medical College Valsad, Gujarat) | Resource Person 3: Dr. Darshankumar Mahyavanshi (Professor and Head, Community Medicine NAMO Medical Education and Research Institute, Silvassa) | Resource Person 4: Dr. Nilamkumar J. Patel (Professor, Community Medicine Nootan Medical College & Research Centre, Sankalchand Patel University, Visnagar)",
+    otherFaculties: " Dr. Neha A. Patel (Associate Professor, Community Medicine GMERS Medical College Valsad, Gujarat) | Resource Person 3: Dr. Darshankumar Mahyavanshi (Professor and Head, Community Medicine NAMO Medical Education and Research Institute, Silvassa) | Resource Person 4: Dr. Nikhil Kumar J. Patel (Professor, Community Medicine Nootan Medical College & Research Centre, Sankalchand Patel University, Visnagar)",
     duration: "6 Hours",
   },
   {
@@ -45,6 +45,13 @@ const workshopsData = [
     proposer: "Dr Manisha Gohel, Professor & Head Pramukhswami Medical College, Bhaikaka University, Karamsad",
     otherFaculties: "Dr Dinesh Kumar (Professor Community Medicine Pramukhswami Medical College, Bhaikaka University, Karamsad)",
     duration: "3 Hours",
+  },
+  {
+    id: 7,
+    title: "7. Decoding Human Experiences: From Voices to Evidence : A Practical Workshop on Qualitative Research in Public Health",
+    proposer: "Dr. Hinal Baria (Associate Professor, Community Medicine, GMERS Medical College, Rajpipla, Gujarat. M.D. Community Medicine, Ph.D, PGDM-Public Health Nutrition, NIHFW, New Delhi, ACME, KEM college and hospital, Mumbai)",
+    otherFaculties: "Dr. Neha A. Patel (Associate Professor, Community Medicine, GMERS Medical College Valsad, Gujarat. Qualification: MD (Community Medicine), PGDM (H&FW), CCEBDM, ACME, PhD Scholar)",
+    duration: "TBD",
   }
 ];
 
