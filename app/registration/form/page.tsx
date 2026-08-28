@@ -1,5 +1,7 @@
 'use client';
 import React, { useState, useRef, Suspense } from 'react';
+
+export const dynamic = 'force-dynamic';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Header from '@/components/sections/Header';
 import Footer from '@/components/sections/Footer';
