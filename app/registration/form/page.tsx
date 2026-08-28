@@ -15,7 +15,8 @@ const WORKSHOPS = [
     "MEDPRENEUR 2026: From White Coat to Startup.",
     "Smart SRMA: Hands-on Systematic Review and Meta-analysis using AI tools.",
     "From Research Idea to Thesis Submission—Digitally, Efficiently, ethically.",
-    "Transforming Competency-Based Medical Education through Digital Media–Based Innovative Teaching–Learning Approaches for Gender-Sensitive Medical Education"
+    "Transforming Competency-Based Medical Education through Digital Media–Based Innovative Teaching–Learning Approaches for Gender-Sensitive Medical Education.",
+    "Decoding Human Experiences: From Voices to Evidence: A Practical Workshop on Qualitative Research in Public Health."
 ];
 
 function RegistrationFormContent() {
@@ -59,7 +60,7 @@ function RegistrationFormContent() {
         foodPreference: '',
         rrnNumber: '',
         dateOfPayment: '',
-        workshopPriorities: ['', '', '', '', '', ''] // 6 priorities
+        workshopPriorities: ['', '', '', '', '', '', ''] // 7 priorities
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -179,7 +180,7 @@ function RegistrationFormContent() {
         if (isPreConf) {
             const hasEmpty = form.workshopPriorities.some(p => !p);
             if (hasEmpty) {
-                e.workshopPriorities = 'Please select a workshop for all 6 priorities';
+                e.workshopPriorities = 'Please select a workshop for all 7 priorities';
             } else {
                 const unique = new Set(form.workshopPriorities);
                 if (unique.size !== form.workshopPriorities.length) {
@@ -230,6 +231,7 @@ function RegistrationFormContent() {
                 priority4: isPreConf ? form.workshopPriorities[3] : '',
                 priority5: isPreConf ? form.workshopPriorities[4] : '',
                 priority6: isPreConf ? form.workshopPriorities[5] : '',
+                priority7: isPreConf ? form.workshopPriorities[6] : '',
                 workshopPriorities: isPreConf ? form.workshopPriorities.map((p, i) => `Priority ${i + 1}: ${p}`).join('\n') : ''
             };
             
@@ -610,7 +612,7 @@ function RegistrationFormContent() {
                             <div style={s.sectionHead}><div style={s.sectionDot} /><span style={s.sectionTitle}>Workshop Preferences</span></div>
                             <div style={{ background: 'rgba(250,204,21,0.05)', border: '1px solid rgba(250,204,21,0.2)', borderRadius: '12px', padding: '1.5rem', marginBottom: '2.5rem' }}>
                                 <p style={{ color: '#cbd5e1', fontSize: '0.9rem', marginBottom: '1.25rem', lineHeight: 1.6 }}>
-                                    Please select your preferred workshops in order of priority (Priority 1 being your most preferred). You must rank all 6 workshops and each workshop can only be selected once.
+                                    Please select your preferred workshops in order of priority (Priority 1 being your most preferred). You must rank all 7 workshops and each workshop can only be selected once.
                                 </p>
                                 
                                 {form.workshopPriorities.map((priority, index) => (
