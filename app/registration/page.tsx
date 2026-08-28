@@ -122,7 +122,8 @@ export default function RegistrationPage() {
             amount = Math.round(amount * 0.95);
         }
 
-        router.push(`/registration/form?amount=${amount}&label=${encodeURIComponent(label)}&category=${encodeURIComponent(category)}`);
+        const typeParam = isConf ? '' : '&type=preconf';
+        router.push(`/registration/form?amount=${amount}&label=${encodeURIComponent(label)}&category=${encodeURIComponent(category)}${typeParam}`);
     };
 
     useEffect(() => {

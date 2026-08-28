@@ -28,8 +28,10 @@ function RegistrationFormContent() {
     const amount = parseInt(searchParams.get('amount') || '0');
     const label = searchParams.get('label') || 'Conference Registration';
     const category = searchParams.get('category') || '';
+    const type = searchParams.get('type') || '';
     
-    const isPreConf = label.toLowerCase().includes('pre-conference');
+    // Use explicit type=preconf param (reliable) OR label string match (fallback for old links)
+    const isPreConf = type === 'preconf' || label.toLowerCase().includes('pre-conference');
 
     const upiString = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent('IAPSMGC CON 2026 - ' + label)}`;
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiString)}&bgcolor=ffffff&color=0b1c35&margin=12`;
