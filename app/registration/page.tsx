@@ -255,13 +255,13 @@ export default function RegistrationPage() {
 
     const fees = [
         {
-            category: 'IAPSM Member',
+            category: 'IAPSM Member(Faculty)',
             earlyBird: { conf: '₹4000', preConf: '₹1500' },
             lateBird: { conf: '₹4500', preConf: '₹2000' },
             spot: '₹5000',
         },
         {
-            category: 'IAPSM Non Member',
+            category: 'IAPSM Non Member(Faculty)',
             earlyBird: { conf: '₹4500', preConf: '₹1500' },
             lateBird: { conf: '₹5000', preConf: '₹2000' },
             spot: '₹6000',

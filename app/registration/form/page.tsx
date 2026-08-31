@@ -21,6 +21,56 @@ const WORKSHOPS = [
     "Decoding Human Experiences: From Voices to Evidence: A Practical Workshop on Qualitative Research in Public Health."
 ];
 
+const INSTITUTIONS = [
+    "Ananya College of Medicine & Research, Kalol, Gandhinagar",
+    "All India Institute of Medical Sciences and Research(AIIMS) Rajkot",
+    "Baroda Medical Collage",
+    "B J Medical College, Ahmedabad",
+    "Banas Medical College and Research Institute, Palanpur, Banaskantha",
+    "Bhagyoday Medical College, Kadi, Mehsana",
+    "CU Shah Medical College, Surendranagar",
+    "Dr. Kiran C.Patel Medical College and Research Institute, Bharuch",
+    "Dr. M.K. Shah Medical College & Research Centre, Ahmedabad",
+    "Dr. N.D. Desai Faculty of Medical Science and Research, Nadiad",
+    "ESIC Medical Collage & Hospital, Naroda-Bapunagar, Ahmedabad",
+    "GCS Medical College, Ahmedabad",
+    "GMERS Medical College, Dharpur, Patan",
+    "GMERS Medical College, Gandhinagar",
+    "GMERS Medical College, Godhra, Panchmahal",
+    "GMERS Medical College, Gotri, Vadodara",
+    "GMERS Medical College, Himmatnagar, Sabarkantha",
+    "GMERS Medical College, Junagadh",
+    "GMERS Medical College, Morbi",
+    "GMERS Medical College, Navsari",
+    "GMERS Medical College, Porbandar",
+    "GMERS Medical College, Rajpipla, Narmada",
+    "GMERS Medical College, Sola, Ahmedabad",
+    "GMERS Medical College, Vadnagar, Mehsana",
+    "GMERS Medical College, Valsad",
+    "Government Medical College, Bhavnagar",
+    "Government Medical College, Surat",
+    "Gujarat Adani Institute of Medical Sciences, Bhuj, Kutch",
+    "Kiran Medical College, Surat",
+    "Matushri Prabhaben Khodabhai Boghara Medical College & Research Centre, Atkot, Rajkot",
+    "Medical College, Baroda",
+    "MP Shah Medical College, Jamnagar",
+    "NAMO Medical Education & Research Institute, Silvassa, Dadra & Nagar Haveli, Daman and Diu",
+    "Narendra Modi Medical College, Maninagar, Ahmedabad",
+    "Nootan Medical College and Research Centre, Visnagar, Mehsana",
+    "Pandit Deendayal Upadhyay Medical College, Rajkot",
+    "Parul Institute of Medical Sciences & Research, Vadodara",
+    "Pramukhswami Medical College, Karmsad, Anand",
+    "SAL Institute of Medical Sciences, Ahmedabad",
+    "Sardar Patel Medical College And Research Centre, Nava Naroda, Ahmedabad",
+    "SBKS Medical Inst. & Research Centre, Waghodia, Vadodara",
+    "Shantabaa Medical College, Amreli",
+    "Shri Satsangi Medical and Research Institute, Vadasma, Mehsana",
+    "Smt. N.H.L.Municipal Medical College, Ahmedabad",
+    "Surat Municipal Institute of Medical Education & Research(SMIMER), Surat",
+    "Swaminarayan Institute of Medical Sciences & Research, Kalol, Gandhinagar",
+    "Zydus Medical College & Hospital, Dahod"
+];
+
 function RegistrationFormContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -68,6 +118,7 @@ function RegistrationFormContent() {
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [institutionSelect, setInstitutionSelect] = useState('');
 
     const set = (key: string, val: string) => setForm(f => ({ ...f, [key]: val }));
 
@@ -524,12 +575,31 @@ function RegistrationFormContent() {
                     {/* 7. Institution */}
                     <div style={s.field}>
                         <label style={s.label}>Institution / Organization Name <span style={s.required}>*</span></label>
-                        <input
-                            style={{ ...s.input, ...(errors.institution ? s.inputErr : {}) }}
-                            placeholder="Full name of your institution or organization"
-                            value={form.institution}
-                            onChange={e => set('institution', e.target.value)}
-                        />
+                        <select
+                            style={{ ...s.input, ...(errors.institution ? s.inputErr : {}), appearance: 'auto' }}
+                            value={institutionSelect}
+                            onChange={e => {
+                                setInstitutionSelect(e.target.value);
+                                if (e.target.value !== 'Other') {
+                                    set('institution', e.target.value);
+                                } else {
+                                    set('institution', '');
+                                }
+                            }}
+                            data-error={errors.institution ? true : undefined}
+                        >
+                            <option value="" disabled>Select Institution / Organization</option>
+                            {INSTITUTIONS.map(inst => <option key={inst} value={inst}>{inst}</option>)}
+                            <option value="Other">Other</option>
+                        </select>
+                        {institutionSelect === 'Other' && (
+                            <input
+                                style={{ ...s.input, marginTop: '0.75rem', ...(errors.institution ? s.inputErr : {}) }}
+                                placeholder="Please specify your institution"
+                                value={form.institution}
+                                onChange={e => set('institution', e.target.value)}
+                            />
+                        )}
                         {errors.institution && <p style={s.errMsg}><AlertCircle size={13} />{errors.institution}</p>}
                     </div>
 
@@ -568,7 +638,13 @@ function RegistrationFormContent() {
                         <label style={s.label}>IAPSM Membership <span style={s.required}>*</span></label>
                         <div style={{ ...s.optionGrid, gridTemplateColumns: 'repeat(2, 1fr)' }}>
                             {['Yes', 'No'].map(v => (
-                                <div key={v} style={s.option(form.iapsmMember === v)} onClick={() => set('iapsmMember', v)}>
+                                <div key={v} style={s.option(form.iapsmMember === v)} onClick={() => {
+                                    setForm(f => ({
+                                        ...f,
+                                        iapsmMember: v,
+                                        iapsmRegNumber: v === 'No' ? 'NA' : (f.iapsmRegNumber === 'NA' ? '' : f.iapsmRegNumber)
+                                    }));
+                                }}>
                                     <div style={s.radioCircle(form.iapsmMember === v)}>
                                         {form.iapsmMember === v && <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#0B1C35' }} />}
                                     </div>
@@ -583,10 +659,15 @@ function RegistrationFormContent() {
                     <div style={s.field}>
                         <label style={s.label}>IAPSM Registration Number <span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}></span></label>
                         <input
-                            style={{ ...s.input, ...(errors.iapsmRegNumber ? s.inputErr : {}) }}
+                            style={{ 
+                                ...s.input, 
+                                ...(errors.iapsmRegNumber ? s.inputErr : {}),
+                                ...(form.iapsmMember === 'No' ? { opacity: 0.6, cursor: 'not-allowed', backgroundColor: 'rgba(255,255,255,0.02)' } : {})
+                            }}
                             placeholder="e.g. IAPSM-12345 or NA"
                             value={form.iapsmRegNumber}
                             onChange={e => set('iapsmRegNumber', e.target.value)}
+                            readOnly={form.iapsmMember === 'No'}
                         />
                         {errors.iapsmRegNumber && <p style={s.errMsg}><AlertCircle size={13} />{errors.iapsmRegNumber}</p>}
                     </div>
