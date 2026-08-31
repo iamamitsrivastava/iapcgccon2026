@@ -1,4 +1,5 @@
 export const REGISTRATION_MAPPING: Record<string, string[]> = {
+  //Registration Mapping for Gujarat State
   "2303051240028@paruluniversity.ac.in": ["26GUJCON000"],
   "prashant.dave29697@paruluniversity.ac.in": ["26GUJCON001"],
   "bhoimanish29399@gmail.com": ["26GUJCON002"],
@@ -248,7 +249,25 @@ export const REGISTRATION_MAPPING: Record<string, string[]> = {
   "poojawaghela93@gmail.com": ["26GUJCON250"],
   "dr.sonalparikh05@yahoo.com": ["26GUJCON251"],
   "mohuamoitra27@gmail.com": ["26GUJCON252"],
-  "rkmakhesana721999@gmail.com": ["26GUJCON253"]
+  "rkmakhesana721999@gmail.com": ["26GUJCON253"],
+  "kp12sept@gmail.com": ["26GUJCON254"],
+  "harshilpatel11192@gmail.com": ["26GUJCON255"],
+  "maharshivp84@yahoo.co.in": ["26GUJCON256"],
+  "snehalvasaiya98@gmail.com": ["26GUJCON257"],
+  "ddhameliya16@gmail.com": ["26GUJCON258"],
+  "suraniurvashi0@gmail.com": ["26GUJCON259"],
+  "mjmesuriya@gmail.com": ["26GUJCON260"],
+  "nandhakumar4005@gmail.com": ["26GUJCON261"],
+  "drdineshkl@bhaikakauniv.edu.in": ["26GUJCON262"],
+  "ankurvchaudhari@gmail.com": ["26GUJCON263"],
+  "draparajita73@hotmail.com": ["26GUJCON264"],
+  "khyatiahir1699@gmail.com": ["26GUJCON265"],
+  "hinalbaria150@gmail.com": ["26GUJCON266"],
+  "Bhavin.S.Dave@ril.com": ["26GUJCON267"],
+  "ghanshyamahir@gmail.com": ["26GUJCON268"],
+  "sidhyartha@gmail.com": ["26GUJCON269"],
+  "drharshpsm@gmail.com": ["26GUJCON270"],
+  "bhavikpatel20771@gmail.com": ["26GUJCON271"]
 };
 export const ACCESS_CODE_MAPPING: Record<string, string[]> = {
   "2303051240028@paruluniversity.ac.in": ["IAPSMGC2026"],
@@ -494,6 +513,24 @@ export const ACCESS_CODE_MAPPING: Record<string, string[]> = {
   "altafhabibmalek1985@gmail.com": ["IAPSMGC-Z2R5X6"],
   "poojawaghela93@gmail.com": ["IAPSMGC-E9L4N1"],
   "dr.sonalparikh05@yahoo.com": ["IAPSMGC-T7P3M8"],
-  "mohuamoitra27@gmail.com": ["IAPSMGC-A5Q1W9"]
+  "mohuamoitra27@gmail.com": ["IAPSMGC-A5Q1W9"],
+  "kp12sept@gmail.com": ["IAPSMGC-K3W8N5"],
+  "harshilpatel11192@gmail.com": ["IAPSMGC-P9R2X6"],
+  "maharshivp84@yahoo.co.in": ["IAPSMGC-Z4M7T1"],
+  "ddhameliya16@gmail.com": ["IAPSMGC-E5K9P3"],
+  "suraniurvashi0@gmail.com": ["IAPSMGC-R8N4W2"],
+  "mjmesuriya@gmail.com": ["IAPSMGC-X2T7M9"],
+  "nandhakumar4005@gmail.com": ["IAPSMGC-H1P6Q4"],
+  "drdineshkl@bhaikakauniv.edu.in": ["IAPSMGC-Q8L3R7"],
+  "ankurvchaudhari@gmail.com": ["IAPSMGC-T5X9K2"],
+  "draparajita73@hotmail.com": ["IAPSMGC-A7M4N8"],
+  "khyatiahir1699@gmail.com": ["IAPSMGC-F1W6P5"],
+  "rkmakhesana721999@gmail.com": ["IAPSMGC-Y3Q8T9"],
+  "hinalbaria150@gmail.com": ["IAPSMGC-D9L2X1"],
+  "Bhavin.S.Dave@ril.com": ["IAPSMGC-M4R7K6"],
+  "ghanshyamahir@gmail.com": ["IAPSMGC-B8P5W1"],
+  "sidhyartha@gmail.com": ["IAPSMGC-U6N9Q3"],
+  "drharshpsm@gmail.com": ["IAPSMGC-C2X4T7"],
+  "bhavikpatel20771@gmail.com": ["IAPSMGC-G5M1L9"]
 };
 
