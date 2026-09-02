@@ -170,7 +170,7 @@ export async function POST(request: Request) {
     });
 
     // ── 3. Send auto-reply to the Delegate ──────────────────────────────────
-    const delegateSubject = typeLabel === 'FULL_PAPER' ? 'Full Paper Submission Received - IAPSMGCCON 2026' : 'Abstract Submission Received - IAPSMGCCON 2026';
+    const delegateSubject = typeLabel === 'Full Paper' ? 'Full Paper Submission Received - IAPSMGCCON 2026' : 'Abstract Submission Received - IAPSMGCCON 2026';
     
     await transporter.sendMail({
       from: `"IAPSMGC CON 2026 Website" <${process.env.SMTP_USER}>`,
