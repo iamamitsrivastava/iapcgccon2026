@@ -173,38 +173,26 @@ export function SubmissionGuidelines() {
         try {
             const { name: fullName, registrationNo, email, documentLink } = formData;
 
-            const res = await fetch("https://script.google.com/macros/s/AKfycbzoIwZzQ10_hAxt1efM8iYh5qyfbXGDjmmUPf_VVodjyRvDz12OlfK_ZcfxdePfwTCBUw/exec", {
+            const submitData = new FormData();
+            submitData.append('submissionType', submissionType);
+            submitData.append('fullName', fullName);
+            submitData.append('registrationNo', registrationNo);
+            submitData.append('email', email);
+            if (documentLink) {
+                submitData.append('documentLink', documentLink);
+            }
+            if (docFile && !documentLink) {
+                submitData.append('file', docFile);
+            }
+
+            const res = await fetch("/api/submit-abstract", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "text/plain;charset=utf-8",
-                },
-                body: JSON.stringify({
-                    type: submissionType,
-                    fullName,
-                    registrationNumber: registrationNo,
-                    email,
-                    documentLink
-                }),
+                body: submitData,
             });
-            const text = await res.text();
 
-            if (text.startsWith("<!DOCTYPE") || text.startsWith("<html")) {
-                if (res.ok) setSubmissionSuccess(true);
-                else throw new Error("Server returned an HTML error page.");
-            } else {
-                let result;
-                try {
-                    result = JSON.parse(text);
-                } catch {
-                    if (res.ok) setSubmissionSuccess(true);
-                    else throw new Error("Invalid JSON response from server.");
-                }
-
-                if (result && (result.status === "success" || result.success === true)) {
-                    setSubmissionSuccess(true);
-                } else if (result) {
-                    throw new Error(result.message || result.error || "Submission failed");
-                }
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}));
+                throw new Error(errorData.error || "Server error");
             }
 
             if (submissionSuccess || res.ok) {

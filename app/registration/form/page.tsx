@@ -914,6 +914,7 @@ function RegistrationFormContent() {
             <style>{`
                 input::placeholder { color: #475569; }
                 input[type=date]::-webkit-calendar-picker-indicator { filter: invert(0.5); }
+                select option { background-color: #0B1C35; color: white; }
                 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
             `}</style>
         </main>

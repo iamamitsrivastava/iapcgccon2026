@@ -84,6 +84,10 @@
     border-top: 4px solid #D4AF37;
     /* Gold accent */
     transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .dateCard:hover {

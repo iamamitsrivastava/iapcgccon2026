@@ -169,6 +169,50 @@ export async function POST(request: Request) {
       attachments: mailAttachments
     });
 
+    // ── 3. Send auto-reply to the Delegate ──────────────────────────────────
+    const delegateSubject = typeLabel === 'FULL_PAPER' ? 'Full Paper Submission Received - IAPSMGCCON 2026' : 'Abstract Submission Received - IAPSMGCCON 2026';
+    
+    await transporter.sendMail({
+      from: `"IAPSMGC CON 2026 Website" <${process.env.SMTP_USER}>`,
+      to: email, // Send to the delegate
+      subject: delegateSubject,
+      text: `Dear Delegate,
+
+Greetings from the Organizing Committee of IAPSMGCCON 2026 – Gujarat State Chapter.
+
+Thank you for submitting your abstract for presentation at the 33rd Annual State Conference of IAPSM, Gujarat Chapter.
+
+We are pleased to confirm that your abstract has been successfully received by the Organizing Committee.
+
+View your submitted abstract:
+${documentLink}
+
+Please retain this email for your records. The submitted abstract will undergo the review process, and further communication regarding acceptance, presentation format, and presentation schedule will be shared with you subsequently.
+
+Thank you for your contribution to IAPSMGCCON 2026. We look forward to your participation and an enriching scientific programme.
+
+Warm regards,
+Organizing Committee
+IAPSMGCCON 2026 – Gujarat State Chapter
+Parul University, Vadodara`,
+      html: `
+        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+          <p>Dear Delegate,</p>
+          <p>Greetings from the Organizing Committee of IAPSMGCCON 2026 – Gujarat State Chapter.</p>
+          <p>Thank you for submitting your abstract for presentation at the 33rd Annual State Conference of IAPSM, Gujarat Chapter.</p>
+          <p>We are pleased to confirm that your abstract has been successfully received by the Organizing Committee.</p>
+          <p>View your submitted abstract:<br/>
+          <a href="${documentLink}" target="_blank" rel="noopener noreferrer">${documentLink}</a></p>
+          <p>Please retain this email for your records. The submitted abstract will undergo the review process, and further communication regarding acceptance, presentation format, and presentation schedule will be shared with you subsequently.</p>
+          <p>Thank you for your contribution to IAPSMGCCON 2026. We look forward to your participation and an enriching scientific programme.</p>
+          <p>Warm regards,<br/>
+          Organizing Committee<br/>
+          IAPSMGCCON 2026 – Gujarat State Chapter<br/>
+          Parul University, Vadodara</p>
+        </div>
+      `
+    });
+
     return NextResponse.json({ success: true, message: `${typeLabel} submitted successfully.` });
   } catch (error: any) {
     console.error('Error submitting abstract:', error);
