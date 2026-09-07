@@ -7,8 +7,10 @@ import { conference } from '@/data/conference';
 import { REGISTRATION_MAPPING, ACCESS_CODE_MAPPING } from '@/lib/registrationData';
 import styles from './Hero.module.css';
 
-// Unique IAPSMGC access codes for Abstract submission
-export const ABSTRACT_ACCESS_CODES = [
+// Unique IAPSMGC access codes for Abstract submission.
+// We combine the legacy hardcoded list with ALL codes from ACCESS_CODE_MAPPING so
+// that whenever a new registrant is added to the mapping their code is automatically valid.
+const _ABSTRACT_LEGACY_CODES = [
   'IAPSMGC2026', 'IAPSMGC-X7K4M2', 'IAPSMGC-P9R8T5', 'IAPSMGC-W3N6Q1', 'IAPSMGC-H8V2L7', 'IAPSMGC-Z4M9K3',
   'IAPSMGC-B7T5X8', 'IAPSMGC-R2Q6N4', 'IAPSMGC-K9W3P7', 'IAPSMGC-C5L8T2', 'IAPSMGC-Y1M7R6',
   'IAPSMGC-F4X9K8', 'IAPSMGC-N2P6W3', 'IAPSMGC-T8R1M5', 'IAPSMGC-Q7V4L9', 'IAPSMGC-D3K8X2',
@@ -61,6 +63,15 @@ export const ABSTRACT_ACCESS_CODES = [
   'IAPSMGC-P6Q1W3', 'IAPSMGC-R2K8N7', 'IAPSMGC-X1L4T9', 'IAPSMGC-V5M7P6', 'IAPSMGC-H2Q9R1', 'IAPSMGC-Z8W5L4', 'IAPSMGC-E4T2N7', 'IAPSMGC-T9P1K3', 'IAPSMGC-A3X8M6', 'IAPSMGC-F6R4Q9',
   'IAPSMGC-Y2N7W5',
 ];
+
+// Dynamically include every code from ACCESS_CODE_MAPPING so newly added registrants
+// are automatically valid without needing to update this list manually.
+export const ABSTRACT_ACCESS_CODES: string[] = Array.from(
+  new Set([
+    ..._ABSTRACT_LEGACY_CODES,
+    ...Object.values(ACCESS_CODE_MAPPING).flat(),
+  ])
+);
 
 // Unique IAPSMGC access codes for Full Paper submission
 export const FULL_PAPER_ACCESS_CODES = [
