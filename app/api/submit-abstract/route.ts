@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { ACCESS_CODE_MAPPING } from '@/lib/registrationData';
 
 const TARGET_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUE8_drWQ2d6uEawp6MyobglT5dj4t7ekTGH2QaLv1JJmnlooAGRngVd6k20wJvHx4Cg/exec";
@@ -9,12 +10,18 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const submissionType = (formData.get('submissionType') as string) || 'ABSTRACT';
     const fullName = formData.get('fullName') as string;
-    const registrationNo = formData.get('registrationNo') as string;
-    const email = formData.get('email') as string;
+    const accessCode = formData.get('accessCode') as string;
+    const email = (formData.get('email') as string || '').toLowerCase().trim();
     let documentLink = formData.get('documentLink') as string;
 
-    if (!fullName || !registrationNo || !email || !documentLink) {
+    if (!fullName || !accessCode || !email || !documentLink) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Validate Access Code
+    const validCodes = ACCESS_CODE_MAPPING[email];
+    if (!validCodes || !validCodes.includes(accessCode)) {
+      return NextResponse.json({ error: 'Invalid Access Code for this email address.' }, { status: 403 });
     }
 
     // ── 1. Fetch file from tmpfiles.org and convert to base64 ────────────────
@@ -60,7 +67,7 @@ export async function POST(request: Request) {
       const gsPayload: any = {
         type: submissionType,
         fullName,
-        registrationNumber: registrationNo,
+        registrationNumber: accessCode,
         email,
         documentLink: documentLink, // Fallback if Drive upload fails
       };
@@ -145,8 +152,8 @@ export async function POST(request: Request) {
               <td style="padding: 10px 14px; border: 1px solid #ddd;">${fullName}</td>
             </tr>
             <tr>
-              <td style="padding: 10px 14px; font-weight: bold; border: 1px solid #ddd;">Registration No.</td>
-              <td style="padding: 10px 14px; border: 1px solid #ddd;">${registrationNo}</td>
+              <td style="padding: 10px 14px; font-weight: bold; border: 1px solid #ddd;">Access Code</td>
+              <td style="padding: 10px 14px; border: 1px solid #ddd;">${accessCode}</td>
             </tr>
             <tr style="background: #f9f9f9;">
               <td style="padding: 10px 14px; font-weight: bold; border: 1px solid #ddd;">Email</td>
@@ -165,7 +172,7 @@ export async function POST(request: Request) {
           </p>
         </div>
       `,
-      text: `New ${typeLabel} Submission\n\nFull Name: ${fullName}\nRegistration No: ${registrationNo}\nEmail: ${email}\nDocument: ${documentLink}\n\nSubmitted: ${new Date().toISOString()}`,
+      text: `New ${typeLabel} Submission\n\nFull Name: ${fullName}\nAccess Code: ${accessCode}\nEmail: ${email}\nDocument: ${documentLink}\n\nSubmitted: ${new Date().toISOString()}`,
       attachments: mailAttachments
     });
 

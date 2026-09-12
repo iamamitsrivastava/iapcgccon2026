@@ -41,15 +41,26 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
 
     if (!isOpen) return null;
 
-    const handleUnlock = (e: React.FormEvent) => {
+    const handleUnlock = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Placeholder access code check (replace with real validation later if needed)
-        if (accessCode.trim().toUpperCase() === 'IAPSMGC2026') {
-            localStorage.setItem('abstract_code_unlocked_until', (Date.now() + 5 * 60 * 1000).toString());
-            setIsLocked(false);
-            setError('');
-        } else {
-            setError('Invalid access code. Please try again.');
+        setError('');
+        
+        try {
+            const res = await fetch('/api/verify-access-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: accessCode }),
+            });
+            const data = await res.json();
+            
+            if (data.success) {
+                localStorage.setItem('abstract_code_unlocked_until', (Date.now() + 5 * 60 * 1000).toString());
+                setIsLocked(false);
+            } else {
+                setError(data.message || 'Invalid access code. Please try again.');
+            }
+        } catch (err) {
+            setError('Error verifying code. Please try again later.');
         }
     };
 

@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/sections/Header';
 import Footer from "../../components/sections/Footer";
 import { Landmark, AlertCircle, Lock } from 'lucide-react';
+import Link from 'next/link';
 import styles from './page.module.css';
 
 const CONFERENCE_100_CODES = [
@@ -154,7 +155,7 @@ export default function RegistrationPage() {
 
         usedCodes.push(code);
         localStorage.setItem('used_group_codes', JSON.stringify(usedCodes));
-        
+
         if (is100ConfCode) {
             setIs100DiscountApplied(true);
             setCodeMessage({ text: 'Code applied! 100% discount added to Conference fees.', type: 'success' });
@@ -165,7 +166,7 @@ export default function RegistrationPage() {
             setIsPreConfGroupDiscountApplied(true);
             setCodeMessage({ text: 'Code applied! 5% discount added to Pre-Conference fees.', type: 'success' });
         }
-        
+
         setGroupCode('');
     };
 
@@ -247,7 +248,7 @@ export default function RegistrationPage() {
 
     const keyDates = [
         { label: 'Early Bird registration closing soon', value: '31st Aug' },
-        { label: 'Abstract Submission Deadline', value: '15th September' },
+        { label: 'Abstract Submission Deadline', value: '30th September' },
         { label: 'Notification for Acceptance (Abstract)', value: '15th October' },
         { label: 'Pre-Conference Date', value: '26th November' },
         { label: 'Conference Date', value: '27-28th November' },
@@ -316,6 +317,11 @@ export default function RegistrationPage() {
             <div className={styles.container}>
                 <div className={styles.titleSection}>
                     <h1 className={styles.title}>Registration</h1>
+                    <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                        <Link href="/registration/status" style={{ display: 'inline-block', backgroundColor: 'var(--color-secondary)', color: 'black', padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 'bold', textDecoration: 'none', transition: 'opacity 0.2s' }}>
+                            Check Registration Status &rarr;
+                        </Link>
+                    </div>
                 </div>
 
                 <div className={styles.datesSection}>
@@ -499,7 +505,7 @@ export default function RegistrationPage() {
                             </h3>
                             <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '1rem' }}>
                                 Enter a valid promo or group discount code to apply discounts to Conference or Pre-Conference fees.
-                                <br/>
+                                <br />
                                 <strong style={{ color: '#ef4444' }}>Note: One code is valid once.</strong>
                             </p>
                             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>

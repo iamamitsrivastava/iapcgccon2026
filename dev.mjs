@@ -2,7 +2,7 @@ import { spawn, execSync } from 'child_process';
 import net from 'net';
 
 const defaultPort = parseInt(process.env.PORT || '3000', 10);
-const host = '0.0.0.0'; // Bind specifically to IPv4 localhost
+const host = '127.0.0.1'; // Bind specifically to IPv4 localhost
 
 function freePort(port) {
     try {
@@ -56,7 +56,10 @@ async function start() {
     const port = await findOrFreePort(defaultPort);
     console.log(`[dev.mjs] 🚀 Starting Next.js dev server on http://${host}:${port}`);
 
-    const child = spawn('./node_modules/.bin/next', ['dev', '-H', host, '-p', port.toString()], {
+    const isWin = process.platform === 'win32';
+    const command = isWin ? 'npx' : './node_modules/.bin/next';
+    const args = isWin ? ['next', 'dev', '-H', host, '-p', port.toString()] : ['dev', '-H', host, '-p', port.toString()];
+    const child = spawn(command, args, {
         stdio: 'inherit',
         env: { ...process.env, PORT: port.toString() },
         shell: true
