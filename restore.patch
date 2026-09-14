@@ -10,7 +10,7 @@
 -    { label: "Pre-Conference Workshop", date: "26th November 2026" },
 -    { label: "Main Conference", date: "27th – 28th November 2026" },
 +    { label: "closing soon", date: "15th July" },
-+    { label: "Abstract Submission Deadline", date: "15th september" },
++    { label: "Abstract Submission Deadline", date: "30th september" },
 +    { label: "Nortification for Acceptance( Abstract )", date: "15th October" },
 +    { label: "Pre-Conference Date", date: "26th November" },
 +    { label: "Conference Date", date: "27-28th November" },

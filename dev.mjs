@@ -5,8 +5,9 @@ const defaultPort = parseInt(process.env.PORT || '3000', 10);
 const host = '127.0.0.1'; // Bind specifically to IPv4 localhost
 
 function freePort(port) {
+    if (process.platform === 'win32') return false; // lsof is not available on Windows natively
     try {
-        const pids = execSync(`lsof -t -i :${port}`).toString().trim().split('\n');
+        const pids = execSync(`lsof -t -i :${port}`, { stdio: ['pipe', 'pipe', 'ignore'] }).toString().trim().split('\n');
         if (pids.length > 0 && pids[0] !== '') {
             console.log(`[dev.mjs] ⚠️  Port ${port} is in use by PID(s): ${pids.join(', ')}. Freeing it now...`);
             for (const pid of pids) {
