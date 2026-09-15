@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import { ACCESS_CODE_MAPPING } from '@/lib/registrationData';
+import { ACCESS_CODE_MAPPING, REGISTRATION_MAPPING } from '@/lib/registrationData';
 
 const TARGET_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUE8_drWQ2d6uEawp6MyobglT5dj4t7ekTGH2QaLv1JJmnlooAGRngVd6k20wJvHx4Cg/exec";
@@ -10,18 +10,29 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const submissionType = (formData.get('submissionType') as string) || 'ABSTRACT';
     const fullName = formData.get('fullName') as string;
-    const accessCode = formData.get('accessCode') as string;
+    const rawAccessCode = (formData.get('accessCode') as string) || (formData.get('registrationNo') as string);
+    const accessCode = (rawAccessCode || '').toUpperCase().trim();
     const email = (formData.get('email') as string || '').toLowerCase().trim();
     let documentLink = formData.get('documentLink') as string;
 
-    if (!fullName || !accessCode || !email || !documentLink) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    console.log("Received submission data:", { fullName, accessCode, email, documentLink, rawFormData: Array.from(formData.entries()) });
+
+    const missingFields = [];
+    if (!fullName) missingFields.push('fullName');
+    if (!accessCode) missingFields.push('accessCode/registrationNo');
+    if (!email) missingFields.push('email');
+    if (!documentLink) missingFields.push('documentLink');
+
+    if (missingFields.length > 0) {
+      return NextResponse.json({ error: `Missing required fields: ${missingFields.join(', ')}` }, { status: 400 });
     }
 
     // Validate Access Code
-    const validCodes = ACCESS_CODE_MAPPING[email];
-    if (!validCodes || !validCodes.includes(accessCode)) {
-      return NextResponse.json({ error: 'Invalid Access Code for this email address.' }, { status: 403 });
+    const validAccessCodes = ACCESS_CODE_MAPPING[email] || [];
+    const validRegistrationCodes = REGISTRATION_MAPPING[email] || [];
+    
+    if (!validAccessCodes.includes(accessCode) && !validRegistrationCodes.includes(accessCode)) {
+      return NextResponse.json({ error: 'Invalid Access/Registration Code for this email address.' }, { status: 403 });
     }
 
     // ── 1. Fetch file from tmpfiles.org and convert to base64 ────────────────
@@ -101,8 +112,8 @@ export async function POST(request: Request) {
 
     // ── 2. Send confirmation e-mail ─────────────────────────────────────────
     if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      return NextResponse.json({ error: 'Email credentials not configured.' }, { status: 500 });
-    }
+      console.warn('Email credentials not configured. Skipping confirmation emails.');
+    } else {
 
     const port = Number(process.env.SMTP_PORT) || 587;
     const transporter = nodemailer.createTransport({
@@ -220,7 +231,10 @@ Parul University, Vadodara`,
       `
     });
 
-    return NextResponse.json({ success: true, message: `${typeLabel} submitted successfully.` });
+    // End of else block for SMTP credentials
+    }
+
+    return NextResponse.json({ success: true, message: `${submissionType} submitted successfully.` });
   } catch (error: any) {
     console.error('Error submitting abstract:', error);
     return NextResponse.json({ error: error.message || 'Failed to submit' }, { status: 500 });

@@ -212,8 +212,10 @@ export default function Hero() {
       if (selectedFile) {
         submitData.append('file', selectedFile);
       }
-      if (documentLink) {
-        submitData.append('documentLink', documentLink);
+      
+      const finalDocLink = uploadedUrl || documentLink;
+      if (finalDocLink) {
+        submitData.append('documentLink', finalDocLink);
       }
 
       const res = await fetch("/api/submit-abstract", {
