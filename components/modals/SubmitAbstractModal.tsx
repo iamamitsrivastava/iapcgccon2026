@@ -15,13 +15,22 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
 
     React.useEffect(() => {
         if (isOpen) {
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
             const unlockedUntil = localStorage.getItem('abstract_code_unlocked_until');
             if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
                 setIsLocked(false);
             } else {
                 setIsLocked(true);
             }
+        } else {
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
         }
+        return () => {
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+        };
     }, [isOpen]);
 
     const [fullName, setFullName] = useState('');
