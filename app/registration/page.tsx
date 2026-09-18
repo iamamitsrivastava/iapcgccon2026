@@ -87,7 +87,7 @@ export default function RegistrationPage() {
     const router = useRouter();
     const earlyBirdEnd = new Date('2026-08-31T23:59:59').getTime();
     const lateBirdEnd = new Date('2026-11-26T23:59:59').getTime();
-    const [currentTime, setCurrentTime] = useState(new Date().getTime());
+    const [currentTime, setCurrentTime] = useState(1704067200000); // fixed initial time for hydration (2024-01-01)
     const [groupCode, setGroupCode] = useState('');
     const [codeMessage, setCodeMessage] = useState({ text: '', type: '' });
     const [is100DiscountApplied, setIs100DiscountApplied] = useState(false);
