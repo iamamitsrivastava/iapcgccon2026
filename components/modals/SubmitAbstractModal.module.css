@@ -1,19 +1,17 @@
 .overlay {
     position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    padding: 1rem;
+    padding: 20px;
     animation: fadeIn 0.2s ease-out;
-    /* Prevent scrolling on the overlay itself */
-    overscroll-behavior: none;
-    touch-action: none;
 }
 
 .modal {
@@ -22,15 +20,12 @@
     border-radius: 12px;
     width: 100%;
     max-width: 440px;
+    max-height: calc(100% - 40px); /* 100% of overlay minus padding */
+    display: flex;
+    flex-direction: column;
     position: relative;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     animation: slideUp 0.3s ease-out;
-    /* Ensure the modal is never taller than the screen minus padding */
-    max-height: calc(100vh - 2rem);
-    display: flex;
-    flex-direction: column;
-    /* Re-enable touch action for the modal */
-    touch-action: auto;
 }
 
 .closeButton {
@@ -59,7 +54,7 @@
     padding: 1.5rem;
     overflow-y: auto;
     overscroll-behavior: contain;
-    flex: 1;
+    flex: 1 1 auto;
     -webkit-overflow-scrolling: touch;
 }
 

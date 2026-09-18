@@ -158,6 +158,26 @@ export default function Hero() {
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Lock body scroll when any modal is open
+  useEffect(() => {
+    if (isModalOpen || isRegModalOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    }
+  }, [isModalOpen, isRegModalOpen]);
+
   useEffect(() => {
     setIsMounted(true);
     const targetDate = new Date('2026-11-27T09:00:00+05:30').getTime();
@@ -458,10 +478,24 @@ export default function Hero() {
         <div
           className={styles.modalOverlay}
           onClick={() => { setIsModalOpen(false); setIsCodeVerified(false); setAccessCode(''); setCodeError(''); setSubmissionSuccess(false); setIsCodeSent(false); setSendCodeSuccess(''); setSendCodeError(''); }}
+          style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            zIndex: 99999, padding: '20px', overscrollBehavior: 'none', touchAction: 'none'
+          }}
         >
           <div
             className={styles.modalContent}
             onClick={(e) => e.stopPropagation()}
+            style={{
+              background: '#0f172a', border: '1px solid rgba(250, 204, 21, 0.3)',
+              borderRadius: '12px', padding: '2.5rem', width: '100%', maxWidth: '500px',
+              maxHeight: 'calc(100vh - 40px)', overflowY: 'auto', overscrollBehavior: 'contain',
+              WebkitOverflowScrolling: 'touch', position: 'relative',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)', color: 'white',
+              touchAction: 'auto'
+            }}
           >
             <button
               className={styles.closeButton}

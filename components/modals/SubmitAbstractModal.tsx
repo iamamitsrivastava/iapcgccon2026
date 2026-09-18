@@ -15,8 +15,13 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
 
     React.useEffect(() => {
         if (isOpen) {
+            // Lock background scrolling completely
+            const scrollY = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = '100%';
             document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
+
             const unlockedUntil = localStorage.getItem('abstract_code_unlocked_until');
             if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
                 setIsLocked(false);
@@ -24,13 +29,15 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                 setIsLocked(true);
             }
         } else {
+            const scrollY = document.body.style.top;
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
             document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            }
         }
-        return () => {
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
-        };
     }, [isOpen]);
 
     const [fullName, setFullName] = useState('');
@@ -162,16 +169,34 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
     };
 
     return (
-        <div className={styles.overlay}>
-            <div className={styles.modal}>
-                <button className={styles.closeButton} onClick={onClose} aria-label="Close modal">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <div className={styles.overlay} style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            zIndex: 99999, padding: '20px', overscrollBehavior: 'none', touchAction: 'none'
+        }}>
+            <div className={styles.modal} style={{
+                background: '#0f172a', border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '12px', width: '100%', maxWidth: '450px',
+                maxHeight: 'calc(100vh - 40px)', display: 'flex', flexDirection: 'column',
+                position: 'relative', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
+                touchAction: 'auto'
+            }}>
+                <button className={styles.closeButton} onClick={onClose} aria-label="Close modal" style={{
+                    position: 'absolute', top: '1rem', right: '1rem', background: 'rgba(0,0,0,0.5)',
+                    border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8', padding: '0.5rem',
+                    borderRadius: '50%', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center'
+                }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                 </button>
 
-                <div className={styles.content}>
+                <div className={styles.content} style={{
+                    padding: '1.5rem', overflowY: 'auto', overscrollBehavior: 'contain', flex: 1,
+                    WebkitOverflowScrolling: 'touch'
+                }}>
                     {isLocked ? (
                         <form onSubmit={handleUnlock}>
                             <h2 className={styles.title}>Submit Abstract</h2>
