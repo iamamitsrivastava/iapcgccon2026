@@ -356,7 +356,7 @@ export const conference = {
       "Ms. Farida Khatri",
       "Dr. Khusbu Chauhan",
       "Dr. Nirmal Jyoti Jyotsana",
-      "Dr. Honey Patel",
+      "Dr. Keyur Mistry",
       "Dr. Bhavna Dhakate"
     ],
     scientificCommittee: [
@@ -387,7 +387,7 @@ export const conference = {
       "Dr. Labhita Das",
       "Dr. Grishma Chauhan",
       "Dr. Ankita Parmar",
-      "Dr. Keyur Mistry"
+      "Dr. Honey Patel"
     ],
     culturalCommittee: [
       "Dr Charvi Mistry",
