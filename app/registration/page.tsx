@@ -248,7 +248,7 @@ export default function RegistrationPage() {
 
     const keyDates = [
         { label: 'Early Bird registration closing soon', value: '31st Aug' },
-        { label: 'Abstract Submission Deadline', value: '30th September' },
+        { label: 'Abstract Submission Deadline', value: '7th October' },
         { label: 'Notification for Acceptance (Abstract)', value: '15th October' },
         { label: 'Pre-Conference Date', value: '26th November' },
         { label: 'Conference Date', value: '27-28th November' },

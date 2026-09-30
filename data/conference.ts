@@ -72,7 +72,7 @@ export const conference = {
   // SECTION 5: KEY DATES
   timeline: [
     { label: "Early Bird registration closing soon", date: "31st August" },
-    { label: "Abstract Submission Deadline", date: "30th September" },
+    { label: "Abstract Submission Deadline", date: "7th October" },
     { label: "Notification for Acceptance (Abstract)", date: "15th October" },
     { label: "Pre-Conference Date", date: "26th November" },
     { label: "Conference Date", date: "27-28th November" },
