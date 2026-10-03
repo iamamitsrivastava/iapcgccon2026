@@ -143,7 +143,7 @@ export function SubmissionGuidelines() {
         {
             number: "05",
             title: "Full Paper Submission",
-            text: "Upon acceptance, submit the full paper (min 7000 words) adhering to formatting guidelines.",
+            text: "Upon acceptance, submit the full paper adhering to formatting guidelines.",
             buttons: [
                 {
                     text: "Submit Full Paper",
