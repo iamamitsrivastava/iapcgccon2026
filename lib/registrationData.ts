@@ -308,7 +308,14 @@ export const REGISTRATION_MAPPING: Record<string, string[]> = {
   "rtshruti23@gmail.com": ["26GUJCON309"],
   "jaynimavat23@gmail.com": ["26GUJCON310"],
   "dr.bhavikrana@hotmail.com": ["26GUJCON311"],
-  "riyapanchal11011999@gmail.com": ["26GUJCON312"]
+  "riyapanchal11011999@gmail.com": ["26GUJCON312"],
+  "drpratikkambar52@gmail.com": ["26GUJCON313"],
+  "khannaraj303@gmail.com": ["26GUJCON314"],
+  "hardikmbbs31@gmail.com": ["26GUJCON315"],
+  "sheashaanth1304@gmail.com": ["26GUJCON316"],
+  "mrinalijha@gmail.com": ["26GUJCON317"],
+  "drmeetchauhan88@gmail.com": ["26GUJCON318"],
+  "dr.mitali05@gmail.com": ["26GUJCON319"]
 };
 export const ACCESS_CODE_MAPPING: Record<string, string[]> = {
   "2303051240028@paruluniversity.ac.in": ["IAPSMGC2026"],
@@ -613,6 +620,13 @@ export const ACCESS_CODE_MAPPING: Record<string, string[]> = {
   "rtshruti23@gmail.com": ["IAPSMGC-A8T7R4"],
   "jaynimavat23@gmail.com": ["IAPSMGC-A8T7R5"],
   "dr.bhavikrana@hotmail.com": ["IAPSMGC-A8T7R6"],
-  "riyapanchal11011999@gmail.com": ["IAPSMGC-A8T7R7"]
+  "riyapanchal11011999@gmail.com": ["IAPSMGC-A8T7R7"],
+  "drpratikkambar52@gmail.com": ["IAPSMGC-A8T7R8"],
+  "khannaraj303@gmail.com": ["IAPSMGC-A8T7R9"],
+  "hardikmbbs31@gmail.com": ["IAPSMGC-A8T7S0"],
+  "sheashaanth1304@gmail.com": ["IAPSMGC-A8T7S1"],
+  "mrinalijha@gmail.com": ["IAPSMGC-A8T7S2"],
+  "drmeetchauhan88@gmail.com": ["IAPSMGC-A8T7S3"],
+  "dr.mitali05@gmail.com": ["IAPSMGC-A8T7S4"]
 };
 
