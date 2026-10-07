@@ -6,6 +6,12 @@ const TARGET_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUE8_drWQ2d6uEawp6MyobglT5dj4t7ekTGH2QaLv1JJmnlooAGRngVd6k20wJvHx4Cg/exec";
 
 export async function POST(request: Request) {
+  // Check if deadline has passed
+  const deadline = new Date(2026, 9, 7, 23, 59, 59).getTime();
+  if (Date.now() > deadline) {
+    return NextResponse.json({ error: 'Abstract Submission is now closed. No more submissions are allowed.' }, { status: 403 });
+  }
+
   try {
     const formData = await request.formData();
     const submissionType = (formData.get('submissionType') as string) || 'ABSTRACT';
