@@ -627,6 +627,7 @@ export const ACCESS_CODE_MAPPING: Record<string, string[]> = {
   "sheashaanth1304@gmail.com": ["IAPSMGC-A8T7S1"],
   "mrinalijha@gmail.com": ["IAPSMGC-A8T7S2"],
   "drmeetchauhan88@gmail.com": ["IAPSMGC-A8T7S3"],
-  "dr.mitali05@gmail.com": ["IAPSMGC-A8T7S4"]
+  "dr.mitali05@gmail.com": ["IAPSMGC-A8T7S4"],
+  "abhishekchauhanpsm@gmail.com": ["IAPSMGC-A8T7S5"]
 };
 
