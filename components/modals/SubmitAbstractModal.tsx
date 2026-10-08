@@ -22,17 +22,11 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
             document.body.style.width = '100%';
             document.body.style.overflow = 'hidden';
 
-            const deadline = new Date(2026, 9, 7, 23, 59, 59).getTime();
-            if (Date.now() > deadline) {
-                // If deadline is passed, keep it locked regardless of local storage
-                setIsLocked(true);
+            const unlockedUntil = localStorage.getItem('abstract_code_unlocked_until');
+            if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
+                setIsLocked(false);
             } else {
-                const unlockedUntil = localStorage.getItem('abstract_code_unlocked_until');
-                if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
-                    setIsLocked(false);
-                } else {
-                    setIsLocked(true);
-                }
+                setIsLocked(true);
             }
         } else {
             const scrollY = document.body.style.top;
@@ -206,32 +200,24 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                     {isLocked ? (
                         <form onSubmit={handleUnlock}>
                             <h2 className={styles.title}>Submit Abstract</h2>
-                            {Date.now() > new Date(2026, 9, 7, 23, 59, 59).getTime() ? (
-                                <p className={styles.subtitle} style={{ color: '#ef4444' }}>
-                                    Abstract Submission is now closed. No more submissions are allowed.
-                                </p>
-                            ) : (
-                                <>
-                                    <p className={styles.subtitle}>Please enter the access code to proceed.</p>
+                            <p className={styles.subtitle}>Please enter the access code to proceed.</p>
 
-                                    <div className={styles.formGroup}>
-                                        <label className={styles.label}>Access Code</label>
-                                        <input
-                                            type="password"
-                                            className={styles.input}
-                                            placeholder="Enter access code (Hint: IAPSMGC2026)"
-                                            value={accessCode}
-                                            onChange={(e) => setAccessCode(e.target.value)}
-                                            autoFocus
-                                        />
-                                        {error && <span className={styles.errorText}>{error}</span>}
-                                    </div>
+                            <div className={styles.formGroup}>
+                                <label className={styles.label}>Access Code</label>
+                                <input
+                                    type="password"
+                                    className={styles.input}
+                                    placeholder="Enter access code (Hint: IAPSMGC2026)"
+                                    value={accessCode}
+                                    onChange={(e) => setAccessCode(e.target.value)}
+                                    autoFocus
+                                />
+                                {error && <span className={styles.errorText}>{error}</span>}
+                            </div>
 
-                                    <button type="submit" className={styles.submitBtn}>
-                                        Unlock Form
-                                    </button>
-                                </>
-                            )}
+                            <button type="submit" className={styles.submitBtn}>
+                                Unlock Form
+                            </button>
                         </form>
                     ) : (
                         <form onSubmit={handleSubmit}>
