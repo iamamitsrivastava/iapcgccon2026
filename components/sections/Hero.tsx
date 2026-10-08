@@ -504,7 +504,30 @@ export default function Hero() {
               <X size={24} />
             </button>
 
-            {submissionSuccess ? (
+            {submissionType === 'ABSTRACT' ? (
+              <div style={{ textAlign: 'center', padding: '2.5rem 1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{
+                  width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem',
+                  border: '1px solid rgba(239, 68, 68, 0.3)'
+                }}>
+                  <Lock size={32} color="#ef4444" />
+                </div>
+                <h2 className={styles.modalTitle} style={{ color: '#f8fafc', marginBottom: '0.75rem', fontSize: '1.5rem', textAlign: 'center' }}>
+                  Abstract Submission Closed
+                </h2>
+                <p style={{ color: '#ef4444', fontSize: '1.05rem', fontWeight: 600, lineHeight: 1.5, margin: '0 0 1.75rem 0', textAlign: 'center' }}>
+                  Submission is over, No further submissions are accepted
+                </p>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className={styles.submitModalBtn}
+                  style={{ maxWidth: '180px', margin: '0 auto', cursor: 'pointer' }}
+                >
+                  Close
+                </button>
+              </div>
+            ) : submissionSuccess ? (
               <div className={styles.successState}>
                 <div className={styles.successIconWrapper}>
                   <CheckCircle2
@@ -696,7 +719,7 @@ export default function Hero() {
             ) : (
               <>
                 <h2 className={styles.modalTitle}>
-                  {submissionType === 'FULL_PAPER' ? 'Submit Full Paper' : 'Submit Abstract'}
+                  Submit Full Paper
                 </h2>
                 <p className={styles.modalSubtitle}>
                   Please fill the details below. Your submission will be recorded securely.
