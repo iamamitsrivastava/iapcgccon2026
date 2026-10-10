@@ -80,7 +80,7 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
         }
     };
 
-    const handleFileSelect = async (file: File) => {
+    const handleFileSelect = (file: File) => {
         if (file.size > 10 * 1024 * 1024) {
             setUploadError('File too large. Max 10 MB.');
             return;
@@ -89,31 +89,12 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
         setUploadError('');
         setSelectedFile(file);
         setUploadedUrl(null);
-        setIsUploading(true);
-
-        const fd = new FormData();
-        fd.append('file', file);
-        try {
-            const res = await fetch('/api/upload', { method: 'POST', body: fd });
-            const data = await res.json();
-            if (data.success && data.url) {
-                setUploadedUrl(data.url);
-            } else {
-                setUploadError(data.error || 'Upload failed. Please paste a link instead.');
-                setSelectedFile(null);
-            }
-        } catch {
-            setUploadError('Upload failed. Please paste a link instead.');
-            setSelectedFile(null);
-        } finally {
-            setIsUploading(false);
-        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         
-        if (!uploadedUrl && !documentLink) {
+        if (!selectedFile && !documentLink) {
             setError('Please either upload a file or provide a link.');
             return;
         }
@@ -122,26 +103,25 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
         setError('');
 
         try {
-            const finalDocumentLink = uploadedUrl || documentLink;
-
-            if (!finalDocumentLink) {
-                throw new Error('No document URL available. Please re-upload or paste a link.');
-            }
-
-            // Now submit with the public URL (no file attachment)
             const submitForm = new FormData();
             submitForm.append('fullName', fullName);
-            submitForm.append('registrationNo', registrationNo);
+            submitForm.append('registrationNo', registrationNo || accessCode);
+            submitForm.append('accessCode', accessCode || registrationNo);
             submitForm.append('email', email);
-            submitForm.append('documentLink', finalDocumentLink);
+            if (selectedFile) {
+                submitForm.append('file', selectedFile);
+            }
+            if (documentLink) {
+                submitForm.append('documentLink', documentLink);
+            }
 
             const response = await fetch('/api/submit-abstract', {
                 method: 'POST',
                 body: submitForm,
             });
 
-            if (!response.ok) {
-                const data = await response.json();
+            const data = await response.json();
+            if (!response.ok || !data.success) {
                 throw new Error(data.error || 'Submission failed');
             }
 
@@ -193,29 +173,169 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                     </svg>
                 </button>
 
-                <div className={styles.content} style={{
-                    padding: '2.5rem 1.5rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
-                }}>
-                    <div style={{
-                        width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem',
-                        border: '1px solid rgba(239, 68, 68, 0.3)'
-                    }}>
-                        <Lock size={32} color="#ef4444" />
-                    </div>
-                    <h2 className={styles.title} style={{ color: '#f8fafc', marginBottom: '0.75rem', fontSize: '1.5rem', textAlign: 'center' }}>
-                        Abstract Submission Closed
-                    </h2>
-                    <p style={{ color: '#ef4444', fontSize: '1.05rem', fontWeight: 600, lineHeight: 1.5, margin: '0 0 1.75rem 0', textAlign: 'center' }}>
-                        Submission is over, No further submissions are accepted
-                    </p>
-                    <button
-                        onClick={onClose}
-                        className={styles.submitBtn}
-                        style={{ maxWidth: '180px', margin: '0 auto', cursor: 'pointer' }}
-                    >
-                        Close
-                    </button>
+                <div className={styles.content}>
+                    {submitSuccess ? (
+                        <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+                            <CheckCircle2 size={48} color="#22c55e" style={{ margin: '0 auto 1rem' }} />
+                            <h3 style={{ color: 'white', fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem' }}>Abstract Submitted Successfully!</h3>
+                            <p style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Thank you. Your abstract has been received and stored for committee review.</p>
+                        </div>
+                    ) : isLocked ? (
+                        <form onSubmit={handleUnlock}>
+                            <h2 className={styles.title}>Submit Abstract</h2>
+                            <p className={styles.subtitle}>Please enter your registration access code to proceed.</p>
+
+                            <div className={styles.formGroup}>
+                                <label className={styles.label}>Access / Registration Code *</label>
+                                <input
+                                    type="text"
+                                    className={styles.input}
+                                    placeholder="e.g. 26GUJCON001 or IAPSMGC-70P4R7"
+                                    value={accessCode}
+                                    onChange={(e) => {
+                                        setAccessCode(e.target.value);
+                                        setRegistrationNo(e.target.value);
+                                    }}
+                                    autoFocus
+                                    required
+                                />
+                                {error && <span className={styles.errorText} style={{ color: '#ef4444', fontSize: '0.82rem', display: 'block', marginTop: '0.4rem' }}>{error}</span>}
+                            </div>
+
+                            <button type="submit" className={styles.submitBtn}>
+                                Verify & Unlock Form
+                            </button>
+                        </form>
+                    ) : (
+                        <form onSubmit={handleSubmit}>
+                            <h2 className={styles.title}>Abstract Submission</h2>
+                            <p className={styles.subtitle}>Fill in submitter details and upload your abstract document.</p>
+
+                            <div className={styles.formGroup}>
+                                <label className={styles.label}>Full Name *</label>
+                                <input
+                                    type="text"
+                                    className={styles.input}
+                                    placeholder="Enter your full name"
+                                    value={fullName}
+                                    onChange={(e) => setFullName(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label className={styles.label}>Email Address *</label>
+                                <input
+                                    type="email"
+                                    className={styles.input}
+                                    placeholder="Enter your registered email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label className={styles.label}>
+                                    Upload Document or Provide Link *
+                                    <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.78rem', marginLeft: '0.4rem' }}>(PDF/DOCX, Max 10 MB)</span>
+                                </label>
+
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept=".pdf,.doc,.docx"
+                                    style={{ display: 'none' }}
+                                    onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFileSelect(f); }}
+                                />
+
+                                <div
+                                    onClick={() => { if (!isSubmitting) fileInputRef.current?.click(); }}
+                                    onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                                    onDragLeave={() => setIsDragging(false)}
+                                    onDrop={(e) => {
+                                        e.preventDefault();
+                                        setIsDragging(false);
+                                        const f = e.dataTransfer.files?.[0];
+                                        if (f) handleFileSelect(f);
+                                    }}
+                                    style={{
+                                        border: `2px dashed ${isDragging ? '#FACC15' : selectedFile ? '#FACC15' : 'rgba(255,255,255,0.15)'}`,
+                                        borderRadius: '12px',
+                                        padding: '1.25rem',
+                                        textAlign: 'center',
+                                        cursor: isSubmitting ? 'wait' : 'pointer',
+                                        transition: 'all 0.2s',
+                                        background: isDragging ? 'rgba(250,204,21,0.06)' : selectedFile ? 'rgba(250,204,21,0.05)' : 'rgba(255,255,255,0.02)',
+                                        marginBottom: '0.5rem',
+                                    }}
+                                >
+                                    {isSubmitting ? (
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                            <Loader2 size={28} color="#FACC15" style={{ animation: 'spin 1s linear infinite' }} />
+                                            <span style={{ color: '#FACC15', fontSize: '0.88rem', fontWeight: 600 }}>Uploading document to Google Drive...</span>
+                                        </div>
+                                    ) : selectedFile ? (
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                            <CheckCircle2 size={28} color="#22c55e" />
+                                            <span style={{ color: '#22c55e', fontSize: '0.85rem', fontWeight: 600 }}>✓ {selectedFile.name}</span>
+                                            <span style={{ color: '#64748b', fontSize: '0.78rem' }}>Click to change selected file</span>
+                                        </div>
+                                    ) : (
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                            <Upload size={28} color="#FACC15" />
+                                            <span style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Click to upload or drag &amp; drop</span>
+                                            <span style={{ color: '#475569', fontSize: '0.78rem' }}>PDF or DOCX · Max 10 MB</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {uploadError && (
+                                    <span style={{ color: '#ef4444', fontSize: '0.82rem', display: 'block', marginBottom: '0.5rem' }}>{uploadError}</span>
+                                )}
+
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0.85rem 0' }}>
+                                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+                                    <span style={{ color: '#64748b', fontSize: '0.78rem', fontWeight: 600 }}>OR paste a link</span>
+                                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+                                </div>
+
+                                <input
+                                    type="url"
+                                    className={styles.input}
+                                    placeholder={selectedFile ? '(File attached above)' : 'https://docs.google.com/... or other link'}
+                                    value={selectedFile ? '' : documentLink}
+                                    disabled={!!selectedFile || isSubmitting}
+                                    onChange={(e) => {
+                                        setDocumentLink(e.target.value);
+                                        if (e.target.value) {
+                                            setSelectedFile(null);
+                                            setUploadedUrl(null);
+                                            if (fileInputRef.current) fileInputRef.current.value = '';
+                                        }
+                                    }}
+                                    style={selectedFile ? { opacity: 0.4, cursor: 'not-allowed' } : {}}
+                                />
+                            </div>
+
+                            {error && (
+                                <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '8px', padding: '0.75rem', marginBottom: '0.75rem' }}>
+                                    <span style={{ color: '#ef4444', fontSize: '0.82rem', display: 'block' }}>⚠️ {error}</span>
+                                </div>
+                            )}
+
+                            <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
+                                {isSubmitting ? (
+                                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                        <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} />
+                                        Submitting to Google Drive...
+                                    </span>
+                                ) : (
+                                    'Submit to Committee'
+                                )}
+                            </button>
+                        </form>
+                    )}
                 </div>
                 <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
             </div>
