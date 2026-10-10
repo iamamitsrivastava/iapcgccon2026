@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { Upload, Loader2, CheckCircle2, Lock } from 'lucide-react';
 import styles from './SubmitAbstractModal.module.css';
+import { IS_ABSTRACT_SUBMISSION_OPEN, ABSTRACT_SUBMISSION_CLOSED_HEADING, ABSTRACT_SUBMISSION_CLOSED_MESSAGE } from '@/lib/submissionConfig';
 
 interface SubmitAbstractModalProps {
     isOpen: boolean;
@@ -174,7 +175,29 @@ export default function SubmitAbstractModal({ isOpen, onClose }: SubmitAbstractM
                 </button>
 
                 <div className={styles.content}>
-                    {submitSuccess ? (
+                    {!IS_ABSTRACT_SUBMISSION_OPEN ? (
+                        <div style={{ textAlign: 'center', padding: '2.5rem 1.5rem' }}>
+                            <div style={{
+                                width: '64px',
+                                height: '64px',
+                                borderRadius: '50%',
+                                background: 'rgba(239, 68, 68, 0.1)',
+                                border: '1px solid rgba(239, 68, 68, 0.3)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                margin: '0 auto 1.5rem auto'
+                            }}>
+                                <Lock size={32} color="#ef4444" />
+                            </div>
+                            <h2 className={styles.title} style={{ color: 'white', fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.75rem' }}>
+                                {ABSTRACT_SUBMISSION_CLOSED_HEADING}
+                            </h2>
+                            <p className={styles.subtitle} style={{ color: '#94a3b8', fontSize: '0.95rem', lineHeight: '1.6', margin: '0 auto', maxWidth: '360px' }}>
+                                {ABSTRACT_SUBMISSION_CLOSED_MESSAGE}
+                            </p>
+                        </div>
+                    ) : submitSuccess ? (
                         <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
                             <CheckCircle2 size={48} color="#22c55e" style={{ margin: '0 auto 1rem' }} />
                             <h3 style={{ color: 'white', fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem' }}>Abstract Submitted Successfully!</h3>

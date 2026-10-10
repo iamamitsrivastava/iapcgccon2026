@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { ACCESS_CODE_MAPPING, REGISTRATION_MAPPING } from '@/lib/registrationData';
+import { IS_ABSTRACT_SUBMISSION_OPEN, ABSTRACT_SUBMISSION_CLOSED_MESSAGE } from '@/lib/submissionConfig';
 
 const TARGET_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUE8_drWQ2d6uEawp6MyobglT5dj4t7ekTGH2QaLv1JJmnlooAGRngVd6k20wJvHx4Cg/exec";
@@ -9,6 +10,13 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const submissionType = (formData.get('submissionType') as string) || 'ABSTRACT';
+
+    if (submissionType === 'ABSTRACT' && !IS_ABSTRACT_SUBMISSION_OPEN) {
+      return NextResponse.json(
+        { error: ABSTRACT_SUBMISSION_CLOSED_MESSAGE, success: false },
+        { status: 403 }
+      );
+    }
     const fullName = (formData.get('fullName') as string || '').trim();
     const rawAccessCode = (formData.get('accessCode') as string) || (formData.get('registrationNo') as string) || (formData.get('registrationNumber') as string);
     const accessCode = (rawAccessCode || '').toUpperCase().trim();

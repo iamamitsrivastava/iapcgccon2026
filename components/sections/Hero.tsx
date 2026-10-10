@@ -5,6 +5,7 @@ import { Calendar, MapPin, ArrowRight, FileText, Award, Layers, Search, Globe, X
 import Image from 'next/image';
 import { conference } from '@/data/conference';
 import { REGISTRATION_MAPPING, ACCESS_CODE_MAPPING } from '@/lib/registrationData';
+import { IS_ABSTRACT_SUBMISSION_OPEN, ABSTRACT_SUBMISSION_CLOSED_HEADING, ABSTRACT_SUBMISSION_CLOSED_MESSAGE } from '@/lib/submissionConfig';
 import styles from './Hero.module.css';
 
 // Unique IAPSMGC access codes for Abstract submission.
@@ -485,7 +486,29 @@ export default function Hero() {
               <X size={24} />
             </button>
 
-            {submissionSuccess ? (
+            {submissionType === 'ABSTRACT' && !IS_ABSTRACT_SUBMISSION_OPEN ? (
+              <div style={{ textAlign: 'center', padding: '2.5rem 1.5rem' }}>
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  background: 'rgba(239, 68, 68, 0.1)',
+                  border: '1px solid rgba(239, 68, 68, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 1.5rem auto'
+                }}>
+                  <Lock size={32} color="#ef4444" />
+                </div>
+                <h2 className={styles.modalTitle} style={{ color: 'white', fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.75rem' }}>
+                  {ABSTRACT_SUBMISSION_CLOSED_HEADING}
+                </h2>
+                <p className={styles.modalSubtitle} style={{ color: '#94a3b8', fontSize: '0.95rem', lineHeight: '1.6', margin: '0 auto', maxWidth: '360px' }}>
+                  {ABSTRACT_SUBMISSION_CLOSED_MESSAGE}
+                </p>
+              </div>
+            ) : submissionSuccess ? (
               <div className={styles.successState}>
                 <div className={styles.successIconWrapper}>
                   <CheckCircle2
