@@ -87,7 +87,7 @@ export const CONFERENCE_100_CODES = [
 export function validateDiscountCode(rawCode: string, usedCodes: string[] = []): {
   valid: boolean;
   discountPercent?: number;
-  appliesTo?: 'all' | 'conf_only';
+  appliesTo?: 'all' | 'conf_only' | 'preconf_only';
   code?: string;
   message: string;
 } {
@@ -121,8 +121,8 @@ export function validateDiscountCode(rawCode: string, usedCodes: string[] = []):
   return {
     valid: true,
     discountPercent: 10,
-    appliesTo: 'all',
+    appliesTo: 'preconf_only',
     code,
-    message: 'Code applied! 10% discount added to all registration categories.'
+    message: 'Code applied! 10% discount added to Pre-Conference fees.'
   };
 }

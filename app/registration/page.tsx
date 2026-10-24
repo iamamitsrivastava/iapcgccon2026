@@ -39,15 +39,16 @@ export default function RegistrationPage() {
         if (!numMatch) return;
         let amount = parseInt(numMatch[0]);
 
-        // 10% Discount applies to ALL registration categories automatically
+        // 100% Discount applies to Conference fees
         if (is100DiscountApplied && isConf) {
             amount = 0;
-        } else if (isDiscountApplied) {
+        } else if (isDiscountApplied && !isConf) {
+            // 10% Discount applies ONLY to Pre-Conference
             amount = Math.round(amount * 0.9);
         }
 
         const typeParam = isConf ? '' : '&type=preconf';
-        const codeParam = appliedDiscountCode ? `&discountCode=${encodeURIComponent(appliedDiscountCode)}&discount=10` : '';
+        const codeParam = (!isConf && appliedDiscountCode) ? `&discountCode=${encodeURIComponent(appliedDiscountCode)}&discount=10` : '';
         router.push(`/registration/form?amount=${amount}&label=${encodeURIComponent(label)}&category=${encodeURIComponent(category)}${typeParam}${codeParam}`);
     };
 
@@ -102,7 +103,7 @@ export default function RegistrationPage() {
                 setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Discount applied to Conference fees.`, type: 'success' });
             } else {
                 setIsDiscountApplied(true);
-                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied automatically to all Conference & Pre-Conference categories below!`, type: 'success' });
+                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied to Pre-Conference categories below!`, type: 'success' });
             }
         } catch {
             // Local fallback validation
@@ -122,7 +123,7 @@ export default function RegistrationPage() {
                 setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Discount applied to Conference fees.`, type: 'success' });
             } else {
                 setIsDiscountApplied(true);
-                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied automatically to all Conference & Pre-Conference categories below!`, type: 'success' });
+                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied to Pre-Conference categories below!`, type: 'success' });
             }
         } finally {
             setIsApplying(false);
@@ -141,31 +142,17 @@ export default function RegistrationPage() {
         const num = parseAmount(priceStr);
         if (!num) return priceStr;
 
-        let hasDiscount = false;
-        let discounted = num;
-
         if (is100DiscountApplied && isConf) {
-            hasDiscount = true;
-            discounted = 0;
-        } else if (isDiscountApplied) {
-            hasDiscount = true;
-            discounted = Math.round(discounted * 0.9);
+            return (
+                <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
+                    <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
+                    <span style={{ color: '#FACC15', fontWeight: 800 }}>₹0</span>
+                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.15)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>100% OFF (FREE)</span>
+                </span>
+            );
         }
 
-        if (!hasDiscount) return priceStr;
-
-        return (
-            <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
-                <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
-                <span style={{ color: '#FACC15', fontWeight: 800 }}>₹{discounted}</span>
-                {is100DiscountApplied && isConf && (
-                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.15)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>100% OFF (FREE)</span>
-                )}
-                {isDiscountApplied && (
-                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>10% OFF</span>
-                )}
-            </span>
-        );
+        return priceStr;
     };
 
     const renderPreConfFee = (priceStr: string | undefined) => {
@@ -195,29 +182,7 @@ export default function RegistrationPage() {
     };
 
     const renderSpotFee = (priceStr: string | undefined) => {
-        if (!priceStr) return priceStr;
-        const num = parseAmount(priceStr);
-        if (!num) return priceStr;
-
-        let hasDiscount = false;
-        let discounted = num;
-
-        if (isDiscountApplied) {
-            hasDiscount = true;
-            discounted = Math.round(discounted * 0.9);
-        }
-
-        if (!hasDiscount) return priceStr;
-
-        return (
-            <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
-                <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
-                <span style={{ color: '#FACC15', fontWeight: 800 }}>₹{discounted}</span>
-                {isDiscountApplied && (
-                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>10% OFF</span>
-                )}
-            </span>
-        );
+        return priceStr;
     };
 
     const formatCountdown = () => {
@@ -491,7 +456,7 @@ export default function RegistrationPage() {
                                 Promo / Group Discount
                             </h3>
                             <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '1rem' }}>
-                                Enter a valid promo or group discount code to apply 10% discount to all Conference &amp; Pre-Conference categories.
+                                Enter a valid promo code to apply 10% discount to Pre-Conference categories.
                                 <br />
                                 <strong style={{ color: '#ef4444' }}>Note: Each code is valid for one-time use only.</strong>
                             </p>
