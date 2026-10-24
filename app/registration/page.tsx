@@ -102,7 +102,7 @@ export default function RegistrationPage() {
                 setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Discount applied to Conference fees.`, type: 'success' });
             } else {
                 setIsDiscountApplied(true);
-                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied automatically to all registration categories below!`, type: 'success' });
+                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied automatically to all Conference & Pre-Conference categories below!`, type: 'success' });
             }
         } catch {
             // Local fallback validation
@@ -122,7 +122,7 @@ export default function RegistrationPage() {
                 setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Discount applied to Conference fees.`, type: 'success' });
             } else {
                 setIsDiscountApplied(true);
-                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied automatically to all registration categories below!`, type: 'success' });
+                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied automatically to all Conference & Pre-Conference categories below!`, type: 'success' });
             }
         } finally {
             setIsApplying(false);
@@ -324,7 +324,7 @@ export default function RegistrationPage() {
                     </div>
                 </div>
 
-                <div className={styles.tableContainer}>
+                <div id="fee-structure" className={styles.tableContainer}>
                     <div className={styles.tableHeader}>
                         <h2 className={styles.tableTitle}>Registration Fee Structure</h2>
 
@@ -491,7 +491,7 @@ export default function RegistrationPage() {
                                 Promo / Group Discount
                             </h3>
                             <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '1rem' }}>
-                                Enter a valid promo or group discount code to apply discounts to all registration categories.
+                                Enter a valid promo or group discount code to apply 10% discount to all Conference &amp; Pre-Conference categories.
                                 <br />
                                 <strong style={{ color: '#ef4444' }}>Note: Each code is valid for one-time use only.</strong>
                             </p>

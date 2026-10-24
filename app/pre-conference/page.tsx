@@ -1,5 +1,6 @@
 import Header from '@/components/sections/Header';
 import Footer from '@/components/sections/Footer';
+import WorkshopList from '@/components/sections/WorkshopList';
 import {
     Calendar, Clock, MapPin, Users, BookOpen, FlaskConical,
     Brain, Globe, FileText, Cpu, ChevronRight, Award
@@ -172,49 +173,7 @@ export default function PreConferencePage() {
                         </div>
                     </div>
 
-                    {/* Coming Soon */}
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '5rem 2rem',
-                        textAlign: 'center',
-                        background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
-                        borderRadius: '16px',
-                        border: '1px dashed #D4AF37',
-                        marginTop: '2rem',
-                    }}>
-                        <div style={{
-                            width: '80px',
-                            height: '80px',
-                            borderRadius: '50%',
-                            background: 'rgba(212,175,55,0.15)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginBottom: '1.5rem',
-                            fontSize: '2.5rem',
-                        }}>
-                            🕐
-                        </div>
-                        <h3 style={{
-                            fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
-                            fontWeight: 800,
-                            color: '#0F172A',
-                            marginBottom: '0.75rem',
-                        }}>
-                            Will Be Announced Soon
-                        </h3>
-                        <p style={{
-                            color: '#64748b',
-                            fontSize: '1rem',
-                            maxWidth: '480px',
-                            lineHeight: 1.7,
-                        }}>
-                            Workshop details are currently being finalized. Please check back later for the complete schedule and registration information.
-                        </p>
-                    </div>
+                    <WorkshopList />
                 </div>
             </section>
 
@@ -226,7 +185,7 @@ export default function PreConferencePage() {
                     <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '2rem', fontSize: '1.05rem' }}>
                         Register now to secure your spot at the workshops and main conference.
                     </p>
-                    <a href="/registration" className="program-register-btn">Register Now →</a>
+                    <a href="/registration#fee-structure" className="program-register-btn">Register Now →</a>
                 </div>
             </section>
 

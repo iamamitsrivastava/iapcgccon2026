@@ -79,6 +79,7 @@ function RegistrationFormContent() {
     const label = searchParams.get('label') || 'Conference Registration';
     const category = searchParams.get('category') || '';
     const type = searchParams.get('type') || '';
+    const discountCode = searchParams.get('discountCode') || '';
     
     // Use explicit type=preconf param (reliable) OR label string match (fallback for old links)
     const isPreConf = type === 'preconf' || label.toLowerCase().includes('pre-conference');
@@ -442,6 +443,11 @@ function RegistrationFormContent() {
                     <div>
                         <p style={{ color: '#94a3b8', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>Selected Plan</p>
                         <p style={{ color: 'white', fontWeight: 700, fontSize: '0.95rem' }}>{label}</p>
+                        {discountCode && (
+                            <span style={{ display: 'inline-block', marginTop: '0.4rem', fontSize: '0.75rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', padding: '2px 8px', borderRadius: '4px' }}>
+                                🎉 10% Discount Applied ({discountCode})
+                            </span>
+                        )}
                     </div>
                     <div style={{ textAlign: 'right' }}>
                         <p style={{ color: '#94a3b8', fontSize: '0.72rem', marginBottom: '0.1rem' }}>Amount</p>

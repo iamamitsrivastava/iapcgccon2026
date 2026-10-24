@@ -257,7 +257,7 @@ export default function WorkshopList() {
 
                   <div className="workshop-btn-container">
                     <button
-                      onClick={() => router.push('/registration')}
+                      onClick={() => router.push('/registration#fee-structure')}
                       style={{
                         background: 'linear-gradient(135deg, #D4AF37 0%, #aa8c2c 100%)',
                         color: '#0a1124',
@@ -271,7 +271,7 @@ export default function WorkshopList() {
                         transition: 'transform 0.2s',
                         width: '100%'
                       }}>
-                      Register & Pay
+                      Register Now
                     </button>
                   </div>
                 </div>
