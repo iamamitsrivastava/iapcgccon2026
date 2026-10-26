@@ -58,6 +58,7 @@ const navItems: NavItem[] = [
         ]
     },
     { label: 'Explore Vadodara' , href: '/travel' },
+    { label: 'PITCH FOR PUBLIC HEALTH', href: '/pitch-for-public-health' },
     { label: 'Contact Us', href: '/contact' },
 ];
 
