@@ -48,7 +48,14 @@ export default function RegistrationPage() {
         }
 
         const typeParam = isConf ? '' : '&type=preconf';
-        const codeParam = (!isConf && appliedDiscountCode) ? `&discountCode=${encodeURIComponent(appliedDiscountCode)}&discount=10` : '';
+        let codeParam = '';
+        if (appliedDiscountCode) {
+            if (is100DiscountApplied && isConf) {
+                codeParam = `&discountCode=${encodeURIComponent(appliedDiscountCode)}&discount=100`;
+            } else if (isDiscountApplied && !isConf) {
+                codeParam = `&discountCode=${encodeURIComponent(appliedDiscountCode)}&discount=10`;
+            }
+        }
         router.push(`/registration/form?amount=${amount}&label=${encodeURIComponent(label)}&category=${encodeURIComponent(category)}${typeParam}${codeParam}`);
     };
 
@@ -100,7 +107,7 @@ export default function RegistrationPage() {
 
             if (data.discountPercent === 100) {
                 setIs100DiscountApplied(true);
-                setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Discount applied to Conference fees.`, type: 'success' });
+                setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Registration applied to Conference fees. Please click your category in the table above to proceed.`, type: 'success' });
             } else {
                 setIsDiscountApplied(true);
                 setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied to Pre-Conference categories below!`, type: 'success' });
@@ -120,7 +127,7 @@ export default function RegistrationPage() {
 
             if (result.discountPercent === 100) {
                 setIs100DiscountApplied(true);
-                setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Discount applied to Conference fees.`, type: 'success' });
+                setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Registration applied to Conference fees. Please click your category in the table above to proceed.`, type: 'success' });
             } else {
                 setIsDiscountApplied(true);
                 setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied to Pre-Conference categories below!`, type: 'success' });
@@ -453,17 +460,17 @@ export default function RegistrationPage() {
                         <div className={styles.infoCard}>
                             <h3 className={styles.infoSectionTitle} style={{ marginBottom: '1rem', color: 'var(--color-secondary)' }}>
                                 <AlertCircle className={styles.infoIcon} size={24} />
-                                Promo / Group Discount
+                                Promo / Free Registration / Group Discount
                             </h3>
                             <p style={{ fontSize: '0.9rem', color: '#94a3b8', marginBottom: '1rem' }}>
-                                Enter a valid promo code to apply 10% discount to Pre-Conference categories.
+                                Enter a valid promo code to apply discount (100% Free Registration for Conference or 10% Discount for Pre-Conference).
                                 <br />
                                 <strong style={{ color: '#ef4444' }}>Note: Each code is valid for one-time use only.</strong>
                             </p>
                             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
                                 <input
                                     type="text"
-                                    placeholder="Enter Promo / Group Code"
+                                    placeholder="Enter Promo / Free Registration Code"
                                     value={groupCode}
                                     onChange={(e) => setGroupCode(e.target.value.toUpperCase())}
                                     style={{

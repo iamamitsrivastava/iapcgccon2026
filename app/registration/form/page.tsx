@@ -75,16 +75,27 @@ function RegistrationFormContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
-    const amount = parseInt(searchParams.get('amount') || '0');
+    const initialAmount = parseInt(searchParams.get('amount') || '0');
     const label = searchParams.get('label') || 'Conference Registration';
     const category = searchParams.get('category') || '';
     const type = searchParams.get('type') || '';
-    const discountCode = searchParams.get('discountCode') || '';
+    const initialDiscountCode = searchParams.get('discountCode') || '';
     
     // Use explicit type=preconf param (reliable) OR label string match (fallback for old links)
     const isPreConf = type === 'preconf' || label.toLowerCase().includes('pre-conference');
 
-    const upiString = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent('IAPSMGC CON 2026 - ' + label)}`;
+    const [currentAmount, setCurrentAmount] = useState<number>(initialAmount);
+    const [activeDiscountCode, setActiveDiscountCode] = useState<string>(initialDiscountCode);
+    const [formPromoCode, setFormPromoCode] = useState('');
+    const [formPromoMessage, setFormPromoMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+    const [isApplyingPromo, setIsApplyingPromo] = useState(false);
+
+    useEffect(() => {
+        setCurrentAmount(initialAmount);
+        setActiveDiscountCode(initialDiscountCode);
+    }, [initialAmount, initialDiscountCode]);
+
+    const upiString = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&am=${currentAmount}&cu=INR&tn=${encodeURIComponent('IAPSMGC CON 2026 - ' + label)}`;
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiString)}&bgcolor=ffffff&color=0b1c35&margin=12`;
 
     const [copied, setCopied] = useState(false);
@@ -210,6 +221,102 @@ function RegistrationFormContent() {
     };
 
     const copyUpiId = () => copyToClipboard(UPI_ID, setCopied);
+
+    const handleApplyPromoInForm = async () => {
+        const code = formPromoCode.trim().toUpperCase();
+        if (!code) {
+            setFormPromoMessage({ text: 'Please enter a code.', type: 'error' });
+            return;
+        }
+        setIsApplyingPromo(true);
+        const localUsed: string[] = JSON.parse(localStorage.getItem('used_group_codes') || '[]');
+        try {
+            const res = await fetch('/api/discount-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code, action: 'verify', clientUsedCodes: localUsed })
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                setFormPromoMessage({ text: data.message || 'Invalid or already used code.', type: 'error' });
+                setIsApplyingPromo(false);
+                return;
+            }
+
+            if (data.discountPercent === 100) {
+                if (isPreConf) {
+                    setFormPromoMessage({ text: 'This free registration code is valid for Conference only.', type: 'error' });
+                    setIsApplyingPromo(false);
+                    return;
+                }
+                await fetch('/api/discount-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code, action: 'burn', clientUsedCodes: localUsed })
+                });
+                if (!localUsed.includes(code)) {
+                    localUsed.push(code);
+                    localStorage.setItem('used_group_codes', JSON.stringify(localUsed));
+                }
+                setActiveDiscountCode(code);
+                setCurrentAmount(0);
+                setFormPromoMessage({ text: `🎉 Code ${code} applied! 100% Free Registration applied.`, type: 'success' });
+            } else if (data.discountPercent === 10) {
+                if (!isPreConf) {
+                    setFormPromoMessage({ text: 'This 10% discount code is valid for Pre-Conference only.', type: 'error' });
+                    setIsApplyingPromo(false);
+                    return;
+                }
+                await fetch('/api/discount-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code, action: 'burn', clientUsedCodes: localUsed })
+                });
+                if (!localUsed.includes(code)) {
+                    localUsed.push(code);
+                    localStorage.setItem('used_group_codes', JSON.stringify(localUsed));
+                }
+                setActiveDiscountCode(code);
+                setCurrentAmount(Math.round(currentAmount * 0.9));
+                setFormPromoMessage({ text: `🎉 Code ${code} applied! 10% discount applied.`, type: 'success' });
+            }
+        } catch {
+            const { validateDiscountCode } = await import('@/lib/discountCodes');
+            const result = validateDiscountCode(code, localUsed);
+            if (!result.valid) {
+                setFormPromoMessage({ text: result.message, type: 'error' });
+                setIsApplyingPromo(false);
+                return;
+            }
+            if (result.discountPercent === 100) {
+                if (isPreConf) {
+                    setFormPromoMessage({ text: 'This free registration code is valid for Conference only.', type: 'error' });
+                    setIsApplyingPromo(false);
+                    return;
+                }
+                localUsed.push(code);
+                localStorage.setItem('used_group_codes', JSON.stringify(localUsed));
+                setActiveDiscountCode(code);
+                setCurrentAmount(0);
+                setFormPromoMessage({ text: `🎉 Code ${code} applied! 100% Free Registration applied.`, type: 'success' });
+            } else {
+                if (!isPreConf) {
+                    setFormPromoMessage({ text: 'This 10% discount code is valid for Pre-Conference only.', type: 'error' });
+                    setIsApplyingPromo(false);
+                    return;
+                }
+                localUsed.push(code);
+                localStorage.setItem('used_group_codes', JSON.stringify(localUsed));
+                setActiveDiscountCode(code);
+                setCurrentAmount(Math.round(currentAmount * 0.9));
+                setFormPromoMessage({ text: `🎉 Code ${code} applied! 10% discount applied.`, type: 'success' });
+            }
+        } finally {
+            setIsApplyingPromo(false);
+            setFormPromoCode('');
+        }
+    };
+
     const validate = () => {
         const e: Record<string, string> = {};
         if (!form.fullName.trim()) e.fullName = 'Required';
@@ -225,12 +332,12 @@ function RegistrationFormContent() {
         if (!form.iapsmRegNumber.trim()) e.iapsmRegNumber = 'Required';
         if (!form.foodPreference) e.foodPreference = 'Required';
         
-        if (amount > 0) {
+        if (currentAmount > 0) {
             if (!form.rrnNumber.trim()) e.rrnNumber = 'Required';
             if (!form.dateOfPayment) e.dateOfPayment = 'Required';
             if (!proofPreview) e.proof = 'Please upload your payment proof';
         } else {
-            if (!proofPreview) e.proof = 'Please upload your age proof';
+            if (!activeDiscountCode && !proofPreview) e.proof = 'Please upload your age proof';
         }
         
         if (isPreConf) {
@@ -262,7 +369,7 @@ function RegistrationFormContent() {
             const paymentProofUrl = typeof window !== 'undefined' && proofUrl?.startsWith('/') ? window.location.origin + proofUrl : proofUrl;
 
             const payload = {
-                amount: amount,
+                amount: currentAmount,
                 fullName: form.fullName,
                 gender: form.gender,
                 department: form.department,
@@ -276,11 +383,11 @@ function RegistrationFormContent() {
                 registrationNumber: form.iapsmRegNumber,
                 foodPreference: form.foodPreference,
                 registrationDoneFor: isPreConf ? 'Pre-conference Workshop' : 'Conference',
-                registrationPlan: `${category} - ${label} - ₹${amount}`,
-                rrn: amount === 0 ? (form.rrnNumber.trim() || 'AGE PROOF VERIFICATION') : form.rrnNumber,
-                paymentDate: amount === 0 ? (form.dateOfPayment || new Date().toISOString().split('T')[0]) : form.dateOfPayment,
-                paymentProof: paymentProofUrl,
-                ageProof: amount === 0 ? paymentProofUrl : '',
+                registrationPlan: `${category} - ${label} - ₹${currentAmount}`,
+                rrn: currentAmount === 0 ? (activeDiscountCode ? `FREE-CODE: ${activeDiscountCode}` : (form.rrnNumber.trim() || 'AGE PROOF VERIFICATION')) : form.rrnNumber,
+                paymentDate: currentAmount === 0 ? (form.dateOfPayment || new Date().toISOString().split('T')[0]) : form.dateOfPayment,
+                paymentProof: paymentProofUrl || (activeDiscountCode ? `FREE REGISTRATION (${activeDiscountCode})` : ''),
+                ageProof: activeDiscountCode ? '' : (currentAmount === 0 ? paymentProofUrl : ''),
                 priority1: isPreConf ? form.workshopPriorities[0] : '',
                 priority2: isPreConf ? form.workshopPriorities[1] : '',
                 priority3: isPreConf ? form.workshopPriorities[2] : '',
@@ -443,17 +550,66 @@ function RegistrationFormContent() {
                     <div>
                         <p style={{ color: '#94a3b8', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>Selected Plan</p>
                         <p style={{ color: 'white', fontWeight: 700, fontSize: '0.95rem' }}>{label}</p>
-                        {discountCode && (
+                        {activeDiscountCode && (
                             <span style={{ display: 'inline-block', marginTop: '0.4rem', fontSize: '0.75rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', padding: '2px 8px', borderRadius: '4px' }}>
-                                🎉 10% Discount Applied ({discountCode})
+                                {currentAmount === 0 ? `🎉 100% Free Registration Applied (${activeDiscountCode})` : `🎉 10% Discount Applied (${activeDiscountCode})`}
                             </span>
                         )}
                     </div>
                     <div style={{ textAlign: 'right' }}>
                         <p style={{ color: '#94a3b8', fontSize: '0.72rem', marginBottom: '0.1rem' }}>Amount</p>
-                        <p style={{ color: '#FACC15', fontWeight: 900, fontSize: '1.75rem', lineHeight: 1 }}>{amount === 0 ? 'FREE (₹0)' : `₹${amount}`}</p>
+                        <p style={{ color: '#FACC15', fontWeight: 900, fontSize: '1.75rem', lineHeight: 1 }}>{currentAmount === 0 ? 'FREE (₹0)' : `₹${currentAmount}`}</p>
                     </div>
                 </div>
+
+                {/* Optional Promo / Free Registration Code input on form */}
+                {currentAmount > 0 && !activeDiscountCode && (
+                    <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(250,204,21,0.3)', borderRadius: '12px', padding: '1rem', marginTop: '1rem', marginBottom: '1.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#FACC15' }}>Have a Promo / Free Registration Code?</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <input
+                                type="text"
+                                placeholder="Enter Code (e.g. IAPSMGC-...)"
+                                value={formPromoCode}
+                                onChange={(e) => setFormPromoCode(e.target.value.toUpperCase())}
+                                style={{
+                                    flex: 1,
+                                    padding: '0.6rem 0.8rem',
+                                    borderRadius: '6px',
+                                    border: '1px solid rgba(255,255,255,0.2)',
+                                    background: 'rgba(0,0,0,0.3)',
+                                    color: 'white',
+                                    fontSize: '0.85rem',
+                                    textTransform: 'uppercase'
+                                }}
+                            />
+                            <button
+                                type="button"
+                                onClick={handleApplyPromoInForm}
+                                disabled={isApplyingPromo}
+                                style={{
+                                    padding: '0.6rem 1.2rem',
+                                    borderRadius: '6px',
+                                    border: 'none',
+                                    background: '#FACC15',
+                                    color: '#0B1C35',
+                                    fontWeight: 700,
+                                    fontSize: '0.85rem',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                {isApplyingPromo ? 'Applying...' : 'Apply Code'}
+                            </button>
+                        </div>
+                        {formPromoMessage && (
+                            <p style={{ fontSize: '0.8rem', color: formPromoMessage.type === 'error' ? '#ef4444' : '#22c55e', fontWeight: 600, marginTop: '0.5rem', marginBottom: 0 }}>
+                                {formPromoMessage.text}
+                            </p>
+                        )}
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit} noValidate>
                     {/* ── Section 1: Personal Info ── */}
@@ -736,10 +892,10 @@ function RegistrationFormContent() {
                     {/* ── Section 6: Payment Details OR Age Details ── */}
                     <div style={s.sectionHead}>
                         <div style={s.sectionDot} />
-                        <span style={s.sectionTitle}>{amount === 0 ? 'Age Details' : 'Payment Details'}</span>
+                        <span style={s.sectionTitle}>{currentAmount === 0 ? (activeDiscountCode ? 'Free Registration Verification' : 'Age Details') : 'Payment Details'}</span>
                     </div>
 
-                    {amount > 0 ? (
+                    {currentAmount > 0 ? (
                         <>
                             {/* 14. RRN */}
                             <div style={s.field}>
@@ -778,14 +934,14 @@ function RegistrationFormContent() {
                                     {/* QR */}
                                     <div style={{ background: 'white', borderRadius: '14px', padding: '0.85rem', boxShadow: '0 8px 32px rgba(0,0,0,0.4)', flexShrink: 0 }}>
                                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={qrUrl} alt={`UPI QR ₹${amount}`} width={180} height={180} style={{ display: 'block', borderRadius: '6px' }} />
+                                        <img src={qrUrl} alt={`UPI QR ₹${currentAmount}`} width={180} height={180} style={{ display: 'block', borderRadius: '6px' }} />
                                         <p style={{ color: '#0b1c35', fontSize: '0.65rem', fontWeight: 800, textAlign: 'center', marginTop: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                            Scan to Pay ₹{amount}
+                                            Scan to Pay ₹{currentAmount}
                                         </p>
                                     </div>
                                     {/* Instructions */}
                                     <div style={{ flex: 1, minWidth: '200px' }}>
-                                        <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1rem', marginBottom: '0.25rem' }}>Pay ₹{amount} via UPI</p>
+                                        <p style={{ color: '#FACC15', fontWeight: 800, fontSize: '1rem', marginBottom: '0.25rem' }}>Pay ₹{currentAmount} via UPI</p>
                                         <p style={{ color: '#94a3b8', fontSize: '0.82rem', marginBottom: '1.1rem', lineHeight: 1.6 }}>
                                             Scan the QR code with <strong style={{ color: '#cbd5e1' }}>GPay, PhonePe, Paytm or BHIM</strong>, or pay directly to the UPI ID below.
                                         </p>
@@ -852,50 +1008,75 @@ function RegistrationFormContent() {
                             </div>
                         </>
                     ) : (
-                        /* When amount === 0 (100% discount applied): Show ONLY Upload Age Proof */
-                        <div style={s.field}>
-                            <label style={s.label}>Upload Age Proof <span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}>(Govt ID / Passport / Driving License / Birth Certificate - PDF/JPG only, Max 10 MB)</span></label>
-                            <div
-                                style={s.fileZone(!!proofPreview)}
-                                onClick={() => proofRef.current?.click()}
-                                data-error={errors.proof ? true : undefined}
-                            >
-                                <input ref={proofRef} type="file" accept="image/*,application/pdf" style={{ display: 'none' }} onChange={handleProofChange} />
-                                {proofPreview ? (
-                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={proofPreview} alt="Age proof" style={{ height: '90px', maxWidth: '100%', objectFit: 'contain', borderRadius: '8px', border: '2px solid #FACC15' }} />
-                                        <span style={{ color: '#22c55e', fontSize: '0.85rem', fontWeight: 600 }}>✓ Age proof uploaded. Click to change.</span>
+                        /* When currentAmount === 0 (100% Free Registration Code or Senior Citizen) */
+                        <>
+                            {activeDiscountCode && (
+                                <div style={{
+                                    background: 'linear-gradient(145deg, rgba(16,185,129,0.12) 0%, rgba(10,18,38,0.9) 100%)',
+                                    border: '1px solid rgba(16,185,129,0.4)',
+                                    borderRadius: '16px',
+                                    padding: '1.5rem',
+                                    marginBottom: '1.75rem',
+                                    textAlign: 'center'
+                                }}>
+                                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(16,185,129,0.2)', color: '#10b981', marginBottom: '0.75rem' }}>
+                                        <CheckCircle size={28} />
                                     </div>
-                                ) : (
-                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                                        <Upload size={28} color="#FACC15" />
-                                        <span style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Click to upload Age Proof document</span>
-                                        <span style={{ color: '#475569', fontSize: '0.78rem' }}>JPG, PNG or PDF · Max 10 MB</span>
-                                    </div>
-                                )}
-                                {uploadingProof && (
-                                    <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#FACC15', fontSize: '0.85rem' }}>
-                                        <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Uploading...
-                                    </div>
-                                )}
-                            </div>
-                            {proofUrl && (
-                                <div style={{ marginTop: '0.75rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                    <span style={{ flex: 1, fontSize: '0.85rem', color: '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                        {typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl}
-                                    </span>
-                                    <button type="button" onClick={() => {
-                                        const urlToCopy = typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl;
-                                        copyToClipboard(urlToCopy || '', setProofCopied);
-                                    }} style={{ background: proofCopied ? 'rgba(34,197,94,0.15)' : 'rgba(250,204,21,0.12)', border: `1px solid ${proofCopied ? 'rgba(34,197,94,0.4)' : 'rgba(250,204,21,0.3)'}`, borderRadius: '6px', padding: '0.35rem 0.65rem', cursor: 'pointer', color: proofCopied ? '#22c55e' : '#FACC15', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.3rem', whiteSpace: 'nowrap' }}>
-                                        {proofCopied ? <CheckCircle size={12} /> : <Copy size={12} />}
-                                        {proofCopied ? 'Copied!' : 'Copy Link'}
-                                    </button>
+                                    <h4 style={{ color: '#10b981', fontWeight: 800, fontSize: '1.15rem', marginBottom: '0.35rem' }}>
+                                        Free Registration Code Applied
+                                    </h4>
+                                    <p style={{ color: '#cbd5e1', fontSize: '0.9rem', margin: '0 auto', maxWidth: '480px', lineHeight: 1.5 }}>
+                                        Code <strong style={{ color: '#FACC15' }}>{activeDiscountCode}</strong> is verified. Your registration fee for Conference is <strong>₹0 (100% Free)</strong>. No payment required.
+                                    </p>
                                 </div>
                             )}
-                            {errors.proof && <p style={s.errMsg}><AlertCircle size={13} />{errors.proof}</p>}
-                        </div>
+
+                            <div style={s.field}>
+                                <label style={s.label}>
+                                    {activeDiscountCode ? 'Upload ID Proof / Delegate ID' : 'Upload Age Proof'} {activeDiscountCode ? <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}>(Optional - Institutional ID / Govt ID / Letter - PDF/JPG only)</span> : <><span style={s.required}>*</span> <span style={{ color: '#64748b', fontWeight: 400, fontSize: '0.8rem' }}>(Govt ID / Passport / Driving License / Birth Certificate - PDF/JPG only, Max 10 MB)</span></>}
+                                </label>
+                                <div
+                                    style={s.fileZone(!!proofPreview)}
+                                    onClick={() => proofRef.current?.click()}
+                                    data-error={errors.proof ? true : undefined}
+                                >
+                                    <input ref={proofRef} type="file" accept="image/*,application/pdf" style={{ display: 'none' }} onChange={handleProofChange} />
+                                    {proofPreview ? (
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img src={proofPreview} alt="Proof" style={{ height: '90px', maxWidth: '100%', objectFit: 'contain', borderRadius: '8px', border: '2px solid #FACC15' }} />
+                                            <span style={{ color: '#22c55e', fontSize: '0.85rem', fontWeight: 600 }}>✓ Document uploaded. Click to change.</span>
+                                        </div>
+                                    ) : (
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                                            <Upload size={28} color="#FACC15" />
+                                            <span style={{ color: '#94a3b8', fontSize: '0.88rem' }}>{activeDiscountCode ? 'Click to upload ID document (Optional)' : 'Click to upload Age Proof document'}</span>
+                                            <span style={{ color: '#475569', fontSize: '0.78rem' }}>JPG, PNG or PDF · Max 10 MB</span>
+                                        </div>
+                                    )}
+                                    {uploadingProof && (
+                                        <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#FACC15', fontSize: '0.85rem' }}>
+                                            <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} /> Uploading...
+                                        </div>
+                                    )}
+                                </div>
+                                {proofUrl && (
+                                    <div style={{ marginTop: '0.75rem', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <span style={{ flex: 1, fontSize: '0.85rem', color: '#cbd5e1', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            {typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl}
+                                        </span>
+                                        <button type="button" onClick={() => {
+                                            const urlToCopy = typeof window !== 'undefined' ? window.location.origin + proofUrl : proofUrl;
+                                            copyToClipboard(urlToCopy || '', setProofCopied);
+                                        }} style={{ background: proofCopied ? 'rgba(34,197,94,0.15)' : 'rgba(250,204,21,0.12)', border: `1px solid ${proofCopied ? 'rgba(34,197,94,0.4)' : 'rgba(250,204,21,0.3)'}`, borderRadius: '6px', padding: '0.35rem 0.65rem', cursor: 'pointer', color: proofCopied ? '#22c55e' : '#FACC15', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.3rem', whiteSpace: 'nowrap' }}>
+                                            {proofCopied ? <CheckCircle size={12} /> : <Copy size={12} />}
+                                            {proofCopied ? 'Copied!' : 'Copy Link'}
+                                        </button>
+                                    </div>
+                                )}
+                                {errors.proof && <p style={s.errMsg}><AlertCircle size={13} />{errors.proof}</p>}
+                            </div>
+                        </>
                     )}
 
                     {/* Validation summary */}
