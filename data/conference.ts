@@ -298,7 +298,7 @@ export const conference = {
       {
         name: "Dr. Manish Kumar Singh",
         role: "Secretary General",
-        affiliation: "Associate Professor\n Ram Manohar Lohia Hospital, New Delhi",
+        affiliation: "Professor\n Ram Manohar Lohia Hospital, New Delhi",
         image: "/images/manish-kumar-singh-v2.png"
       },
       {
