@@ -313,6 +313,30 @@ export default function Hero() {
       </div>
 
       <div className={styles.container}>
+        {/* Associated with logos - top right */}
+        <div style={{
+          position: 'absolute',
+          top: '1.5rem',
+          right: '1.5rem',
+          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.6rem',
+          background: 'rgba(255,255,255,0.12)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '12px',
+          padding: '0.75rem 1rem',
+          border: '1px solid rgba(255,255,255,0.2)',
+        }}>
+          <span style={{ color: 'white', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.2rem' }}>Associated with</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <img src="/images/logo-who.jpg" alt="WHO" style={{ height: '36px', borderRadius: '4px', background: 'white', padding: '3px' }} />
+            <img src="/images/logo-unicef.jpg" alt="UNICEF" style={{ height: '36px', borderRadius: '4px', background: 'white', padding: '3px' }} />
+            <img src="/images/logo-icmr-niohr.jpg" alt="ICMR NIOHR" style={{ height: '36px', borderRadius: '4px', background: 'white', padding: '3px' }} />
+            <img src="/images/logo-govt-gujarat.jpg" alt="Government of Gujarat" style={{ height: '36px', borderRadius: '4px', background: 'white', padding: '3px' }} />
+          </div>
+        </div>
         <div className={styles.heroGrid}>
           <div className={styles.content}>
             <div className={`${styles.presenter} ${styles.animate} ${styles['delay-100']}`} style={{ borderBottom: 'none', marginBottom: '0.25rem', display: 'block' }}>DEPARTMENT OF COMMUNITY MEDICINE</div>
@@ -324,6 +348,10 @@ export default function Hero() {
 
             <p className={`${styles.subtitle} ${styles.animate} ${styles['delay-300']}`}>
               Digital Health for All: Bridging Equity, Access and Innovation
+            </p>
+
+            <p className={`${styles.animate} ${styles['delay-350']}`} style={{ color: 'white', fontSize: 'clamp(1.35rem, 2.2vw, 1.85rem)', fontFamily: 'var(--font-heading), serif', fontStyle: 'normal', fontWeight: 400, margin: '0', marginBottom: '2.5rem', borderLeft: '3px solid var(--color-secondary)', paddingLeft: '1.5rem' }}>
+              33<sup>rd</sup> Annual State Conference
             </p>
 
             <div className={`${styles.meta} ${styles.animate} ${styles['delay-400']}`}>

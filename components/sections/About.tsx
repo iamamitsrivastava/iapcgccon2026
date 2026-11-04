@@ -38,7 +38,7 @@ export function AboutConference() {
                             <span className="text-uppercase" style={{ color: 'var(--color-secondary)', fontWeight: 600 }}></span>
                             <h2>About the Conference</h2>
                             <p>
-                                <strong>IAPSMGC CON 2026</strong> is the annual state conference of the{' '}
+                                <strong>IAPSMGC CON 2026</strong> is the <strong>33<sup>rd</sup></strong> annual state conference of the{' '}
                                 <strong>Indian Association of Preventive &amp; Social Medicine (IAPSM) &mdash; Gujarat Chapter</strong>,
                                 hosted by <strong style={{ color: '#050506ff' }}>Department Of Community Medicine</strong>, <strong>Parul Institute of Medical Sciences &amp; Research (PIMSR)</strong>,
                                 Parul University, Vadodara.
