@@ -783,3 +783,148 @@
     0% { transform: scale(0.8); opacity: 1; }
     100% { transform: scale(1.2); opacity: 0; }
 }
+
+/* ══════════════════════════════════════
+   ASSOCIATED WITH SECTION
+══════════════════════════════════════ */
+.associatedWith {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.5rem;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.associatedHeading {
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.85rem;
+    text-align: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.associatedGrid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto;
+    gap: 0.85rem 1.5rem;
+    align-items: center;
+    justify-items: center;
+}
+
+.cellWho {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cellUnicef {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cellIcmr {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cellEmblem {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.logoHorizontal {
+    height: 46px;
+    max-width: 155px;
+    width: auto;
+    object-fit: contain;
+    background: transparent;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    transition: transform 0.2s ease;
+}
+
+.logoEmblem {
+    height: 100%;
+    max-height: 106px;
+    width: auto;
+    object-fit: contain;
+    background: transparent;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    transition: transform 0.2s ease;
+}
+
+.logoHorizontal:hover,
+.logoEmblem:hover {
+    transform: scale(1.04);
+}
+
+@media (max-width: 992px) {
+    .associatedWith {
+        position: static;
+        margin: 1.5rem auto 2.25rem auto;
+        width: fit-content;
+    }
+}
+
+@media (max-width: 576px) {
+    .associatedWith {
+        position: static;
+        margin: 1rem auto 1.75rem auto;
+        width: 100%;
+    }
+
+    .associatedGrid {
+        gap: 0.65rem 0.85rem;
+    }
+
+    .logoHorizontal {
+        height: 36px;
+        max-width: 125px;
+    }
+
+    .logoEmblem {
+        max-height: 82px;
+    }
+}
+
+@media (max-width: 360px) {
+    .associatedGrid {
+        gap: 0.5rem 0.6rem;
+    }
+
+    .logoHorizontal {
+        height: 30px;
+        max-width: 105px;
+    }
+
+    .logoEmblem {
+        max-height: 68px;
+    }
+}

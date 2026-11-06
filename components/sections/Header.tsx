@@ -47,6 +47,7 @@ const navItems: NavItem[] = [
             { label: 'Office Bearers', href: '/committee/office-bearers' },
         ]
     },
+    { label: 'Speakers', href: '/speakers' },
     { label: 'THEMES', href: '/#themes' },
     {
         label: 'Scientific',
@@ -217,6 +218,13 @@ export default function Header({ variant = 'transparent' }: HeaderProps) {
                         <Image src="/parul-university-logo.svg" alt="Parul University" width={90} height={30} />
                         <span className={styles.drawerTitle}>IAPSMGC CON <b>2026</b></span>
                     </div>
+                    <button
+                        className={styles.drawerClose}
+                        onClick={() => setMobileOpen(false)}
+                        aria-label="Close menu"
+                    >
+                        <CloseIcon />
+                    </button>
                 </div>
 
                 <nav className={styles.drawerNav}>

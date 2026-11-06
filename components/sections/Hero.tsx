@@ -313,28 +313,29 @@ export default function Hero() {
       </div>
 
       <div className={styles.container}>
-        {/* Associated with logos - top right */}
-        <div style={{
-          position: 'absolute',
-          top: '1.5rem',
-          right: '1.5rem',
-          zIndex: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.6rem',
-          background: 'rgba(255,255,255,0.12)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '12px',
-          padding: '0.75rem 1rem',
-          border: '1px solid rgba(255,255,255,0.2)',
-        }}>
-          <span style={{ color: 'white', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.2rem' }}>Associated with</span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <img src="/images/logo-who.jpg" alt="WHO" style={{ height: '36px', borderRadius: '4px', background: 'white', padding: '3px' }} />
-            <img src="/images/logo-unicef.jpg" alt="UNICEF" style={{ height: '36px', borderRadius: '4px', background: 'white', padding: '3px' }} />
-            <img src="/images/logo-icmr-niohr.jpg" alt="ICMR NIOHR" style={{ height: '36px', borderRadius: '4px', background: 'white', padding: '3px' }} />
-            <img src="/images/logo-govt-gujarat.jpg" alt="Government of Gujarat" style={{ height: '36px', borderRadius: '4px', background: 'white', padding: '3px' }} />
+        {/* Associated with section */}
+        <div className={styles.associatedWith}>
+          <span className={styles.associatedHeading}>Associated with</span>
+          <div className={styles.associatedGrid}>
+            {/* Row 1, Col 1: WHO */}
+            <div className={styles.cellWho}>
+              <img src="/images/logo-who.jpg" alt="WHO" className={styles.logoHorizontal} />
+            </div>
+
+            {/* Row 1, Col 2: UNICEF */}
+            <div className={styles.cellUnicef}>
+              <img src="/images/logo-unicef.jpg" alt="UNICEF" className={styles.logoHorizontal} />
+            </div>
+
+            {/* Row 2, Col 1: ICMR-NIOHR (directly below WHO) */}
+            <div className={styles.cellIcmr}>
+              <img src="/images/logo-icmr-niohr.jpg" alt="ICMR NIOHR" className={styles.logoHorizontal} />
+            </div>
+
+            {/* Col 3, Spans Row 1 & 2: Government of India Emblem */}
+            <div className={styles.cellEmblem}>
+              <img src="/images/logo-govt-gujarat.jpg" alt="Government of India" className={styles.logoEmblem} />
+            </div>
           </div>
         </div>
         <div className={styles.heroGrid}>
