@@ -6,52 +6,17 @@ import { ChevronDown, ChevronUp, Clock, User, Users, CheckCircle, ArrowRight } f
 const workshopsData = [
   {
     id: 1,
-    title: "1. Capturing Digital Public Health Through the Lens: Practical Photography, Videography and Drone Imaging for Community Medicine",
-    proposer: "Dr. Nanda Kumar J., Senior Resident, Government Medical College, Bhavnagar & Dr. Mohit N. Makwana, Assistant Professor, Department of Community Oncology GCRI, Ahmedabad",
-    otherFaculties: "-",
-    duration: "8 Hours",
-  },
-  {
-    id: 2,
-    title: "2. Essential Public Health Updates for Viksit Bharat by 2047",
-    proposer: "Dr. Bhaveshbhai R. Bariya, Assistant Professor, Medical College Baroda, Vadodara",
-    otherFaculties: " Dr. Neha A. Patel (Associate Professor, Community Medicine GMERS Medical College Valsad, Gujarat) | Resource Person 3: Dr. Darshankumar Mahyavanshi (Professor and Head, Community Medicine NAMO Medical Education and Research Institute, Silvassa) | Resource Person 4: Dr. Nikhil Kumar J. Patel (Professor, Community Medicine Nootan Medical College & Research Centre, Sankalchand Patel University, Visnagar)",
-    duration: "6 Hours",
-  },
-  {
-    id: 3,
-    title: "3. MEDPRENEUR 2026: From White Coat to Startup",
+    title: "1. MEDPRENEUR 2026: From White Coat to Startup",
     proposer: "Dr. Bharti Koria, Associate Professor, Pandit Deendayal Upadhyay Medical College, Rajkot",
     otherFaculties: "-",
     duration: "8 Hours",
   },
   {
-    id: 4,
-    title: "4. Smart SRMA: Hands-on Systematic Review and Meta-analysis using AI tools",
+    id: 2,
+    title: "2. Smart SRMA: Hands-on Systematic Review and Meta-analysis using AI tools",
     proposer: "Dr. Ankit Sheth, Medical Scientist 'F' and Head (Health Sciences Division) ICMR - National Institute of Occupational Health Research",
     otherFaculties: " Dr. Ankit Viramgami (Scientist 'D' ICMR – National Institute of Occupational Health Research, Ahmedabad) | Resource person 3: Dr. Bhavesh Modi (Director and Scientist 'G' ICMR – National Institute of Occupational Health Research, Ahmedabad) | Resource person 4: Dr. Urvish Joshi (Associate Professor, Dept. of Community Medicine Narendra Modi Medical College, Ahmedabad)",
     duration: "4 Hours",
-  },
-  {
-    id: 5,
-    title: "5. From Research Idea to Thesis Submission—Digitally, Efficiently, ethically",
-    proposer: "Dr.Chandresh Pandya ,Professor Medical College Baroda",
-    otherFaculties: " Dr Anjali Modi (Associate Professor AIIMS Rajkot)",
-    duration: "8 Hours",
-  },
-  {
-    id: 6,
-    title: "6. Transforming Competency-Based Medical Education through Digital Media–Based Innovative Teaching–Learning Approaches for Gender-Sensitive Medical Education",
-    proposer: "Dr Manisha Gohel, Professor & Head Pramukhswami Medical College, Bhaikaka University, Karamsad",
-    otherFaculties: "Dr Dinesh Kumar (Professor Community Medicine Pramukhswami Medical College, Bhaikaka University, Karamsad)",
-    duration: "3 Hours",
-  },
-  {
-    id: 7,
-    title: "7. Decoding Human Experiences: From Voices to Evidence : A Practical Workshop on Qualitative Research in Public Health",
-    proposer: "Dr. Hinal Baria (Associate Professor, Community Medicine, GMERS Medical College, Rajpipla, Gujarat. M.D. Community Medicine, Ph.D, PGDM-Public Health Nutrition, NIHFW, New Delhi, ACME, KEM college and hospital, Mumbai)",
-    otherFaculties: "Dr. Neha A. Patel (Associate Professor, Community Medicine, GMERS Medical College Valsad, Gujarat. Qualification: MD (Community Medicine), PGDM (H&FW), CCEBDM, ACME, PhD Scholar)",
-    duration: "TBD",
   }
 ];
 
