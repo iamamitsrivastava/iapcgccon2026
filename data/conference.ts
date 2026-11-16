@@ -292,7 +292,7 @@ export const conference = {
       {
         name: "Dr. Darshan Mahyavanshi",
         role: "Vice President",
-        affiliation: "Medical Superintendent\n Shree Vinoba Bhave Civil Hospital, Silvassa, Dadar & Nagar Haveli",
+        affiliation: "Medical Superintendent\n Namo Medical Education & Research Institute, Silvassa, Dadar & Nagar Haveli",
         image: "/images/darshan-mahyavanshi.png"
       },
       {
