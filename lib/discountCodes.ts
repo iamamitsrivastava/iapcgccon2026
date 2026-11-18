@@ -127,17 +127,17 @@ export function validateDiscountCode(rawCode: string, usedCodes: string[] = []):
     return {
       valid: true,
       discountPercent: 100,
-      appliesTo: 'conf_only',
+      appliesTo: 'all',
       code,
-      message: 'Code applied! 100% Free Registration applied to Conference fees.'
+      message: 'Code applied! 100% Free Registration applied.'
     };
   }
 
   return {
     valid: true,
     discountPercent: 10,
-    appliesTo: 'preconf_only',
+    appliesTo: 'all',
     code,
-    message: 'Code applied! 10% discount added to Pre-Conference fees.'
+    message: 'Code applied! 10% Discount applied.'
   };
 }

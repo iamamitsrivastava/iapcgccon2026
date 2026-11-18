@@ -14,10 +14,10 @@ export async function POST(request: Request) {
     const emailKey = email.toLowerCase().trim();
 
     // 2. Setup Nodemailer Transporter using specified Environment Variables
-    const host = process.env.SMTP_HOST;
+    const host = process.env.SMTP_HOST || 'smtp.gmail.com';
     const port = Number(process.env.SMTP_PORT) || 587;
-    const user = process.env.EMAIL_USER;
-    const pass = process.env.EMAIL_PASSWORD;
+    const user = process.env.EMAIL_USER || process.env.SMTP_USER;
+    const pass = process.env.EMAIL_PASSWORD || process.env.SMTP_PASS;
 
     if (!host || !user || !pass) {
       console.error('SMTP credentials or configuration missing in environment variables.');

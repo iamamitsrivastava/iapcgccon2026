@@ -242,11 +242,6 @@ function RegistrationFormContent() {
             }
 
             if (data.discountPercent === 100) {
-                if (isPreConf) {
-                    setFormPromoMessage({ text: 'This free registration code is valid for Conference only.', type: 'error' });
-                    setIsApplyingPromo(false);
-                    return;
-                }
                 await fetch('/api/discount-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -260,11 +255,6 @@ function RegistrationFormContent() {
                 setCurrentAmount(0);
                 setFormPromoMessage({ text: `🎉 Code ${code} applied! 100% Free Registration applied.`, type: 'success' });
             } else if (data.discountPercent === 10) {
-                if (!isPreConf) {
-                    setFormPromoMessage({ text: 'This 10% discount code is valid for Pre-Conference only.', type: 'error' });
-                    setIsApplyingPromo(false);
-                    return;
-                }
                 await fetch('/api/discount-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -287,22 +277,12 @@ function RegistrationFormContent() {
                 return;
             }
             if (result.discountPercent === 100) {
-                if (isPreConf) {
-                    setFormPromoMessage({ text: 'This free registration code is valid for Conference only.', type: 'error' });
-                    setIsApplyingPromo(false);
-                    return;
-                }
                 localUsed.push(code);
                 localStorage.setItem('used_group_codes', JSON.stringify(localUsed));
                 setActiveDiscountCode(code);
                 setCurrentAmount(0);
                 setFormPromoMessage({ text: `🎉 Code ${code} applied! 100% Free Registration applied.`, type: 'success' });
             } else {
-                if (!isPreConf) {
-                    setFormPromoMessage({ text: 'This 10% discount code is valid for Pre-Conference only.', type: 'error' });
-                    setIsApplyingPromo(false);
-                    return;
-                }
                 localUsed.push(code);
                 localStorage.setItem('used_group_codes', JSON.stringify(localUsed));
                 setActiveDiscountCode(code);

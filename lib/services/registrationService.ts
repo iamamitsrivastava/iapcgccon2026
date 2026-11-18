@@ -5,13 +5,16 @@ import { RegistrationInput } from '@/types';
 const CONFERENCE_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 
 function createTransport() {
+  const user = process.env.SMTP_USER || process.env.EMAIL_USER;
+  const pass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD;
+
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: Number(process.env.SMTP_PORT) || 587,
-    secure: false,                     // STARTTLS
+    secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for 587 (STARTTLS)
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: user,
+      pass: pass,
     },
   });
 }
@@ -20,10 +23,19 @@ function createTransport() {
  * Send a nicely formatted HTML e‑mail confirming the registration.
  */
 export async function sendRegistrationMail(reg: RegistrationInput): Promise<void> {
+  const user = process.env.SMTP_USER || process.env.EMAIL_USER;
+  const pass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD;
+
+  if (!user || !pass) {
+    console.warn('⚠️ SMTP credentials not set (SMTP_USER/EMAIL_USER or SMTP_PASS/EMAIL_PASSWORD). Cannot send confirmation email to', reg.email);
+    return;
+  }
+
   const transporter = createTransport();
+  const senderEmail = user || CONFERENCE_EMAIL;
 
   const mailOptions = {
-    from: `"IAPSMGC CON 2026" <${process.env.SMTP_USER}>`,
+    from: `"IAPSMGC CON 2026" <${senderEmail}>`,
     to: reg.email,                     // **User’s e‑mail**
     cc: CONFERENCE_EMAIL,              // optional copy for the conference inbox
     subject: `✅ Your IAPSMGC 2026 Registration`,

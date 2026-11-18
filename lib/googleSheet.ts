@@ -12,7 +12,8 @@ const GOOGLE_SCRIPT_URL_PRE_CONF =
 
 export async function submitRegistration(data: any) {
   // Check if this is a Pre-Conference registration
-  const isPreConf = data.registrationPlan && data.registrationPlan.toLowerCase().includes('pre-conference');
+  const isPreConf = (data.registrationPlan && data.registrationPlan.toLowerCase().includes('pre-conference')) ||
+                    (data.registrationDoneFor && data.registrationDoneFor.toLowerCase().includes('pre-conference'));
   const targetUrl = isPreConf ? GOOGLE_SCRIPT_URL_PRE_CONF : GOOGLE_SCRIPT_URL;
 
   const response = await fetch(targetUrl, {
@@ -29,6 +30,9 @@ export async function submitRegistration(data: any) {
   let result;
   try {
     result = JSON.parse(text);
+    if (result && result.success === false) {
+      console.error('⚠️ Google Apps Script error:', result.message || result);
+    }
   } catch (e) {
     result = text;
   }

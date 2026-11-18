@@ -39,20 +39,19 @@ export default function RegistrationPage() {
         if (!numMatch) return;
         let amount = parseInt(numMatch[0]);
 
-        // 100% Discount applies to Conference fees
-        if (is100DiscountApplied && isConf) {
+        // Apply discount
+        if (is100DiscountApplied) {
             amount = 0;
-        } else if (isDiscountApplied && !isConf) {
-            // 10% Discount applies ONLY to Pre-Conference
+        } else if (isDiscountApplied) {
             amount = Math.round(amount * 0.9);
         }
 
         const typeParam = isConf ? '' : '&type=preconf';
         let codeParam = '';
         if (appliedDiscountCode) {
-            if (is100DiscountApplied && isConf) {
+            if (is100DiscountApplied) {
                 codeParam = `&discountCode=${encodeURIComponent(appliedDiscountCode)}&discount=100`;
-            } else if (isDiscountApplied && !isConf) {
+            } else if (isDiscountApplied) {
                 codeParam = `&discountCode=${encodeURIComponent(appliedDiscountCode)}&discount=10`;
             }
         }
@@ -107,10 +106,10 @@ export default function RegistrationPage() {
 
             if (data.discountPercent === 100) {
                 setIs100DiscountApplied(true);
-                setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Registration applied to Conference fees. Please click your category in the table above to proceed.`, type: 'success' });
+                setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Registration applied. Please click your category in the table above to proceed.`, type: 'success' });
             } else {
                 setIsDiscountApplied(true);
-                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied to Pre-Conference categories below!`, type: 'success' });
+                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied to categories below!`, type: 'success' });
             }
         } catch {
             // Local fallback validation
@@ -127,10 +126,10 @@ export default function RegistrationPage() {
 
             if (result.discountPercent === 100) {
                 setIs100DiscountApplied(true);
-                setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Registration applied to Conference fees. Please click your category in the table above to proceed.`, type: 'success' });
+                setCodeMessage({ text: `🎉 Code ${code} applied! 100% Free Registration applied. Please click your category in the table above to proceed.`, type: 'success' });
             } else {
                 setIsDiscountApplied(true);
-                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied to Pre-Conference categories below!`, type: 'success' });
+                setCodeMessage({ text: `🎉 Code ${code} applied! 10% Discount applied to categories below!`, type: 'success' });
             }
         } finally {
             setIsApplying(false);
@@ -149,12 +148,21 @@ export default function RegistrationPage() {
         const num = parseAmount(priceStr);
         if (!num) return priceStr;
 
-        if (is100DiscountApplied && isConf) {
+        if (is100DiscountApplied) {
             return (
                 <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
                     <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
                     <span style={{ color: '#FACC15', fontWeight: 800 }}>₹0</span>
                     <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.15)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>100% OFF (FREE)</span>
+                </span>
+            );
+        } else if (isDiscountApplied) {
+            const discounted = Math.round(num * 0.9);
+            return (
+                <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
+                    <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
+                    <span style={{ color: '#FACC15', fontWeight: 800 }}>₹{discounted}</span>
+                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.15)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>10% OFF</span>
                 </span>
             );
         }
@@ -166,6 +174,16 @@ export default function RegistrationPage() {
         if (!priceStr) return priceStr;
         const num = parseAmount(priceStr);
         if (!num) return priceStr;
+
+        if (is100DiscountApplied) {
+            return (
+                <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
+                    <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
+                    <span style={{ color: '#FACC15', fontWeight: 800 }}>₹0</span>
+                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.15)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>100% OFF (FREE)</span>
+                </span>
+            );
+        }
 
         let hasDiscount = false;
         let discounted = num;

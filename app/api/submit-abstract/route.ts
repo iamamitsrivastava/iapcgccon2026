@@ -143,7 +143,9 @@ export async function POST(request: Request) {
     }
 
     // ── 4. Send Confirmation Email via SMTP (if configured) ─────────────────
-    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+    const smtpUser = process.env.SMTP_USER || process.env.EMAIL_USER;
+    const smtpPass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD;
+    if (smtpUser && smtpPass) {
       try {
         const port = Number(process.env.SMTP_PORT) || 587;
         const transporter = nodemailer.createTransport({
@@ -151,8 +153,8 @@ export async function POST(request: Request) {
           port: port,
           secure: port === 465,
           auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
+            user: smtpUser,
+            pass: smtpPass,
           },
         });
 
@@ -160,7 +162,7 @@ export async function POST(request: Request) {
         const typeLabel = submissionType === 'FULL_PAPER' ? 'Full Paper' : 'Abstract';
 
         await transporter.sendMail({
-          from: `"IAPSMGC CON 2026 Website" <${process.env.SMTP_USER}>`,
+          from: `"IAPSMGC CON 2026 Website" <${smtpUser}>`,
           to: TARGET_EMAIL,
           subject: `New ${typeLabel} Submission — ${fullName}`,
           html: `
