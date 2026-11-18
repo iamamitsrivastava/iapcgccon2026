@@ -151,6 +151,9 @@ function RegistrationFormContent() {
         setUploadingPhoto(true);
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('uploadType', 'photo');
+        if (form.fullName) formData.append('fullName', form.fullName);
+        if (form.iapsmRegNumber) formData.append('registrationNumber', form.iapsmRegNumber);
         try {
             const res = await fetch('/api/upload', { method: 'POST', body: formData });
             const data = await res.json();

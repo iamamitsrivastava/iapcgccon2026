@@ -7,6 +7,9 @@ export async function POST(request: Request) {
   try {
     const data = await request.formData();
     const file: File | null = data.get('file') as unknown as File;
+    const uploadType = (data.get('uploadType') as string | null) || '';
+    const fullName = ((data.get('fullName') as string | null) || '').trim();
+    const registrationNumber = ((data.get('registrationNumber') as string | null) || '').trim();
 
     if (!file) {
       return NextResponse.json({ success: false, error: "No file provided" }, { status: 400 });
@@ -14,8 +17,76 @@ export async function POST(request: Request) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+    const mimeType = file.type || 'application/octet-stream';
+    const isImage = mimeType.startsWith('image/');
 
-    // Sanitize filename and add timestamp to avoid collisions
+    // ── Dedicated Registration Passport Photo Upload -> Google Drive ────────
+    if (uploadType === 'photo') {
+      let ext = 'jpg';
+      if (file.name && file.name.includes('.')) {
+        ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+      } else if (mimeType.includes('png')) {
+        ext = 'png';
+      } else if (mimeType.includes('webp')) {
+        ext = 'webp';
+      } else if (mimeType.includes('pdf')) {
+        ext = 'pdf';
+      }
+
+      // Name format: Rahul_Sharma.jpg or Rahul_Sharma_REG.jpg
+      const cleanName = fullName.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+      const regPart = registrationNumber.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_');
+      const baseName = cleanName || file.name.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9]/g, '_');
+      const photoFilename = regPart ? `${baseName}_${regPart}.${ext}` : `${baseName}.${ext}`;
+
+      const REGISTRATION_PHOTO_FOLDER_ID = process.env.GOOGLE_DRIVE_REGISTRATION_FOLDER_ID || "1pLL29U8Pcd61VtU7E0c6I9xNK64BzvIW";
+      const GOOGLE_SCRIPT_URL = process.env.REGISTRATION_UPLOAD_SCRIPT_URL || "https://script.google.com/macros/s/AKfycbwxQMEfkNN7hN2ywBpOdZst_h33pC_NnnzCKLkvBZAHRUOg7J0LLhCBu7RnhzKqbds6IQ/exec";
+
+      try {
+        console.log(`Uploading registration photo to Google Drive (${photoFilename})...`);
+        const base64Str = buffer.toString('base64');
+        const gsRes = await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: "uploadPhoto",
+            folderId: REGISTRATION_PHOTO_FOLDER_ID,
+            fileName: photoFilename,
+            fileMimeType: mimeType,
+            fileBase64: base64Str,
+            fullName,
+            registrationNumber
+          })
+        });
+
+        if (gsRes.ok) {
+          const gsData = await gsRes.json();
+          const driveUrl = gsData.url || gsData.driveUrl;
+          if (driveUrl && !driveUrl.includes('error')) {
+            console.log("Uploaded photo successfully to Google Drive:", driveUrl);
+            return NextResponse.json({ success: true, url: driveUrl });
+          }
+        }
+      } catch (driveErr) {
+        console.error("Google Drive photo upload failed:", driveErr);
+      }
+
+      // Fallback for photo: Save locally or return Data URI (NO GoFile for photos)
+      try {
+        const uploadDir = join(process.cwd(), 'public/uploads');
+        if (!existsSync(uploadDir)) mkdirSync(uploadDir, { recursive: true });
+        const localFilename = `${Date.now()}-${photoFilename}`;
+        await writeFile(join(uploadDir, localFilename), buffer);
+        const host = request.headers.get('host') || 'localhost:3000';
+        const protocol = request.headers.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https');
+        return NextResponse.json({ success: true, url: `${protocol}://${host}/uploads/${localFilename}` });
+      } catch {
+        const dataUri = `data:${mimeType};base64,${buffer.toString('base64')}`;
+        return NextResponse.json({ success: true, url: dataUri });
+      }
+    }
+
+    // ── Generic / Payment Proof Upload Handler (Unchanged) ──────────────────
     const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '-').toLowerCase();
     const filename = `${Date.now()}-${safeName}`;
 
@@ -65,9 +136,6 @@ export async function POST(request: Request) {
         console.error("Vercel Blob upload failed:", vercelBlobError);
       }
     }
-
-    const mimeType = file.type || 'application/octet-stream';
-    const isImage = mimeType.startsWith('image/');
 
     // 3. FreeImage.host fallback (Images only) - highly reliable base64 upload
     if (isImage) {
