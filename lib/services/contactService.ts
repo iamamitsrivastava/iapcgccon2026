@@ -17,8 +17,8 @@ function getPaths() {
 async function sendEmailNotification(submission: ContactInput): Promise<void> {
     // Nodemailer transporter — uses environment variables for credentials.
     // Set SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS in your .env.local
-    const user = process.env.SMTP_USER || process.env.EMAIL_USER;
-    const pass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD;
+    const user = process.env.SMTP_USER || process.env.EMAIL_USER || TARGET_EMAIL;
+    const pass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD || 'dcweynmzcxdzrdkr';
 
     const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST || 'smtp.gmail.com',

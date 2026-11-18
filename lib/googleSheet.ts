@@ -6,7 +6,7 @@ import { RegistrationInput } from '@/types';
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbwgAzVPYjO9_07PbNY5-jNPcrxVnTdnkUwlmvjoReuvVmZoCia9kVfiEpAB8yUMvLe0/exec";
 
-// PLACEHOLDER: Replace this with the Web App URL from your new Google Apps Script
+// Google Apps Script Web App for Pre-Conference Registrations
 const GOOGLE_SCRIPT_URL_PRE_CONF =
   "https://script.google.com/macros/s/AKfycbyym0XlBUg-scmh_50MBACYl7yXWagwpzn3pkb3NKSeRpTBZBGb_Rzq-SNLC7qOpANk/exec";
 
@@ -16,44 +16,56 @@ export async function submitRegistration(data: any) {
                     (data.registrationDoneFor && data.registrationDoneFor.toLowerCase().includes('pre-conference'));
   const targetUrl = isPreConf ? GOOGLE_SCRIPT_URL_PRE_CONF : GOOGLE_SCRIPT_URL;
 
-  const response = await fetch(targetUrl, {
-    method: "POST",
-    // headers: {
-    //   "Content-Type": "application/json",
-    // },
-    body: JSON.stringify(data),
-  });
+  // 1️⃣ Send confirmation e-mail concurrently
+  const emailPromise = (async () => {
+    try {
+      const recipientEmail = (data.email || '').trim();
+      if (!recipientEmail) {
+        console.warn('⚠️ No recipient email found in registration data.');
+        return { success: false, reason: 'No email' };
+      }
 
-  // Google Scripts often return a redirect or text instead of strict JSON, 
-  // so we read it as text to prevent JSON parsing errors.
-  const text = await response.text();
-  let result;
-  try {
-    result = JSON.parse(text);
-    if (result && result.success === false) {
-      console.error('⚠️ Google Apps Script error:', result.message || result);
+      await sendRegistrationMail({
+        ...data,
+        email: recipientEmail,
+        mobile: data.mobile || data.phone,
+        participantCategory: data.participantCategory || data.category,
+      } as RegistrationInput);
+
+      console.info('✅ Confirmation e-mail sent successfully to', recipientEmail);
+      return { success: true };
+    } catch (mailErr) {
+      console.error('⚠️ Failed to send registration e-mail:', mailErr);
+      return { success: false, error: mailErr };
     }
-  } catch (e) {
-    result = text;
-  }
+  })();
 
-  // 2️⃣ Send confirmation e‑mail (new)
-  try {
-    // Since page.tsx passes payload with different names, let's map it or pass it directly.
-    // Wait, page.tsx does NOT match RegistrationInput completely!
-    // I need to be careful with the mapping.
-    // I'll type cast it for now, but page.tsx uses "category" instead of "participantCategory", etc.
-    // The user requested exactly the provided code so I will paste it as they wanted.
-    await sendRegistrationMail({
-      ...data,
-      mobile: data.mobile || data.phone,
-      participantCategory: data.participantCategory || data.category,
-    } as RegistrationInput);
-    console.info('✅ Confirmation e‑mail sent to', data.email);
-  } catch (mailErr) {
-    console.error('⚠️ Failed to send registration e‑mail:', mailErr);
-    // Do not block the user – they already got a success UI.
-  }
+  // 2️⃣ Record registration in Google Sheet via Apps Script Web App
+  const sheetPromise = (async () => {
+    try {
+      const response = await fetch(targetUrl, {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
 
-  return result;
+      const text = await response.text();
+      try {
+        const result = JSON.parse(text);
+        if (result && result.success === false) {
+          console.error('⚠️ Google Apps Script error:', result.message || result);
+        }
+        return result;
+      } catch {
+        return { success: true, text };
+      }
+    } catch (sheetErr) {
+      console.error('⚠️ Google Apps Script request failed:', sheetErr);
+      return { success: false, error: sheetErr };
+    }
+  })();
+
+  // Run both tasks concurrently so email delivery is immediate and not blocked by Google Apps Script latency
+  const [, sheetResult] = await Promise.allSettled([emailPromise, sheetPromise]);
+
+  return sheetResult.status === 'fulfilled' ? sheetResult.value : { success: true };
 }

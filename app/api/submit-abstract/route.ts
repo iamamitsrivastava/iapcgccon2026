@@ -143,8 +143,8 @@ export async function POST(request: Request) {
     }
 
     // ── 4. Send Confirmation Email via SMTP (if configured) ─────────────────
-    const smtpUser = process.env.SMTP_USER || process.env.EMAIL_USER;
-    const smtpPass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD;
+    const smtpUser = process.env.SMTP_USER || process.env.EMAIL_USER || 'iapsmgc.conference@paruluniversity.ac.in';
+    const smtpPass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD || 'dcweynmzcxdzrdkr';
     if (smtpUser && smtpPass) {
       try {
         const port = Number(process.env.SMTP_PORT) || 587;
