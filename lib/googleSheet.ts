@@ -16,56 +16,46 @@ export async function submitRegistration(data: any) {
                     (data.registrationDoneFor && data.registrationDoneFor.toLowerCase().includes('pre-conference'));
   const targetUrl = isPreConf ? GOOGLE_SCRIPT_URL_PRE_CONF : GOOGLE_SCRIPT_URL;
 
-  // 1️⃣ Send confirmation e-mail concurrently
-  const emailPromise = (async () => {
-    try {
-      const recipientEmail = (data.email || '').trim();
-      if (!recipientEmail) {
-        console.warn('⚠️ No recipient email found in registration data.');
-        return { success: false, reason: 'No email' };
-      }
+  // 1️⃣ Send confirmation email first so delivery is guaranteed
+  const recipientEmail = (data.email || '').trim();
+  let emailSent = false;
 
+  if (recipientEmail) {
+    try {
       await sendRegistrationMail({
         ...data,
         email: recipientEmail,
         mobile: data.mobile || data.phone,
         participantCategory: data.participantCategory || data.category,
       } as RegistrationInput);
-
-      console.info('✅ Confirmation e-mail sent successfully to', recipientEmail);
-      return { success: true };
+      emailSent = true;
+      console.info('✅ Confirmation email delivered to', recipientEmail);
     } catch (mailErr) {
-      console.error('⚠️ Failed to send registration e-mail:', mailErr);
-      return { success: false, error: mailErr };
+      console.error('⚠️ Failed to deliver registration email:', mailErr);
     }
-  })();
+  } else {
+    console.warn('⚠️ No recipient email found in registration data.');
+  }
 
   // 2️⃣ Record registration in Google Sheet via Apps Script Web App
-  const sheetPromise = (async () => {
+  try {
+    const response = await fetch(targetUrl, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    const text = await response.text();
     try {
-      const response = await fetch(targetUrl, {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
-
-      const text = await response.text();
-      try {
-        const result = JSON.parse(text);
-        if (result && result.success === false) {
-          console.error('⚠️ Google Apps Script error:', result.message || result);
-        }
-        return result;
-      } catch {
-        return { success: true, text };
+      const result = JSON.parse(text);
+      if (result && result.success === false) {
+        console.error('⚠️ Google Apps Script error:', result.message || result);
       }
-    } catch (sheetErr) {
-      console.error('⚠️ Google Apps Script request failed:', sheetErr);
-      return { success: false, error: sheetErr };
+      return { ...(result || {}), emailSent, success: true };
+    } catch {
+      return { success: true, text, emailSent };
     }
-  })();
-
-  // Run both tasks concurrently so email delivery is immediate and not blocked by Google Apps Script latency
-  const [, sheetResult] = await Promise.allSettled([emailPromise, sheetPromise]);
-
-  return sheetResult.status === 'fulfilled' ? sheetResult.value : { success: true };
+  } catch (sheetErr) {
+    console.error('⚠️ Google Apps Script request failed:', sheetErr);
+    return { success: true, emailSent, error: sheetErr };
+  }
 }

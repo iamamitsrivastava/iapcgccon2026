@@ -4,39 +4,54 @@ import { RegistrationInput } from '@/types';
 // Destination address (conference inbox)
 const CONFERENCE_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 
-function createTransport(secure = true) {
-  const host = process.env.SMTP_HOST;
+/**
+ * Standard port 587 transporter (matching working send-access-code and contactService routes)
+ */
+function createTransport() {
+  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const port = Number(process.env.SMTP_PORT) || 587;
   const user = process.env.SMTP_USER || process.env.EMAIL_USER || CONFERENCE_EMAIL;
   const pass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD || 'dcweynmzcxdzrdkr';
-  const port = Number(process.env.SMTP_PORT) || (secure ? 465 : 587);
 
-  // If a custom SMTP host is set (and not standard smtp.gmail.com), connect via host/port
-  if (host && host !== 'smtp.gmail.com') {
-    return nodemailer.createTransport({
-      host,
-      port,
-      secure: port === 465,
-      auth: { user, pass },
-      tls: { rejectUnauthorized: false },
-    });
-  }
-
-  // Default to Gmail service (uses secure SSL port 465, highly reliable for Google Workspace)
-  if (secure) {
-    return nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user, pass },
-      tls: { rejectUnauthorized: false },
-    });
-  }
-
-  // Fallback to direct SMTP connection on port 587
   return nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth: { user, pass },
-    tls: { rejectUnauthorized: false },
+    host: host,
+    port: port,
+    secure: port === 465,
+    auth: {
+      user: user,
+      pass: pass,
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
+  });
+}
+
+/**
+ * Fallback port 465 SSL transporter
+ */
+function createFallbackTransport() {
+  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const user = process.env.SMTP_USER || process.env.EMAIL_USER || CONFERENCE_EMAIL;
+  const pass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD || 'dcweynmzcxdzrdkr';
+
+  return nodemailer.createTransport({
+    host: host,
+    port: 465,
+    secure: true,
+    auth: {
+      user: user,
+      pass: pass,
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
   });
 }
 
@@ -58,7 +73,6 @@ export async function sendRegistrationMail(reg: RegistrationInput): Promise<void
     from: `"IAPSMGCCON 2026" <${senderEmail}>`,
     to: recipientEmail,
     replyTo: CONFERENCE_EMAIL,
-    bcc: CONFERENCE_EMAIL,
     subject: `✅ Registration Form Submission – IAPSMGCCON 2026`,
     html: `
       <div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px 20px; color: #111827; line-height: 1.6; font-size: 15px;">
@@ -105,13 +119,18 @@ Parul Institute of Medical Sciences & Research`,
   };
 
   try {
-    const transporter = createTransport(true);
-    await transporter.sendMail(mailOptions);
-    console.info('✅ Registration confirmation email sent successfully to', recipientEmail);
+    const transporter = createTransport();
+    const info = await transporter.sendMail(mailOptions);
+    console.info('✅ Registration confirmation email sent successfully to', recipientEmail, info.messageId);
   } catch (err) {
-    console.warn('⚠️ Primary transport failed, attempting fallback transport...', err);
-    const fallbackTransporter = createTransport(false);
-    await fallbackTransporter.sendMail(mailOptions);
-    console.info('✅ Registration confirmation email sent via fallback transport to', recipientEmail);
+    console.warn('⚠️ Primary port 587 transport failed, attempting fallback port 465 transport...', err);
+    try {
+      const fallbackTransporter = createFallbackTransport();
+      const info = await fallbackTransporter.sendMail(mailOptions);
+      console.info('✅ Registration confirmation email sent via fallback transport to', recipientEmail, info.messageId);
+    } catch (fallbackErr) {
+      console.error('❌ Failed to send registration email on both transports:', fallbackErr);
+      throw fallbackErr;
+    }
   }
 }
