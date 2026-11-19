@@ -41,7 +41,6 @@ export async function POST(request: Request) {
 
       const REGISTRATION_PHOTO_FOLDER_ID = process.env.GOOGLE_DRIVE_REGISTRATION_FOLDER_ID || "1pLL29U8Pcd61VtU7E0c6I9xNK64BzvIW";
       const GOOGLE_SCRIPT_URL = process.env.REGISTRATION_UPLOAD_SCRIPT_URL || "https://script.google.com/macros/s/AKfycbzchvpJn0a-3FJS3mBx1jLDPABbCwMfBIPxlD4zQVF9S95AnvPHSHRcZPLtiJOuImzeRg/exec";
-      const GOOGLE_SCRIPT_URL = process.env.REGISTRATION_UPLOAD_SCRIPT_URL || "https://script.google.com/macros/s/AKfycbwxQMEfkNN7hN2ywBpOdZst_h33pC_NnnzCKLkvBZAHRUOg7J0LLhCBu7RnhzKqbds6IQ/exec";
 
       try {
         console.log(`Uploading registration photo to Google Drive (${photoFilename})...`);
