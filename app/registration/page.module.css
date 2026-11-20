@@ -294,6 +294,28 @@
     top: 0;
 }
 
+.lockedButton {
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+.lockedButton:hover {
+    background: white !important;
+    color: grey !important;
+    border-color: #e2e8f0 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.lockedButton:hover .feeText {
+    transform: none !important;
+    opacity: 0.4 !important;
+}
+
+.lockedButton:hover::after {
+    display: none !important;
+}
+
 /* Column highlighting */
 .attendingCol {
     background-color: rgba(241, 245, 249, 0.4);
