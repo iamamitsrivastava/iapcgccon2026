@@ -336,7 +336,22 @@ export const REGISTRATION_MAPPING: Record<string, string[]> = {
   "dhruviparekh2584@gmail.com": ["26GUJCON343"],
   "baxirk@gmail.com": ["26GUJCON336"],
   "parmardipesh@yahoo.com": ["26GUJCON337"],
-  "drniraj74@gmail.com": ["26GUJCON338"]
+  "drniraj74@gmail.com": ["26GUJCON338"],
+  "ashoknonu@gmail.com": ["26GUJCON344"],
+  "drsunilnayak@gmail.com": ["26GUJCON345"],
+  "drnileshthakor@gmail.com": ["26GUJCON346"],
+  "tpuwar@iiphg.org": ["26GUJCON347"],
+  "amimkadri@yahoo.com": ["26GUJCON348"],
+  "director@iiphg.org": ["26GUJCON349"],
+  "bhavmod@yahoo.com": ["26GUJCON350"],
+  "drdarshanm@gmail.com": ["26GUJCON351"],
+  "ramandamor@gmail.com": ["26GUJCON352"],
+  "niramayqujarat@gmail.com": ["26GUJCON353"],
+  "shsrc-tl-health@gujarat.gov.in": ["26GUJCON354"],
+  "ankit.sheth@icmr.gov.in": ["26GUJCON359"],
+  "viramgami.a@icmr.gov.in": ["26GUJCON360"],
+  "mainak.kitty@gmail.com": ["26GUJCON361"],
+  "lindaroy24@gmail.com": ["26GUJCON362"]
 };
 export const ACCESS_CODE_MAPPING: Record<string, string[]> = {
   "2303051240028@paruluniversity.ac.in": ["IAPSMGC2026"],
