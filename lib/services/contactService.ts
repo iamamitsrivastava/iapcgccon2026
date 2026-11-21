@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import nodemailer from 'nodemailer';
 import { ContactSubmission } from '@/types';
 import { ContactInput } from '../validations/contact';
+import { getEmailTransport, getEmailSender, escapeHtml } from './emailTransport';
 
 const TARGET_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 
@@ -13,26 +13,20 @@ function getPaths() {
     return { DATA_DIR, SUBMISSIONS_DIR, CONTACT_FILE };
 }
 
-/** Send contact details to the conference inbox */
+/** Send contact details to the conference inbox using centralized SMTP service */
 async function sendEmailNotification(submission: ContactInput): Promise<void> {
-    // Nodemailer transporter — uses environment variables for credentials.
-    // Set SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS in your .env.local
-    const user = process.env.SMTP_USER || process.env.EMAIL_USER || TARGET_EMAIL;
-    const pass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD || 'dcweynmzcxdzrdkr';
+    const transporter = getEmailTransport();
+    const sender = getEmailSender('IAPSMGC CON 2026 Website');
 
-    const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST || 'smtp.gmail.com',
-        port: Number(process.env.SMTP_PORT) || 587,
-        secure: Number(process.env.SMTP_PORT) === 465,
-        auth: {
-            user: user,
-            pass: pass,
-        },
-    });
+    const safeName = escapeHtml(submission.name);
+    const safeEmail = escapeHtml(submission.email);
+    const safePhone = escapeHtml(submission.phone || 'Not provided');
+    const safeMessage = escapeHtml(submission.message);
 
     const mailOptions = {
-        from: `"IAPSMGC CON 2026 Website" <${user || TARGET_EMAIL}>`,
+        from: sender.formatted,
         to: TARGET_EMAIL,
+        replyTo: submission.email,
         subject: `New Contact Form Submission — ${submission.name}`,
         html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -42,21 +36,21 @@ async function sendEmailNotification(submission: ContactInput): Promise<void> {
                 <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
                     <tr style="background: #f9f9f9;">
                         <td style="padding: 10px 14px; font-weight: bold; width: 140px; border: 1px solid #ddd;">Name</td>
-                        <td style="padding: 10px 14px; border: 1px solid #ddd;">${submission.name}</td>
+                        <td style="padding: 10px 14px; border: 1px solid #ddd;">${safeName}</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px 14px; font-weight: bold; border: 1px solid #ddd;">Email</td>
                         <td style="padding: 10px 14px; border: 1px solid #ddd;">
-                            <a href="mailto:${submission.email}">${submission.email}</a>
+                            <a href="mailto:${safeEmail}">${safeEmail}</a>
                         </td>
                     </tr>
                     <tr style="background: #f9f9f9;">
                         <td style="padding: 10px 14px; font-weight: bold; border: 1px solid #ddd;">Contact Number</td>
-                        <td style="padding: 10px 14px; border: 1px solid #ddd;">${submission.phone || 'Not provided'}</td>
+                        <td style="padding: 10px 14px; border: 1px solid #ddd;">${safePhone}</td>
                     </tr>
                     <tr>
                         <td style="padding: 10px 14px; font-weight: bold; border: 1px solid #ddd; vertical-align: top;">Message</td>
-                        <td style="padding: 10px 14px; border: 1px solid #ddd; white-space: pre-wrap;">${submission.message}</td>
+                        <td style="padding: 10px 14px; border: 1px solid #ddd; white-space: pre-wrap;">${safeMessage}</td>
                     </tr>
                 </table>
                 <p style="margin-top: 20px; font-size: 12px; color: #888;">
@@ -82,26 +76,26 @@ export class ContactService {
             forwardTo: TARGET_EMAIL,
         };
 
-        // Save locally (best-effort)
+        // Save locally (best-effort; note that Vercel serverless filesystem is ephemeral)
         try {
             this.ensureDirectory();
             const submissions = this.getAllSubmissions();
             submissions.push(submission);
             fs.writeFileSync(CONTACT_FILE, JSON.stringify(submissions, null, 2));
         } catch (error) {
-            console.warn('Could not write to local filesystem:', error);
+            console.warn('[ContactService] Could not write to local filesystem (expected on read-only serverless platforms):', error);
         }
 
-        // Send email notification
+        // Send email notification via centralized SMTP
         try {
             await sendEmailNotification(input);
-            console.log(`Contact email sent to ${TARGET_EMAIL}`);
+            console.log(`[ContactService] Contact notification email successfully dispatched to ${TARGET_EMAIL}`);
         } catch (emailError: any) {
-            console.error('Failed to send notification email:', emailError);
+            console.error('[ContactService] Failed to send notification email:', emailError?.message || emailError);
             if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-                throw new Error("SMTP credentials are not configured on the server. Please add them to your Vercel Environment Variables.");
+                throw new Error("SMTP credentials are not configured on the server. Please ensure SMTP_USER and SMTP_PASS are set in your Vercel Environment Variables.");
             }
-            throw new Error("Failed to send email. " + emailError.message);
+            throw new Error("Failed to send contact notification email: " + (emailError?.message || "Internal mailer error"));
         }
 
         return submission;
@@ -115,7 +109,7 @@ export class ContactService {
             const content = fs.readFileSync(CONTACT_FILE, 'utf-8');
             return JSON.parse(content);
         } catch (error) {
-            console.error('Error reading contact submissions:', error);
+            console.error('[ContactService] Error reading local contact submissions:', error);
             return [];
         }
     }
