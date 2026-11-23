@@ -21,9 +21,15 @@ export default function RegistrationPage() {
     const [isApplying, setIsApplying] = useState(false);
 
     const isEarlyBirdLocked = currentTime > earlyBirdEnd;
+<<<<<<< HEAD
     const isLateBirdLocked = true; // Standard Registration (Conference) is closed
     const isSpotLocked = false; // Spot registration is now open
     const isPreConfLocked = true; // Pre-conference registration is closed
+=======
+    const isLateBirdLocked = currentTime <= earlyBirdEnd || currentTime > lateBirdEnd;
+    const isSpotLocked = currentTime <= lateBirdEnd;
+    const isPreConferenceLocked = true;
+>>>>>>> 8c9cf57028a88898b6f33e614406595a017fb888
 
     // Navigate to registration form with amount + label + discount params
     const openPayment = (
@@ -363,9 +369,13 @@ export default function RegistrationPage() {
                                 </tr>
                                 <tr>
                                     <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em' }}>CONFERENCE</th>
-                                    <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em', borderRight: '1px solid rgba(255,255,255,0.1)' }}>PRE-CONFERENCE</th>
+                                    <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em', borderRight: '1px solid rgba(255,255,255,0.1)' }}>
+                                        PRE-CONFERENCE {(isEarlyBirdLocked || isPreConferenceLocked) && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}
+                                    </th>
                                     <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em' }}>CONFERENCE</th>
-                                    <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em' }}>PRE-CONFERENCE</th>
+                                    <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em' }}>
+                                        PRE-CONFERENCE {isPreConferenceLocked && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -391,10 +401,11 @@ export default function RegistrationPage() {
                                             </a>
                                         </td>
 
-                                        <td data-label="Early Bird Pre-Conf" className={styles.attendingCol} style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
+                                        <td data-label="Early Bird Pre-Conf" className={styles.attendingCol} style={{ borderRight: '1px solid rgba(255,255,255,0.05)', ...((isEarlyBirdLocked || isPreConferenceLocked) ? { cursor: 'not-allowed' } : {}) }}>
                                             {item.earlyBird.preConf ? (
                                                 <a
                                                     href="#"
+<<<<<<< HEAD
                                                     className={`${styles.feeGridButton} ${(isEarlyBirdLocked || isPreConfLocked) ? styles.lockedButton : ''}`}
                                                     onClick={(e) => openPayment(e, item.earlyBird.preConf, false, isEarlyBirdLocked || isPreConfLocked, `${item.category} — Early Bird Pre-Conference`, item.category)}
                                                     style={(isEarlyBirdLocked || isPreConfLocked) ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
@@ -402,6 +413,15 @@ export default function RegistrationPage() {
                                                     <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
                                                         {renderPreConfFee(item.earlyBird.preConf)}
                                                         {(isEarlyBirdLocked || isPreConfLocked) && <Lock size={14} />}
+=======
+                                                    className={`${styles.feeGridButton} ${(isEarlyBirdLocked || isPreConferenceLocked) ? styles.lockedButton : ''}`}
+                                                    onClick={(e) => openPayment(e, item.earlyBird.preConf, false, isEarlyBirdLocked || isPreConferenceLocked, `${item.category} — Early Bird Pre-Conference`, item.category)}
+                                                    style={(isEarlyBirdLocked || isPreConferenceLocked) ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4, pointerEvents: 'none' } : {}}
+                                                >
+                                                    <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                                                        {renderPreConfFee(item.earlyBird.preConf)}
+                                                        {(isEarlyBirdLocked || isPreConferenceLocked) && <Lock size={14} />}
+>>>>>>> 8c9cf57028a88898b6f33e614406595a017fb888
                                                     </span>
                                                 </a>
                                             ) : (
@@ -423,10 +443,11 @@ export default function RegistrationPage() {
                                             </a>
                                         </td>
 
-                                        <td data-label="Late Bird Pre-Conf" className={styles.attendingCol}>
+                                        <td data-label="Late Bird Pre-Conf" className={styles.attendingCol} style={(isLateBirdLocked || isPreConferenceLocked) ? { cursor: 'not-allowed' } : {}}>
                                             {item.lateBird.preConf ? (
                                                 <a
                                                     href="#"
+<<<<<<< HEAD
                                                     className={`${styles.feeGridButton} ${(isLateBirdLocked || isPreConfLocked) ? styles.lockedButton : ''}`}
                                                     onClick={(e) => openPayment(e, item.lateBird.preConf, false, isLateBirdLocked || isPreConfLocked, `${item.category} — Late Bird Pre-Conference`, item.category)}
                                                     style={(isLateBirdLocked || isPreConfLocked) ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
@@ -434,6 +455,15 @@ export default function RegistrationPage() {
                                                     <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
                                                         {renderPreConfFee(item.lateBird.preConf)}
                                                         {(isLateBirdLocked || isPreConfLocked) && <Lock size={14} />}
+=======
+                                                    className={`${styles.feeGridButton} ${(isLateBirdLocked || isPreConferenceLocked) ? styles.lockedButton : ''}`}
+                                                    onClick={(e) => openPayment(e, item.lateBird.preConf, false, isLateBirdLocked || isPreConferenceLocked, `${item.category} — Late Bird Pre-Conference`, item.category)}
+                                                    style={(isLateBirdLocked || isPreConferenceLocked) ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4, pointerEvents: 'none' } : {}}
+                                                >
+                                                    <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                                                        {renderPreConfFee(item.lateBird.preConf)}
+                                                        {(isLateBirdLocked || isPreConferenceLocked) && <Lock size={14} />}
+>>>>>>> 8c9cf57028a88898b6f33e614406595a017fb888
                                                     </span>
                                                 </a>
                                             ) : (

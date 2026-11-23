@@ -4,10 +4,12 @@ import { sendRegistrationMail } from '@/lib/services/registrationService';
 import { RegistrationInput } from '@/types';
 
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwgAzVPYjO9_07PbNY5-jNPcrxVnTdnkUwlmvjoReuvVmZoCia9kVfiEpAB8yUMvLe0/exec";
+  process.env.REGISTRATION_CONFERENCE_SCRIPT_URL ||
+  "https://script.google.com/macros/s/AKfycbwCUXfDJmX4z85iU3_MImszaKdPeFKDoKCq96tUle7yly5NBGkjJcvTQ_f_DGler5Fm/exec";
 
 // Google Apps Script Web App for Pre-Conference Registrations
 const GOOGLE_SCRIPT_URL_PRE_CONF =
+  process.env.REGISTRATION_PRECONF_SCRIPT_URL ||
   "https://script.google.com/macros/s/AKfycbyym0XlBUg-scmh_50MBACYl7yXWagwpzn3pkb3NKSeRpTBZBGb_Rzq-SNLC7qOpANk/exec";
 
 export async function submitRegistration(data: any) {

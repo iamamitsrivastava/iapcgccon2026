@@ -1,77 +1,29 @@
-import nodemailer from 'nodemailer';
 import { RegistrationInput } from '@/types';
+import { getEmailTransport, getEmailSender } from '@/lib/services/emailTransport';
 
 // Destination address (conference inbox)
 const CONFERENCE_EMAIL = 'iapsmgc.conference@paruluniversity.ac.in';
 
-/**
- * Standard port 587 transporter (matching working send-access-code and contactService routes)
- */
-function createTransport() {
-  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const port = Number(process.env.SMTP_PORT) || 587;
-  const user = process.env.SMTP_USER || process.env.EMAIL_USER || CONFERENCE_EMAIL;
-  const pass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD || 'dcweynmzcxdzrdkr';
-
-  return nodemailer.createTransport({
-    host: host,
-    port: port,
-    secure: port === 465,
-    auth: {
-      user: user,
-      pass: pass,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000,
-  });
-}
-
-/**
- * Fallback port 465 SSL transporter
- */
-function createFallbackTransport() {
-  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const user = process.env.SMTP_USER || process.env.EMAIL_USER || CONFERENCE_EMAIL;
-  const pass = process.env.SMTP_PASS || process.env.EMAIL_PASSWORD || 'dcweynmzcxdzrdkr';
-
-  return nodemailer.createTransport({
-    host: host,
-    port: 465,
-    secure: true,
-    auth: {
-      user: user,
-      pass: pass,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000,
-  });
-}
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
  * Send a nicely formatted HTML and plain-text email confirming registration submission.
+ * Standardized to use centralized SMTP service with safe error handling and verified delivery.
  */
 export async function sendRegistrationMail(reg: RegistrationInput): Promise<void> {
-  const user = process.env.SMTP_USER || process.env.EMAIL_USER || CONFERENCE_EMAIL;
   const recipientEmail = (reg.email || '').trim();
 
-  if (!recipientEmail) {
-    console.warn('⚠️ No recipient email address provided for registration mail.');
-    return;
+  if (!recipientEmail || !EMAIL_REGEX.test(recipientEmail)) {
+    console.warn('⚠️ Invalid or missing recipient email address for registration mail:', recipientEmail);
+    throw new Error(`Invalid or missing recipient email address: "${recipientEmail}"`);
   }
 
-  const senderEmail = user || CONFERENCE_EMAIL;
+  const sender = getEmailSender('IAPSMGCCON 2026');
 
   const mailOptions = {
-    from: `"IAPSMGCCON 2026" <${senderEmail}>`,
+    from: sender.formatted,
     to: recipientEmail,
+    cc: CONFERENCE_EMAIL,
     replyTo: CONFERENCE_EMAIL,
     subject: `✅ Registration Form Submission – IAPSMGCCON 2026`,
     html: `
@@ -119,18 +71,11 @@ Parul Institute of Medical Sciences & Research`,
   };
 
   try {
-    const transporter = createTransport();
+    const transporter = getEmailTransport();
     const info = await transporter.sendMail(mailOptions);
-    console.info('✅ Registration confirmation email sent successfully to', recipientEmail, info.messageId);
-  } catch (err) {
-    console.warn('⚠️ Primary port 587 transport failed, attempting fallback port 465 transport...', err);
-    try {
-      const fallbackTransporter = createFallbackTransport();
-      const info = await fallbackTransporter.sendMail(mailOptions);
-      console.info('✅ Registration confirmation email sent via fallback transport to', recipientEmail, info.messageId);
-    } catch (fallbackErr) {
-      console.error('❌ Failed to send registration email on both transports:', fallbackErr);
-      throw fallbackErr;
-    }
+    console.info('[RegistrationEmailSuccess] Confirmation email delivered to', recipientEmail, `messageId: ${info.messageId}`);
+  } catch (err: any) {
+    console.error('[RegistrationEmailError] Failed to deliver confirmation email:', err?.message || err);
+    throw err;
   }
 }

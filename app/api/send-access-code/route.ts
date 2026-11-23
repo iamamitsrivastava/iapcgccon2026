@@ -1,43 +1,22 @@
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
 import { REGISTRATION_MAPPING } from '@/lib/registrationData';
+import { getEmailTransport, getEmailSender } from '@/lib/services/emailTransport';
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const CONFERENCE_INBOX = 'iapsmgc.conference@paruluniversity.ac.in';
 
 export async function POST(request: Request) {
   try {
     const { email } = await request.json();
 
     // 1. Validation: Reject empty or invalid email addresses
-    if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return NextResponse.json({ success: false, message: 'Unable to send email' }, { status: 400 });
+    if (!email || typeof email !== 'string' || !EMAIL_REGEX.test(email.trim())) {
+      return NextResponse.json({ success: false, message: 'Invalid or empty email address provided.' }, { status: 400 });
     }
 
     const emailKey = email.toLowerCase().trim();
 
-    // 2. Setup Nodemailer Transporter using specified Environment Variables
-    const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-    const port = Number(process.env.SMTP_PORT) || 587;
-    const user = process.env.EMAIL_USER || process.env.SMTP_USER || 'iapsmgc.conference@paruluniversity.ac.in';
-    const pass = process.env.EMAIL_PASSWORD || process.env.SMTP_PASS || 'dcweynmzcxdzrdkr';
-
-    if (!host || !user || !pass) {
-      console.error('SMTP credentials or configuration missing in environment variables.');
-      return NextResponse.json({
-        success: false,
-        message: 'Unable to send email'
-      }, { status: 500 });
-    }
-
-    const transporter = nodemailer.createTransport({
-      host: host,
-      port: port,
-      secure: port === 465, // true for port 465, false for 587/other ports using STARTTLS
-      auth: {
-        user: user,
-        pass: pass,
-      },
-    });
-
-    // 3. Optional: Search the participants database/mapping for extra info to make it future ready
+    // 2. Search participant records for access/registration codes
     const codes = REGISTRATION_MAPPING[emailKey];
     let accessCodeSectionHtml = '';
     if (codes && codes.length > 0) {
@@ -49,10 +28,15 @@ export async function POST(request: Request) {
       `;
     }
 
-    // 4. Construct Responsive HTML Email
+    // 3. Resolve centralized transporter and sender
+    const transporter = getEmailTransport();
+    const sender = getEmailSender('IAPSMGC CON 2026');
+
+    // 4. Construct responsive HTML email
     const mailOptions = {
-      from: `"IAPSMGC CON 2026" <iapsmgc.conference@paruluniversity.ac.in>`,
+      from: sender.formatted,
       to: emailKey,
+      replyTo: CONFERENCE_INBOX,
       subject: 'IAPSMGC CON 2026 – Registration Successful',
       html: `
         <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #334155; line-height: 1.6; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
@@ -91,20 +75,24 @@ export async function POST(request: Request) {
           </div>
         </div>
       `,
+      text: `Dear Participant,\n\nGreetings from IAPSMGC CON 2026.\n\nThank you for registering. Your registration has been received successfully.\n\n${codes && codes.length > 0 ? `Your Access/Registration Code: ${codes.join(', ')}\n\n` : ''}Conference Website: https://iapsmgccon2026.paruluniversity.ac.in\n\nIf you have any queries, feel free to contact us.\n\nRegards,\nOrganizing Committee\nIAPSMGC CON 2026\nParul University`,
     };
 
     await transporter.sendMail(mailOptions);
-    console.info(`[EmailSuccess] Access code/success email sent to ${emailKey}`);
+    console.info(`[EmailSuccess] Access code/success email delivered to ${emailKey}`);
 
     return NextResponse.json({
-      success: true
+      success: true,
+      message: 'Access code sent successfully',
     });
 
-  } catch (error) {
-    console.error('API Error /send-access-code:', error);
+  } catch (error: any) {
+    console.error('[AccessCodeEmailError] Delivery error:', error?.message || error);
     return NextResponse.json({
       success: false,
-      message: 'Unable to send email'
+      message: error?.message?.includes('SMTP configuration error')
+        ? 'Server email configuration error. Please contact conference support.'
+        : 'Unable to send email at this moment. Please try again later.'
     }, { status: 500 });
   }
 }
