@@ -96,6 +96,8 @@ function RegistrationFormContent() {
     const [copied, setCopied] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [submitting, setSubmitting] = useState(false);
+    const [assignedRegistrationCode, setAssignedRegistrationCode] = useState<string>('');
+    const [codeCopied, setCodeCopied] = useState(false);
     const [photoPreview, setPhotoPreview] = useState<string | null>(null);
     const [proofPreview, setProofPreview] = useState<string | null>(null);
     const [photoUrl, setPhotoUrl] = useState<string | null>(null);
@@ -376,13 +378,26 @@ function RegistrationFormContent() {
                 workshopPriorities: isPreConf ? form.workshopPriorities.map((p, i) => `Priority ${i + 1}: ${p}`).join('\n') : ''
             };
             
-            await submitRegistration(payload);
+            const result = await submitRegistration(payload);
+            
+            if (result && result.success === false) {
+                if (result.capacityExhausted) {
+                    alert(result.message || "Registration code capacity has been exhausted (maximum 26GUJCON800 reached). Please contact the organizing committee.");
+                } else {
+                    alert(result.message || "Failed to submit registration. Please try again or check your internet connection.");
+                }
+                return;
+            }
+
+            if (result && result.registrationCode) {
+                setAssignedRegistrationCode(result.registrationCode);
+            }
             
             setSubmitted(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        } catch (error) {
+        } catch (error: any) {
             console.error("Submission failed:", error);
-            alert("Failed to submit registration. Please try again or check your internet connection.");
+            alert(error?.message || "Failed to submit registration. Please try again or check your internet connection.");
         } finally {
             setSubmitting(false);
         }
@@ -488,22 +503,108 @@ function RegistrationFormContent() {
         } as React.CSSProperties,
     };
 
-    // ── Success Screen ──────────────────────────────
+    // ── Success Screen & Instant Registration Code Popup ──────────────────────────────
     if (submitted) {
         return (
             <main style={s.page}>
                 <Header variant="solid" />
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '80vh', textAlign: 'center', padding: '2rem' }}>
-                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(34,197,94,0.15)', border: '2px solid rgba(34,197,94,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
-                        <CheckCircle size={40} color="#22c55e" />
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '85vh', textAlign: 'center', padding: '2rem 1.5rem', maxWidth: '640px', margin: '0 auto' }}>
+                    {/* Modal / Card Container */}
+                    <div style={{
+                        background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(11, 28, 53, 0.98))',
+                        border: '1px solid rgba(250, 204, 21, 0.3)',
+                        borderRadius: '20px',
+                        padding: 'clamp(2rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2.5rem)',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(250, 204, 21, 0.1)',
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'
+                    }}>
+                        <div style={{ width: '84px', height: '84px', borderRadius: '50%', background: 'rgba(34,197,94,0.15)', border: '2px solid rgba(34,197,94,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
+                            <CheckCircle size={44} color="#22c55e" />
+                        </div>
+                        <h1 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.25rem)', fontWeight: 900, color: 'white', marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>
+                            Registration Successful!
+                        </h1>
+                        <p style={{ color: '#94a3b8', maxWidth: '480px', lineHeight: 1.6, fontSize: '0.98rem', marginBottom: '1.75rem' }}>
+                            Your registration for <strong style={{ color: '#f8fafc' }}>IAPSMGCCON 2026</strong> has been submitted successfully.
+                        </p>
+
+                        {/* Prominent Registration Code Box */}
+                        {assignedRegistrationCode ? (
+                            <div style={{
+                                width: '100%',
+                                background: 'linear-gradient(135deg, rgba(250,204,21,0.12), rgba(250,204,21,0.03))',
+                                border: '2px solid #FACC15',
+                                borderRadius: '14px',
+                                padding: '1.5rem 1rem',
+                                marginBottom: '1.75rem',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: '0.6rem'
+                            }}>
+                                <span style={{ color: '#cbd5e1', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                                    Your Registration Code
+                                </span>
+                                <span style={{ color: '#FACC15', fontSize: 'clamp(1.8rem, 5vw, 2.4rem)', fontWeight: 900, letterSpacing: '0.06em', fontFamily: 'monospace' }}>
+                                    {assignedRegistrationCode}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() => copyToClipboard(assignedRegistrationCode, setCodeCopied)}
+                                    style={{
+                                        marginTop: '0.4rem',
+                                        padding: '0.55rem 1.25rem',
+                                        borderRadius: '8px',
+                                        border: '1px solid rgba(250,204,21,0.4)',
+                                        background: codeCopied ? 'rgba(34,197,94,0.2)' : 'rgba(255,255,255,0.08)',
+                                        color: codeCopied ? '#4ade80' : '#FACC15',
+                                        fontWeight: 700,
+                                        fontSize: '0.85rem',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.45rem',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    {codeCopied ? (
+                                        <>
+                                            <CheckCircle size={15} color="#4ade80" /> Copied to Clipboard!
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Copy size={15} /> Copy Code
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        ) : null}
+
+                        <p style={{ color: '#cbd5e1', maxWidth: '460px', lineHeight: 1.6, fontSize: '0.9rem', marginBottom: '2rem' }}>
+                            Please save this code for future communication and conference-related activities. A confirmation email has also been sent to your registered email address.
+                        </p>
+
+                        <button
+                            onClick={() => router.push('/')}
+                            style={{
+                                padding: '0.9rem 2.75rem',
+                                borderRadius: '10px',
+                                border: 'none',
+                                background: 'linear-gradient(135deg, #FACC15, #d4af37)',
+                                color: '#0B1C35',
+                                fontWeight: 800,
+                                fontSize: '1rem',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                                boxShadow: '0 4px 14px rgba(250,204,21,0.3)'
+                            }}
+                        >
+                            Back to Home
+                        </button>
                     </div>
-                    <h1 style={{ fontSize: '2rem', fontWeight: 900, color: 'white', marginBottom: '0.75rem' }}>Registration Submitted!</h1>
-                    <p style={{ color: '#94a3b8', maxWidth: '480px', lineHeight: 1.7, marginBottom: '2rem' }}>
-                        Thank you for registering for <strong style={{ color: 'white' }}>IAPSMGC CON 2026</strong>. Your registration is under review. You will receive a confirmation email shortly.
-                    </p>
-                    <button onClick={() => router.push('/')} style={{ padding: '0.85rem 2.5rem', borderRadius: '10px', border: '2px solid #FACC15', background: 'transparent', color: '#FACC15', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}>
-                        Back to Home
-                    </button>
                 </div>
                 <Footer />
             </main>

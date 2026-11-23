@@ -15,49 +15,81 @@ const GOOGLE_SCRIPT_URL_PRE_CONF =
 export async function submitRegistration(data: any) {
   // Check if this is a Pre-Conference registration
   const isPreConf = (data.registrationPlan && data.registrationPlan.toLowerCase().includes('pre-conference')) ||
-                    (data.registrationDoneFor && data.registrationDoneFor.toLowerCase().includes('pre-conference'));
+    (data.registrationDoneFor && data.registrationDoneFor.toLowerCase().includes('pre-conference'));
   const targetUrl = isPreConf ? GOOGLE_SCRIPT_URL_PRE_CONF : GOOGLE_SCRIPT_URL;
 
-  // 1️⃣ Send confirmation email first so delivery is guaranteed
-  const recipientEmail = (data.email || '').trim();
-  let emailSent = false;
+  // 1️⃣ Record registration and atomically allocate code in Google Sheet
+  let sheetResult: any = null;
+  let allocatedCode: string | null = null;
 
-  if (recipientEmail) {
-    try {
-      await sendRegistrationMail({
-        ...data,
-        email: recipientEmail,
-        mobile: data.mobile || data.phone,
-        participantCategory: data.participantCategory || data.category,
-      } as RegistrationInput);
-      emailSent = true;
-      console.info('✅ Confirmation email delivered to', recipientEmail);
-    } catch (mailErr) {
-      console.error('⚠️ Failed to deliver registration email:', mailErr);
-    }
-  } else {
-    console.warn('⚠️ No recipient email found in registration data.');
-  }
-
-  // 2️⃣ Record registration in Google Sheet via Apps Script Web App
   try {
     const response = await fetch(targetUrl, {
       method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(data),
     });
 
     const text = await response.text();
     try {
-      const result = JSON.parse(text);
-      if (result && result.success === false) {
-        console.error('⚠️ Google Apps Script error:', result.message || result);
-      }
-      return { ...(result || {}), emailSent, success: true };
+      sheetResult = JSON.parse(text);
     } catch {
-      return { success: true, text, emailSent };
+      sheetResult = { success: true, text };
     }
-  } catch (sheetErr) {
-    console.error('⚠️ Google Apps Script request failed:', sheetErr);
-    return { success: true, emailSent, error: sheetErr };
+
+    if (sheetResult && sheetResult.success === false) {
+      console.error('⚠️ Google Apps Script error:', sheetResult.message || sheetResult);
+      return {
+        success: false,
+        capacityExhausted: !!sheetResult.capacityExhausted,
+        message: sheetResult.message || 'Failed to submit registration to Google Sheets.',
+      };
+    }
+
+    if (sheetResult && sheetResult.registrationCode) {
+      allocatedCode = sheetResult.registrationCode;
+    }
+  } catch (sheetErr: any) {
+    console.error('❌ Google Apps Script request failed:', sheetErr);
+    return {
+      success: false,
+      message: 'Failed to record registration in spreadsheet. Please try again or check internet connection.',
+      error: sheetErr?.message || String(sheetErr)
+    };
   }
+
+  // 2️⃣ Send confirmation email including the allocated registration code
+  const recipientEmail = (data.email || '').trim();
+  let emailSent = false;
+  let emailDeliveryInfo: { messageId?: string; response?: string } | null = null;
+  let emailError: string | null = null;
+
+  if (recipientEmail) {
+    try {
+      const delivery = await sendRegistrationMail({
+        ...data,
+        email: recipientEmail,
+        mobile: data.mobile || data.phone,
+        participantCategory: data.participantCategory || data.category,
+        registrationCode: allocatedCode || undefined,
+      } as RegistrationInput);
+      emailSent = true;
+      emailDeliveryInfo = delivery;
+      console.info('✅ Confirmation email delivered to', recipientEmail, `Code: ${allocatedCode}`);
+    } catch (mailErr: any) {
+      emailError = mailErr?.message || String(mailErr);
+      console.error('⚠️ Failed to deliver registration email:', emailError);
+    }
+  } else {
+    emailError = 'No recipient email found in registration data.';
+    console.warn('⚠️ No recipient email found in registration data.');
+  }
+
+  return {
+    ...(sheetResult || {}),
+    success: true,
+    registrationCode: allocatedCode,
+    emailSent,
+    emailDeliveryInfo,
+    emailError,
+  };
 }

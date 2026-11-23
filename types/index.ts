@@ -59,4 +59,5 @@ export interface RegistrationInput {
   passportPhoto?: string;
   paymentProof?: string;
   registrationPlan?: string;
+  registrationCode?: string;
 }
