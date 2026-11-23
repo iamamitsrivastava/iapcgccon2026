@@ -337,6 +337,27 @@ export default function Hero() {
               <img src="/images/logo-govt-gujarat.jpg" alt="Government of India" className={styles.logoEmblem} />
             </div>
           </div>
+
+          {/* Interactive Venue Map */}
+          <div className={styles.heroMapWrapper}>
+            <div className={styles.heroMapHeader}>
+              <div className={styles.heroMapHeaderTitle}>
+                <MapPin size={14} color="var(--color-secondary)" />
+                <span>Venue: Parul University, Vadodara</span>
+              </div>
+              <div className={styles.heroMapLandmark}>
+                <span className={styles.landmarkLabel}>Landmark:</span>
+                <span>Limda, Waghodia</span>
+              </div>
+            </div>
+            <iframe
+              title="Parul University Vadodara Location Map"
+              src="https://maps.google.com/maps?width=100%25&height=300&hl=en&q=Parul+University,+Limda,+Waghodia,+Vadodara,+Gujarat,+India&t=&z=14&ie=UTF8&iwloc=B&output=embed"
+              className={styles.heroMapIframe}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </div>
         <div className={styles.heroGrid}>
           <div className={styles.content}>
@@ -386,25 +407,67 @@ export default function Hero() {
                       setIsModalOpen(true);
                     }}
                     className={styles.btnSecondary}
-                    style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.25rem', padding: '0.6rem 1.5rem', cursor: 'pointer', outline: 'none' }}
+                    style={{
+                      display: 'inline-flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.25rem',
+                      padding: '0.6rem 1.5rem',
+                      cursor: 'pointer',
+                      outline: 'none',
+                      background: 'transparent',
+                      color: '#ffbf00',
+                      border: '2px solid #ffbf00',
+                      boxShadow: 'none',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 191, 0, 0.1)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.background = 'transparent';
+                    }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', lineHeight: 1 }}>
-                      Submit Abstract <Lock size={18} />
+                      Submit Abstract <Lock size={18} color="#ffbf00" />
                     </div>
                   </button>
                 )}
 
-                <button onClick={() => { 
-                  setSubmissionType('FULL_PAPER'); 
-                  const unlockedUntil = localStorage.getItem('full_paper_code_unlocked_until');
-                  if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
-                    setIsCodeVerified(true);
-                  } else {
-                    setIsCodeVerified(false);
-                  }
-                  setIsModalOpen(true); 
-                }} className={styles.btnPrimary} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', cursor: 'pointer', border: 'none' }}>
-                  Submit Full Paper <Lock size={18} />
+                <button
+                  type="button"
+                  onClick={() => { 
+                    setSubmissionType('FULL_PAPER'); 
+                    const unlockedUntil = localStorage.getItem('full_paper_code_unlocked_until');
+                    if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
+                      setIsCodeVerified(true);
+                    } else {
+                      setIsCodeVerified(false);
+                    }
+                    setIsModalOpen(true); 
+                  }}
+                  className={styles.btnPrimary}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.5rem',
+                    cursor: 'pointer',
+                    background: 'transparent',
+                    color: '#ffbf00',
+                    border: '2px solid #ffbf00',
+                    boxShadow: 'none',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 191, 0, 0.1)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  Submit Full Paper <Lock size={18} color="#ffbf00" />
                 </button>
               </div>
 
@@ -419,10 +482,10 @@ export default function Hero() {
                     justifyContent: 'center',
                     padding: '0.8rem 1.5rem',
                     cursor: 'pointer',
-                    background: 'rgba(15, 23, 42, 0.4)',
-                    color: '#ffbf00',
-                    border: '2px solid #ffbf00',
-                    boxShadow: 'none',
+                    background: 'linear-gradient(135deg, var(--color-secondary) 0%, #b8860b 100%)',
+                    color: 'black',
+                    border: 'none',
+                    boxShadow: '0 4px 15px rgba(212, 175, 55, 0.3)',
                     fontWeight: 'bold',
                     fontSize: '1rem',
                     transition: 'all 0.3s ease',
@@ -430,10 +493,12 @@ export default function Hero() {
                     letterSpacing: '0.1em'
                   }}
                   onMouseOver={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 191, 0, 0.1)';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 8px 25px rgba(212, 175, 55, 0.4)';
                   }}
                   onMouseOut={(e) => {
-                    e.currentTarget.style.background = 'rgba(15, 23, 42, 0.4)';
+                    e.currentTarget.style.transform = 'none';
+                    e.currentTarget.style.boxShadow = '0 4px 15px rgba(212, 175, 55, 0.3)';
                   }}
                 >
                   KNOW YOUR REGISTRATION NUMBER
