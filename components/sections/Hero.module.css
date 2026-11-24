@@ -912,8 +912,8 @@
 }
 
 .logoNewLarge {
-    height: 216px;
-    width: 216px;
+    height: 144px;
+    width: 144px;
     max-width: 100%;
     object-fit: contain;
     background: transparent;
@@ -958,8 +958,8 @@
     }
 
     .logoNewLarge {
-        height: 168px;
-        width: 168px;
+        height: 112px;
+        width: 112px;
         max-width: calc(50% - 0.5rem);
     }
 
@@ -993,8 +993,8 @@
     }
 
     .logoNewLarge {
-        height: 144px;
-        width: 144px;
+        height: 96px;
+        width: 96px;
         max-width: calc(50% - 0.4rem);
     }
 
