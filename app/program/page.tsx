@@ -2,7 +2,7 @@ import Header from '@/components/sections/Header';
 import Footer from '@/components/sections/Footer';
 import {
     Calendar, Clock, MapPin, Users, BookOpen, FlaskConical,
-    Brain, Globe, FileText, Cpu, ChevronRight, Award
+    Brain, Globe, FileText, Cpu, ChevronRight, Award, Download
 } from 'lucide-react';
 
 export const metadata = {
@@ -138,7 +138,7 @@ export default function ProgramPage() {
 
             {/* Hero Banner */}
             <div className="program-hero">
-                <div className="container" style={{ paddingTop: '120px', paddingBottom: '4rem' }}>
+                <div className="container program-hero-container">
                     <span style={{ display: 'block', color: '#D4AF37', fontWeight: 700, letterSpacing: '0.12em', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                         IAPSMGC CON 2026
                     </span>
@@ -163,11 +163,47 @@ export default function ProgramPage() {
                             <span>PIMSR, Parul University, Vadodara</span>
                         </div>
                     </div>
+
+                    {/* ── PDF Program & Agenda Downloads ── */}
+                    <div className="program-downloads-wrapper">
+                        <a
+                            href="/IAPSMGCCON_2026_Agenda_Day_1.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            download="IAPSMGCCON_2026_Agenda_Day_1.pdf"
+                            className="btn-program-outline"
+                        >
+                            <Download size={18} />
+                            <span>Day 1 Schedule</span>
+                        </a>
+
+                        <a
+                            href="/IAPSMGCCON_2026_Agenda_Day_2.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            download="IAPSMGCCON_2026_Agenda_Day_2.pdf"
+                            className="btn-program-outline"
+                        >
+                            <Download size={18} />
+                            <span>Day 2 Schedule</span>
+                        </a>
+
+                        <a
+                            href="/IAPSMGCCON_2026_Oral_Poster_Scientific_Agenda.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            download="IAPSMGCCON_2026_Oral_Poster_Scientific_Agenda.pdf"
+                            className="btn-program-filled"
+                        >
+                            <Download size={18} />
+                            <span>Oral Poster Scientific Agenda</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             {/* ── Venue Details from About Parul University ── */}
-            <div className="container" style={{ marginBottom: '4rem', marginTop: '2rem' }}>
+            <div className="container" style={{ marginBottom: '4rem', marginTop: '3.5rem' }}>
                 <div style={{
                     background: '#fff',
                     borderRadius: '20px',
@@ -274,8 +310,18 @@ export default function ProgramPage() {
             <style>{`
                 /* ── Hero ── */
                 .program-hero {
-                    background: linear-gradient(90deg, rgba(10, 15, 30, 0.95) 0%, rgba(10, 15, 30, 0.8) 40%, rgba(10, 15, 30, 0.9) 100%), url('/images/gate-hero.jpg') center/cover;
+                    min-height: 100vh;
+                    min-height: 100dvh;
+                    display: flex;
+                    align-items: center;
+                    background: linear-gradient(90deg, rgba(10, 15, 30, 0.95) 0%, rgba(10, 15, 30, 0.8) 40%, rgba(10, 15, 30, 0.9) 100%), url('/images/gate-hero.jpg') center/cover no-repeat;
                     border-bottom: 1px solid rgba(212,175,55,0.15);
+                    position: relative;
+                }
+                .program-hero-container {
+                    padding-top: calc(68px + 2.5rem);
+                    padding-bottom: 4rem;
+                    width: 100%;
                 }
                 .program-meta-row {
                     display: flex;
@@ -290,6 +336,75 @@ export default function ProgramPage() {
                     color: rgba(255,255,255,0.7);
                     font-size: 0.9rem;
                     font-weight: 500;
+                }
+
+                /* ── Downloads Action Row ── */
+                .program-downloads-wrapper {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 1rem;
+                    margin-top: 2.25rem;
+                    width: 100%;
+                    max-width: 440px;
+                }
+                .btn-program-outline {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.6rem;
+                    width: 100%;
+                    max-width: 440px;
+                    padding: 0.85rem 1.5rem;
+                    background: transparent;
+                    color: #ffbf00;
+                    border: 2px solid #ffbf00;
+                    border-radius: 4px;
+                    font-size: 0.95rem;
+                    font-weight: 700;
+                    letter-spacing: 0.06em;
+                    text-transform: uppercase;
+                    text-decoration: none;
+                    text-align: center;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: none;
+                    box-sizing: border-box;
+                }
+                .btn-program-outline:hover {
+                    background: rgba(255, 191, 0, 0.12);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 15px rgba(255, 191, 0, 0.2);
+                    color: #ffd043;
+                    border-color: #ffd043;
+                }
+                .btn-program-filled {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.6rem;
+                    width: 100%;
+                    max-width: 440px;
+                    padding: 0.85rem 1.5rem;
+                    background: linear-gradient(135deg, var(--color-secondary, #D4AF37) 0%, #b8860b 100%);
+                    color: #000000;
+                    border: 2px solid transparent;
+                    border-radius: 4px;
+                    font-size: 0.95rem;
+                    font-weight: 800;
+                    letter-spacing: 0.08em;
+                    text-transform: uppercase;
+                    text-decoration: none;
+                    text-align: center;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+                    transition: all 0.3s ease;
+                    box-sizing: border-box;
+                }
+                .btn-program-filled:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+                    color: #000000;
                 }
 
                 /* ── Sections ── */
@@ -515,10 +630,40 @@ export default function ProgramPage() {
 
                 /* ── Responsive ── */
                 @media (max-width: 1024px) {
+                    .program-hero {
+                        min-height: 85vh;
+                        min-height: 85dvh;
+                    }
+                    .program-hero-container {
+                        padding-top: calc(68px + 2rem);
+                        padding-bottom: 3.5rem;
+                    }
                     .workshops-grid { grid-template-columns: repeat(2, 1fr); }
                     .main-conf-grid { grid-template-columns: repeat(2, 1fr); }
                 }
                 @media (max-width: 640px) {
+                    .program-hero {
+                        min-height: calc(100dvh - 64px);
+                    }
+                    .program-hero-container {
+                        padding-top: 5rem;
+                        padding-bottom: 3rem;
+                    }
+                    .program-downloads-wrapper {
+                        flex-direction: column;
+                        align-items: stretch;
+                        width: 100%;
+                        max-width: 100%;
+                        gap: 0.85rem;
+                    }
+                    .btn-program-outline,
+                    .btn-program-filled {
+                        width: 100%;
+                        max-width: 100%;
+                        text-align: center;
+                        padding: 0.8rem 1.25rem;
+                        font-size: 0.85rem;
+                    }
                     .workshops-grid { grid-template-columns: 1fr; }
                     .main-conf-grid { grid-template-columns: 1fr; }
                     .program-meta-row { flex-direction: column; gap: 0.75rem; }

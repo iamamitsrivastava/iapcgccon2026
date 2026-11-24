@@ -338,6 +338,24 @@ export default function Hero() {
             </div>
           </div>
 
+          {/* New Associated With Logos: SHSRC Gujarat & SIHFW Gujarat */}
+          <div className={styles.associatedNewLogos}>
+            <div className={styles.cellNewLogo}>
+              <img
+                src="/images/logo-shsrc-gujarat.jpg"
+                alt="State Health System Resource Centre Gujarat"
+                className={styles.logoNewLarge}
+              />
+            </div>
+            <div className={styles.cellNewLogo}>
+              <img
+                src="/images/logo-sihfw-gujarat.jpg"
+                alt="State Institute of Health and Family Welfare Gujarat"
+                className={styles.logoNewLarge}
+              />
+            </div>
+          </div>
+
           {/* Interactive Venue Map */}
           <div className={styles.heroMapWrapper}>
             <div className={styles.heroMapHeader}>

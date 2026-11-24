@@ -20,7 +20,7 @@ export async function sendRegistrationMail(reg: RegistrationInput): Promise<{ me
 
   const sender = getEmailSender('IAPSMGCCON 2026');
 
-    const codeSectionHtml = reg.registrationCode ? `
+  const codeSectionHtml = reg.registrationCode ? `
         <div style="margin: 20px 0; padding: 16px 20px; background: #f8fafc; border-left: 4px solid #D4AF37; border-radius: 6px;">
           <p style="margin: 0 0 8px 0; font-size: 16px; font-weight: 700; color: #0B1C35;">
             Your Registration Code: <span style="color: #0B1C35; font-size: 18px; letter-spacing: 0.05em; font-family: monospace;">${escapeHtml(reg.registrationCode)}</span>
@@ -30,7 +30,7 @@ export async function sendRegistrationMail(reg: RegistrationInput): Promise<{ me
           </p>
         </div>` : '';
 
-    const codeSectionText = reg.registrationCode ? `\nYour Registration Code: ${reg.registrationCode}\nPlease keep this code safe. You may need it for future communication and conference-related activities.\n` : '';
+  const codeSectionText = reg.registrationCode ? `\nYour Registration Code: ${reg.registrationCode}\nPlease keep this code safe. You may need it for future communication and conference-related activities.\n` : '';
 
   const mailOptions = {
     from: sender.formatted,

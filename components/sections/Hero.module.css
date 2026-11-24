@@ -324,8 +324,8 @@
 }
 
 .profileImage {
-    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                transform 6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .activeProfile {
@@ -337,7 +337,8 @@
 
 .inactiveProfile {
     opacity: 0 !important;
-    transform: scale(1.08); /* Subtle zoom out for deeper transition */
+    transform: scale(1.08);
+    /* Subtle zoom out for deeper transition */
     z-index: 5;
     visibility: hidden;
 }
@@ -360,6 +361,7 @@
         opacity: 0;
         transform: translateY(15px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -780,8 +782,15 @@
 }
 
 @keyframes pulseIcon {
-    0% { transform: scale(0.8); opacity: 1; }
-    100% { transform: scale(1.2); opacity: 0; }
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
 }
 
 /* ══════════════════════════════════════
@@ -881,8 +890,38 @@
 }
 
 .logoHorizontal:hover,
-.logoEmblem:hover {
+.logoEmblem:hover,
+.logoNewLarge:hover {
     transform: scale(1.04);
+}
+
+.associatedNewLogos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.25rem;
+    width: 100%;
+}
+
+.cellNewLogo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logoNewLarge {
+    height: 216px;
+    width: 216px;
+    max-width: 100%;
+    object-fit: contain;
+    background: transparent;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    transition: transform 0.2s ease;
 }
 
 @media (max-width: 992px) {
@@ -904,6 +943,11 @@
         gap: 0.65rem 0.85rem;
     }
 
+    .associatedNewLogos {
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
     .logoHorizontal {
         height: 36px;
         max-width: 125px;
@@ -911,6 +955,12 @@
 
     .logoEmblem {
         max-height: 82px;
+    }
+
+    .logoNewLarge {
+        height: 168px;
+        width: 168px;
+        max-width: calc(50% - 0.5rem);
     }
 
     .heroMapWrapper {
@@ -928,6 +978,11 @@
         gap: 0.5rem 0.6rem;
     }
 
+    .associatedNewLogos {
+        gap: 0.75rem;
+        margin-top: 0.85rem;
+    }
+
     .logoHorizontal {
         height: 30px;
         max-width: 105px;
@@ -935,6 +990,12 @@
 
     .logoEmblem {
         max-height: 68px;
+    }
+
+    .logoNewLarge {
+        height: 144px;
+        width: 144px;
+        max-width: calc(50% - 0.4rem);
     }
 
     .heroMapWrapper {
@@ -948,7 +1009,7 @@
 
 /* ─── Hero Map Container (directly below Associated With logos) ─── */
 .heroMapWrapper {
-    margin-top: 1.25rem;
+    margin-top: 1.5rem;
     width: 100%;
     max-width: 360px;
     border-radius: 12px;
