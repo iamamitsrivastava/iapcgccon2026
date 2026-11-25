@@ -167,36 +167,25 @@ export default function ProgramPage() {
                     {/* ── PDF Program & Agenda Downloads ── */}
                     <div className="program-downloads-wrapper">
                         <a
-                            href="/IAPSMGCCON_2026_Agenda_Day_1.pdf"
+                            href="/IAPSM_GC_2026_Master_Agenda_25-11-2026_ver_5.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
-                            download="IAPSMGCCON_2026_Agenda_Day_1.pdf"
+                            download="IAPSM_GC_2026_Master_Agenda_25-11-2026_ver_5.pdf"
                             className="btn-program-outline"
                         >
                             <Download size={18} />
-                            <span>Day 1 Schedule</span>
+                            <span>Program Schedule</span>
                         </a>
 
                         <a
-                            href="/IAPSMGCCON_2026_Agenda_Day_2.pdf"
+                            href="/IAPSM_GC_2026_Oral_and_Poster_Agenda_25-11-2026.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
-                            download="IAPSMGCCON_2026_Agenda_Day_2.pdf"
-                            className="btn-program-outline"
-                        >
-                            <Download size={18} />
-                            <span>Day 2 Schedule</span>
-                        </a>
-
-                        <a
-                            href="/IAPSMGCCON_2026_Oral_Poster_Scientific_Agenda.pdf"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            download="IAPSMGCCON_2026_Oral_Poster_Scientific_Agenda.pdf"
+                            download="IAPSM_GC_2026_Oral_and_Poster_Agenda_25-11-2026.pdf"
                             className="btn-program-filled"
                         >
                             <Download size={18} />
-                            <span>Oral Poster Scientific Agenda</span>
+                            <span>SCHEDULE FOR HM Patel ORAL &amp; POSTER PRESENTATIONS</span>
                         </a>
                     </div>
                 </div>
@@ -346,7 +335,7 @@ export default function ProgramPage() {
                     gap: 1rem;
                     margin-top: 2.25rem;
                     width: 100%;
-                    max-width: 440px;
+                    max-width: 500px;
                 }
                 .btn-program-outline {
                     display: inline-flex;
@@ -354,15 +343,15 @@ export default function ProgramPage() {
                     justify-content: center;
                     gap: 0.6rem;
                     width: 100%;
-                    max-width: 440px;
+                    max-width: 500px;
                     padding: 0.85rem 1.5rem;
                     background: transparent;
                     color: #ffbf00;
                     border: 2px solid #ffbf00;
                     border-radius: 4px;
-                    font-size: 0.95rem;
+                    font-size: 0.92rem;
                     font-weight: 700;
-                    letter-spacing: 0.06em;
+                    letter-spacing: 0.05em;
                     text-transform: uppercase;
                     text-decoration: none;
                     text-align: center;
@@ -384,15 +373,15 @@ export default function ProgramPage() {
                     justify-content: center;
                     gap: 0.6rem;
                     width: 100%;
-                    max-width: 440px;
+                    max-width: 500px;
                     padding: 0.85rem 1.5rem;
                     background: linear-gradient(135deg, var(--color-secondary, #D4AF37) 0%, #b8860b 100%);
                     color: #000000;
                     border: 2px solid transparent;
                     border-radius: 4px;
-                    font-size: 0.95rem;
+                    font-size: 0.92rem;
                     font-weight: 800;
-                    letter-spacing: 0.08em;
+                    letter-spacing: 0.05em;
                     text-transform: uppercase;
                     text-decoration: none;
                     text-align: center;
