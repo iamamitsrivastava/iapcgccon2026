@@ -58,7 +58,7 @@ const navItems: NavItem[] = [
             { label: 'Submit Abstract', href: '#submit-abstract' },
         ]
     },
-    { label: 'Explore Vadodara' , href: '/travel' },
+    { label: 'Venue', href: '/travel' },
     { label: 'PITCH FOR PUBLIC HEALTH', href: '/pitch-for-public-health' },
     { label: 'Contact Us', href: '/contact' },
 ];

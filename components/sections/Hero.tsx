@@ -229,19 +229,19 @@ export default function Hero() {
       submitData.append('fullName', fullName);
       submitData.append('registrationNo', registrationNumber);
       submitData.append('email', email);
-      
+
       if (selectedFile) {
         submitData.append('file', selectedFile);
       }
-      
+
       const finalDocLink = uploadedUrl || documentLink;
       if (finalDocLink) {
         submitData.append('documentLink', finalDocLink);
       }
 
       const res = await fetch("/api/submit-abstract", {
-          method: "POST",
-          body: submitData,
+        method: "POST",
+        body: submitData,
       });
 
       if (res.ok) {
@@ -356,8 +356,12 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Interactive Venue Map */}
-          <div className={styles.heroMapWrapper}>
+          {/* Interactive Venue / Landmark Card */}
+          <Link
+            href="/travel"
+            className={styles.heroMapWrapper}
+            aria-label="Venue and Landmark Details: Parul University, Limda, Waghodia, Vadodara"
+          >
             <div className={styles.heroMapHeader}>
               <div className={styles.heroMapHeaderTitle}>
                 <MapPin size={14} color="var(--color-secondary)" />
@@ -375,7 +379,7 @@ export default function Hero() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
-          </div>
+          </Link>
         </div>
         <div className={styles.heroGrid}>
           <div className={styles.content}>
@@ -488,15 +492,15 @@ export default function Hero() {
 
                 <button
                   type="button"
-                  onClick={() => { 
-                    setSubmissionType('FULL_PAPER'); 
+                  onClick={() => {
+                    setSubmissionType('FULL_PAPER');
                     const unlockedUntil = localStorage.getItem('full_paper_code_unlocked_until');
                     if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
                       setIsCodeVerified(true);
                     } else {
                       setIsCodeVerified(false);
                     }
-                    setIsModalOpen(true); 
+                    setIsModalOpen(true);
                   }}
                   className={styles.btnPrimary}
                   style={{
