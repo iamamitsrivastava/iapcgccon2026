@@ -20,6 +20,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     institution: "SEWA Rural",
     location: "Bharuch, Gujarat",
     qualifications: "MBBS, MD (Community Medicine)",
+    image: "/images/speakers/dr-dhiren-modi.png",
     awards: [
       "Contributed to the development and implementation of ImTeCHO, a mobile-health initiative supporting community-based maternal, newborn and child health services in rural and tribal Gujarat."
     ],
@@ -43,6 +44,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     institution: "ICMR – National Institute of Occupational Health Research",
     location: "Ahmedabad, Gujarat",
     qualifications: "MD (Community Medicine)",
+    image: "/images/speakers/dr-ankit-sheth.webp",
     awards: [
       "Dr. C. K. Ramchandar Centenary Award for Best Scientific Paper, Indian Association of Occupational Health."
     ],
@@ -62,6 +64,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     institution: "Pandit Deendayal Upadhyaya Government Medical College",
     location: "Rajkot, Gujarat",
     qualifications: "MBBS, MD (Preventive and Social Medicine / Community Medicine)",
+    image: "/images/speakers/dr-bharti-koria.webp",
     awards: [
       "Recognition during World Breastfeeding Week, 2013."
     ],
@@ -88,6 +91,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     institution: "Insights, Capacity and Operations Unit (ICO), Data, Digital Health, Analytics and AI Department (DDA), World Health Organization",
     location: "Geneva, Switzerland",
     qualifications: "PhD, MSc Public Health, MSc Information Systems Management, BSc Computer Science; PRINCE2 and CompTIA Project+ certifications.",
+    image: "/images/speakers/dr-derrick-muneene.png",
     awards: [
       "Contributed to development of electronic antiretroviral treatment records, laboratory software and smartcard-based patient records in Zambia.",
       "Served as WHO Regional Office for Africa eHealth/mHealth technical adviser, supporting digital health strategy development and implementation across 47 African countries.",
@@ -114,6 +118,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     designation: "Physician, Microbiologist and Public Health Scientist",
     location: "Gujarat, India",
     qualifications: "Public health and microbiology professional based in Gujarat, India.",
+    image: "/images/speakers/mr-yazdi-maneksha-italia.png",
     awards: [
       "Padma Shri (2024), Medicine.",
       "Prime Minister’s Award for Excellence in Public Administration (2011), associated with Gujarat’s Sickle Cell Anaemia Control Programme.",
@@ -142,6 +147,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     institution: "Bharat Cancer Hospital & Research Institute",
     location: "Surat, Gujarat",
     qualifications: "MBBS, MD Community Medicine",
+    image: "/images/speakers/dr-mahua-moitra.jpg",
     awards: [
       "Academic and research contributions in community medicine and preventive healthcare.",
       "Research contributions in public health and healthcare delivery."

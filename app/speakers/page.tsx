@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Header from '@/components/sections/Header';
 import Footer from '@/components/sections/Footer';
+import SpeakersCoverflow from '@/components/speakers/SpeakersCoverflow';
 import SpeakersGrid from './SpeakersGrid';
 import styles from './page.module.css';
 import { Calendar, MapPin, Sparkles } from 'lucide-react';
@@ -50,8 +51,20 @@ export default function SpeakersPage() {
         </div>
       </section>
 
-      {/* ── Speakers Directory Grid with 3D Flip Cards ── */}
+      {/* ── 3D Coverflow Slideshow (Top of Page) ── */}
+      <section className={styles.carouselSection} aria-label="Distinguished Speakers Coverflow">
+        <SpeakersCoverflow />
+      </section>
+
+      {/* ── Speakers Directory Grid with 3D Flip Cards (Existing Showcase Preserved) ── */}
       <section className={styles.container}>
+        <div className={styles.directoryHeader}>
+          <span className={styles.directoryTag}>Speaker Directory</span>
+          <h2 className={styles.directoryTitle}>Full Speaker Profiles &amp; Biographies</h2>
+          <p className={styles.directorySubtitle}>
+            Click on any card to flip and view complete background, credentials, honours, and key publications.
+          </p>
+        </div>
         <SpeakersGrid />
       </section>
 

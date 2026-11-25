@@ -41,6 +41,7 @@ export default function SpeakersGrid() {
         return (
           <div
             key={speaker.id}
+            id={speaker.id}
             className={`${styles.cardContainer} ${isFlipped ? styles.isFlipped : ''}`}
             onClick={() => toggleFlip(speaker.id)}
             onKeyDown={(e) => handleKeyDown(e, speaker.id)}

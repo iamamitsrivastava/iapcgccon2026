@@ -4,6 +4,7 @@ import { AboutConference, Objectives, ConferenceTheme } from "@/components/secti
 import Themes from "@/components/sections/Themes";
 import Timeline from "@/components/sections/Timeline";
 import { Venue, AboutIAPSM } from "@/components/sections/Venue";
+import SpeakersCarouselSection from "@/components/sections/SpeakersCarouselSection";
 import Footer from "@/components/sections/Footer";
 import { Highlights } from "@/components/sections/Highlights";
 import { SubmissionGuidelines } from "@/components/sections/SubmissionGuidelines";
@@ -16,6 +17,7 @@ export default function Home() {
             <AboutConference />
             <AboutIAPSM />
             <Venue />
+            <SpeakersCarouselSection />
             <ConferenceTheme />
             <Themes />
             <Objectives />
