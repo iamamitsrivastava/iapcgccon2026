@@ -410,86 +410,6 @@ export default function Hero() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '4rem', width: 'fit-content' }} className={`${styles.animate} ${styles['delay-500']}`}>
               <div className={styles.actions} style={{ marginBottom: 0 }}>
-                {(!isMounted || !isExpired) && (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setSubmissionType('ABSTRACT');
-                      const unlockedUntil = localStorage.getItem('abstract_code_unlocked_until');
-                      if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
-                        setIsCodeVerified(true);
-                      } else {
-                        setIsCodeVerified(false);
-                      }
-                      setIsModalOpen(true);
-                    }}
-                    className={styles.btnSecondary}
-                    style={{
-                      display: 'inline-flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.25rem',
-                      padding: '0.6rem 1.5rem',
-                      cursor: 'pointer',
-                      outline: 'none',
-                      background: 'transparent',
-                      color: '#ffbf00',
-                      border: '2px solid #ffbf00',
-                      boxShadow: 'none',
-                      transition: 'all 0.3s ease'
-                    }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 191, 0, 0.1)';
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.background = 'transparent';
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', lineHeight: 1 }}>
-                      Submit Abstract <Lock size={18} color="#ffbf00" />
-                    </div>
-                  </button>
-                )}
-
-                <button
-                  type="button"
-                  onClick={() => { 
-                    setSubmissionType('FULL_PAPER'); 
-                    const unlockedUntil = localStorage.getItem('full_paper_code_unlocked_until');
-                    if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
-                      setIsCodeVerified(true);
-                    } else {
-                      setIsCodeVerified(false);
-                    }
-                    setIsModalOpen(true); 
-                  }}
-                  className={styles.btnPrimary}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem',
-                    cursor: 'pointer',
-                    background: 'transparent',
-                    color: '#ffbf00',
-                    border: '2px solid #ffbf00',
-                    boxShadow: 'none',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 191, 0, 0.1)';
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                  }}
-                >
-                  Submit Full Paper <Lock size={18} color="#ffbf00" />
-                </button>
-              </div>
-
-              <div className={styles.actions} style={{ marginBottom: 0 }}>
                 <button
                   type="button"
                   onClick={() => setIsRegModalOpen(true)}
@@ -498,7 +418,8 @@ export default function Hero() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    padding: '0.8rem 1.5rem',
+                    padding: '1rem 1.5rem',
+                    minHeight: '54px',
                     cursor: 'pointer',
                     background: 'linear-gradient(135deg, var(--color-secondary) 0%, #b8860b 100%)',
                     color: 'black',
@@ -520,6 +441,86 @@ export default function Hero() {
                   }}
                 >
                   KNOW YOUR REGISTRATION NUMBER
+                </button>
+              </div>
+
+              <div className={styles.actions} style={{ marginBottom: 0 }}>
+                {(!isMounted || !isExpired) && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSubmissionType('ABSTRACT');
+                      const unlockedUntil = localStorage.getItem('abstract_code_unlocked_until');
+                      if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
+                        setIsCodeVerified(true);
+                      } else {
+                        setIsCodeVerified(false);
+                      }
+                      setIsModalOpen(true);
+                    }}
+                    className={styles.btnSecondary}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.5rem',
+                      padding: '0.6rem 1.5rem',
+                      minHeight: '44px',
+                      cursor: 'pointer',
+                      outline: 'none',
+                      background: 'transparent',
+                      color: '#ffbf00',
+                      border: '2px solid #ffbf00',
+                      boxShadow: 'none',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 191, 0, 0.1)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.background = 'transparent';
+                    }}
+                  >
+                    Submit Abstract <Lock size={18} color="#ffbf00" />
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => { 
+                    setSubmissionType('FULL_PAPER'); 
+                    const unlockedUntil = localStorage.getItem('full_paper_code_unlocked_until');
+                    if (unlockedUntil && parseInt(unlockedUntil, 10) > Date.now()) {
+                      setIsCodeVerified(true);
+                    } else {
+                      setIsCodeVerified(false);
+                    }
+                    setIsModalOpen(true); 
+                  }}
+                  className={styles.btnPrimary}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.5rem',
+                    padding: '0.6rem 1.5rem',
+                    minHeight: '44px',
+                    cursor: 'pointer',
+                    background: 'transparent',
+                    color: '#ffbf00',
+                    border: '2px solid #ffbf00',
+                    boxShadow: 'none',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 191, 0, 0.1)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  Submit Full Paper <Lock size={18} color="#ffbf00" />
                 </button>
               </div>
             </div>
