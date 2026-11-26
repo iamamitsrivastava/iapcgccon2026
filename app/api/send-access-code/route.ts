@@ -18,7 +18,6 @@ export async function POST(request: Request) {
     const port = Number(process.env.SMTP_PORT) || 587;
     const user = process.env.EMAIL_USER || process.env.SMTP_USER || 'iapsmgc.conference@paruluniversity.ac.in';
     const pass = process.env.EMAIL_PASSWORD || process.env.SMTP_PASS || 'dcweynmzcxdzrdkr';
-    const pass = process.env.EMAIL_PASSWORD || process.env.SMTP_PASS;
 
     if (!host || !user || !pass) {
       console.error('SMTP credentials or configuration missing in environment variables.');

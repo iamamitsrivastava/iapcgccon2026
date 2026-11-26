@@ -208,6 +208,29 @@ export default function RegistrationPage() {
     };
 
     const renderSpotFee = (priceStr: string | undefined) => {
+        if (!priceStr) return priceStr;
+        const num = parseAmount(priceStr);
+        if (!num) return priceStr;
+
+        if (is100DiscountApplied) {
+            return (
+                <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
+                    <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
+                    <span style={{ color: '#FACC15', fontWeight: 800 }}>₹0</span>
+                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.15)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>100% OFF (FREE)</span>
+                </span>
+            );
+        } else if (isDiscountApplied) {
+            const discounted = Math.round(num * 0.9);
+            return (
+                <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.2 }}>
+                    <span style={{ textDecoration: 'line-through', opacity: 0.5, fontSize: '0.75rem' }}>{priceStr}</span>
+                    <span style={{ color: '#FACC15', fontWeight: 800 }}>₹{discounted}</span>
+                    <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.15)', padding: '2px 6px', borderRadius: '4px', marginTop: '2px' }}>10% OFF</span>
+                </span>
+            );
+        }
+
         return priceStr;
     };
 
@@ -366,7 +389,9 @@ export default function RegistrationPage() {
                                     <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em', borderRight: '1px solid rgba(255,255,255,0.1)' }}>
                                         PRE-CONFERENCE {(isEarlyBirdLocked || isPreConferenceLocked) && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}
                                     </th>
-                                    <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em' }}>CONFERENCE</th>
+                                    <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em' }}>
+                                        CONFERENCE {isLateBirdLocked && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}
+                                    </th>
                                     <th className={styles.subHeader} style={{ fontSize: '0.85rem', color: '#94a3b8', padding: '0.75rem', textAlign: 'center', fontWeight: 700, letterSpacing: '0.05em' }}>
                                         PRE-CONFERENCE {isPreConferenceLocked && <Lock size={14} style={{ display: 'inline', marginLeft: '4px' }} />}
                                     </th>
@@ -418,7 +443,7 @@ export default function RegistrationPage() {
                                                 href="#"
                                                 className={`${styles.feeGridButton} ${isLateBirdLocked ? styles.lockedButton : ''}`}
                                                 onClick={(e) => openPayment(e, item.lateBird.conf, true, isLateBirdLocked, `${item.category} — Late Bird Conference`, item.category)}
-                                                style={isLateBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
+                                                style={isLateBirdLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4, pointerEvents: 'none' } : {}}
                                             >
                                                 <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
                                                     {renderFee(item.lateBird.conf, true)}
@@ -449,7 +474,7 @@ export default function RegistrationPage() {
                                             <a
                                                 href="#"
                                                 className={`${styles.feeGridButton} ${isSpotLocked ? styles.lockedButton : ''}`}
-                                                onClick={(e) => openPayment(e, item.spot, false, isSpotLocked, `${item.category} — Spot`, item.category)}
+                                                onClick={(e) => openPayment(e, item.spot, true, isSpotLocked, `${item.category} — Spot`, item.category)}
                                                 style={isSpotLocked ? { cursor: 'not-allowed', color: 'grey', opacity: 0.4 } : {}}
                                             >
                                                 <span className={styles.feeText} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
